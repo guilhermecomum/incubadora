@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div>
+    <span>Spectacles:</span>
+    <ul>
+    {% for s in spectacles %}
+        <li>{{ s.name }} : <a href="/easy/spectacle/{{ s.pk }}/">Easy</a> | <a href="/hard/spectacle/{{ s.pk }}/">Hard</a></li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

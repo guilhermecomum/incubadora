@@ -17,24 +17,13 @@
 # Boston, MA 02111-1307, USA.
 ##
 
-from django.conf.urls import patterns, include, url
-from django.contrib import admin
-admin.autodiscover()
+from django.shortcuts import render
+from presentation.models import Spectacle
 
-urlpatterns = patterns('',
-    # admin
-     url(r'^admin/', include(admin.site.urls)),
 
-    # index
-    url(r'^$', 'index.views.index', name='index'),
+def index(request):
+    spectacles = Spectacle.objects.all()
 
-    # Hard
-    url(r'^hard/spectacle/(?P<s_id>(.*))/$', 'presentation.views.hard_show'),
-    url(r'^hard/command/add/$', 'presentation.views.hard_add'),
-    url(r'^hard/happiness-meter/(?P<s_id>(.*))/$', 'presentation.views.hard_happiness_meter'),
+    c = { 'spectacles':spectacles }
 
-    # Easy
-    url(r'^easy/spectacle/(?P<s_id>(.*))/$', 'presentation.views.easy_show'),
-    url(r'^easy/command/add/$', 'presentation.views.easy_add'),
-    url(r'^easy/happiness-meter/(?P<s_id>(.*))/$', 'presentation.views.easy_happiness_meter'),
-)
+    return render(request, 'index.html', c)
