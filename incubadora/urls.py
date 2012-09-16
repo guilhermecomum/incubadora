@@ -37,4 +37,9 @@ urlpatterns = patterns('',
     url(r'^easy/spectacle/(?P<s_id>(.*))/$', 'presentation.views.easy_show'),
     url(r'^easy/command/add/$', 'presentation.views.easy_add'),
     url(r'^easy/happiness-meter/(?P<s_id>(.*))/$', 'presentation.views.easy_happiness_meter'),
+
+    # Frontal Projection
+    url(r'^frontal-projection/(?P<s_id>(.*))/commands/$', 'presentation.views.frontal_projection_commands'),
+    url(r'^frontal-projection/(?P<s_id>(.*))/$', 'presentation.views.frontal_projection'),
+
 )

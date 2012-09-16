@@ -27,6 +27,9 @@ from presentation.forms import EasyModeForm, HardModeForm
 
 
 MAX_SAME_COMMAND = 3
+# FIXME
+SPECTACLE_MODE_EASY = 1
+SPECTACLE_MODE_HARD = 2
 
 
 def easy_show(request, s_id):
@@ -133,3 +136,38 @@ def hard_add(request):
     else:
         message = simplejson.dumps( { 'error': 1 } )
         return HttpResponse(message, mimetype="application/json")
+
+
+def frontal_projection(request, s_id):
+
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+
+    if spectacle.mode == SPECTACLE_MODE_EASY:
+        spectacle_mode = EasyMode.objects.filter(spectacle=spectacle)
+        template = 'easy_frontal_projection.html'
+    else:
+        spectacle_mode = HardMode.objects.filter(spectacle=spectacle)
+        template = 'hard_frontal_projection.html'
+    spectacle_mode = spectacle_mode.values('command__name', 'command__pk')
+    spectacle_mode = spectacle_mode.annotate(Count('pk'))
+
+    c = { 'spectacle':spectacle, 'commands':spectacle_mode }
+
+    return render(request, template, c)
+
+def frontal_projection_commands(request, s_id):
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    if spectacle.mode == SPECTACLE_MODE_EASY:
+        spectacle_mode = EasyMode.objects.filter(spectacle=spectacle)
+    else:
+        spectacle_mode = HardMode.objects.filter(spectacle=spectacle)
+    spectacle_mode = spectacle_mode.values('command__name', 'command__pk')
+    spectacle_mode = spectacle_mode.annotate(Count('pk'))
+
+    message = simplejson.dumps( { 'error': 0,
+                                  'commands': [ { 'name': m['command__name'],
+                                                  'pk': m['command__pk'],
+                                                  'total': m['pk__count'] }
+                                                  for m in spectacle_mode ] })
+
+    return HttpResponse(message, mimetype="application/json")
