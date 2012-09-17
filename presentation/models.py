@@ -32,7 +32,8 @@ class Spectacle(models.Model):
     mode = models.CharField(
         verbose_name=_('Mode'),
         max_length=1,
-        choices=MODEL_CHOICES,)
+        choices=MODEL_CHOICES,
+        default='1')
     mobile_interaction = models.BooleanField(
         verbose_name=_('Mobile Interaction'),
         default=False)
