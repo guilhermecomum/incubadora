@@ -60,6 +60,30 @@ class Spectacle(models.Model):
     def __unicode__(self):
         return "%s" % (self.name)
 
+    @models.permalink
+    def get_easy_show_url(self):
+        return ('easy-show', [str(self.pk)])
+
+    @models.permalink
+    def get_hard_show_url(self):
+        return ('hard-show', [str(self.pk)])
+
+    @models.permalink
+    def get_frontal_projection_show_url(self):
+        return ('frontal-projection-show', [str(self.pk)])
+
+    @models.permalink
+    def get_hard_happiness_meter_url(self):
+        return ('hard-happiness-meter', [str(self.pk)])
+
+    @models.permalink
+    def get_hard_happiness_meter_url(self):
+        return ('easy-happiness-meter', [str(self.pk)])
+
+    @models.permalink
+    def get_frontal_projection_commands_url(self):
+        return ('frontal-projection-commands', [str(self.pk)])
+
 class Command(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))

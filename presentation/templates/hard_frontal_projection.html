@@ -4,7 +4,7 @@
 {% block head %}
 <script type="text/javascript">
 
-var url = '/hard/happiness-meter/{{ spectacle.pk }}/';
+var url = '{{ spectacle.get_hard_happiness_meter_url }}';
 var happiness_meter_refresh = setInterval(
     function (){
         $.get(url,
@@ -19,9 +19,10 @@ var happiness_meter_refresh = setInterval(
 // FIXME
 var commands_refresh = setInterval(
     function (){
+        var url = '{{ spectacle.get_frontal_projection_commands_url }}';
         $('#command-list').html('');
         $.get(
-            "/frontal-projection/{{ spectacle.pk }}/commands/",
+            url,
             function ( data ) {
                 if (!data.error) {
                     $.each(data.commands, function(i, item) {

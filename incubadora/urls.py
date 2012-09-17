@@ -28,18 +28,35 @@ urlpatterns = patterns('',
     # index
     url(r'^$', 'index.views.index', name='index'),
 
+)
+
+urlpatterns += patterns('presentation.views',
+
     # Hard
-    url(r'^hard/spectacle/(?P<s_id>(.*))/$', 'presentation.views.hard_show'),
-    url(r'^hard/command/add/$', 'presentation.views.hard_add'),
-    url(r'^hard/happiness-meter/(?P<s_id>(.*))/$', 'presentation.views.hard_happiness_meter'),
+    url(r'^hard/spectacle/(?P<s_id>(.*))/$', 'hard_show', name='hard-show'),
+
+    url(r'^hard/command/add/$', 'hard_add', name='hard-add'),
+
+    url(r'^hard/happiness-meter/(?P<s_id>(.*))/$',
+        'hard_happiness_meter',
+        name='hard-happiness-meter'),
 
     # Easy
-    url(r'^easy/spectacle/(?P<s_id>(.*))/$', 'presentation.views.easy_show'),
-    url(r'^easy/command/add/$', 'presentation.views.easy_add'),
-    url(r'^easy/happiness-meter/(?P<s_id>(.*))/$', 'presentation.views.easy_happiness_meter'),
+    url(r'^easy/spectacle/(?P<s_id>(.*))/$', 'easy_show', name='easy-show'),
+
+    url(r'^easy/command/add/$', 'easy_add', name='easy-add',),
+
+    url(r'^easy/happiness-meter/(?P<s_id>(.*))/$',
+        'easy_happiness_meter',
+        name='easy-happiness-meter'),
 
     # Frontal Projection
-    url(r'^frontal-projection/(?P<s_id>(.*))/commands/$', 'presentation.views.frontal_projection_commands'),
-    url(r'^frontal-projection/(?P<s_id>(.*))/$', 'presentation.views.frontal_projection'),
+    url(r'^frontal-projection/(?P<s_id>(.*))/commands/$',
+        'frontal_projection_commands',
+        name='frontal-projection-commands'),
+
+    url(r'^frontal-projection/(?P<s_id>(.*))/$',
+        'frontal_projection',
+        name='frontal-projection-show'),
 
 )
