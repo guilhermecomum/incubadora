@@ -157,3 +157,11 @@ def frontal_projection_commands(request, s_id):
                                                   for m in spectacle_mode ] })
 
     return HttpResponse(message, mimetype="application/json")
+
+def controller(request, s_id):
+
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+
+    c = { 'spectacle':spectacle }
+
+    return render(request, "controller.html", c)

@@ -57,4 +57,7 @@ urlpatterns += patterns('presentation.views',
         'happiness_meter',
         name='happiness-meter'),
 
+     # Controller
+     url(r'^controller/(?P<s_id>(.*))/$', 'controller', name='controller'),
+
 )

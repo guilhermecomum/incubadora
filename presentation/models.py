@@ -84,6 +84,10 @@ class Spectacle(models.Model):
     def get_frontal_projection_commands_url(self):
         return ('frontal-projection-commands', [str(self.pk)])
 
+    @models.permalink
+    def get_controller_url(self):
+        return ('controller', [str(self.pk)])
+
 class Command(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
