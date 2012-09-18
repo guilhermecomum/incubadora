@@ -77,12 +77,8 @@ class Spectacle(models.Model):
         return ('frontal-projection-show', [str(self.pk)])
 
     @models.permalink
-    def get_hard_happiness_meter_url(self):
-        return ('hard-happiness-meter', [str(self.pk)])
-
-    @models.permalink
-    def get_hard_happiness_meter_url(self):
-        return ('easy-happiness-meter', [str(self.pk)])
+    def get_happiness_meter_url(self):
+        return ('happiness-meter', [str(self.pk)])
 
     @models.permalink
     def get_frontal_projection_commands_url(self):

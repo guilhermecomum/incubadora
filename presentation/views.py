@@ -74,15 +74,12 @@ def easy_add(request):
         message = simplejson.dumps( { 'error': 1 } )
         return HttpResponse(message, mimetype="application/json")
 
-def easy_happiness_meter(request, s_id):
+def happiness_meter(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)
-    value = spectacle.easy_happiness_meter
-    message = simplejson.dumps( { 'error': 0, 'value':value } )
-    return HttpResponse(message, mimetype="application/json")
-
-def hard_happiness_meter(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
-    value = spectacle.hard_happiness_meter
+    if spectacle.mode == SPECTACLE_MODE_EASY:
+        value = spectacle.easy_happiness_meter
+    else:
+        value = spectacle.hard_happiness_meter
     message = simplejson.dumps( { 'error': 0, 'value':value } )
     return HttpResponse(message, mimetype="application/json")
 
