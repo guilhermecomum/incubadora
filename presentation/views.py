@@ -141,15 +141,12 @@ def frontal_projection(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)
 
     if spectacle.mode == SPECTACLE_MODE_EASY:
-        spectacle_mode = EasyMode.objects.filter(spectacle=spectacle)
         template = 'easy_frontal_projection.html'
     else:
-        spectacle_mode = HardMode.objects.filter(spectacle=spectacle)
         template = 'hard_frontal_projection.html'
-    spectacle_mode = spectacle_mode.values('command__name', 'command__pk')
-    spectacle_mode = spectacle_mode.annotate(Count('pk'))
 
-    c = { 'spectacle':spectacle, 'commands':spectacle_mode }
+
+    c = { 'spectacle':spectacle }
 
     return render(request, template, c)
 
