@@ -55,7 +55,7 @@ var commands_refresh = setInterval(
 </div>
 
 <div class="column grid_4">
-    <span>Happiness Meter:</span> <span id="happiness-meter">{{ spectacle.easy_happiness_meter }}</span>
+    <span>Happiness Meter:</span> <span id="happiness-meter">{% if spectacle.mode == '1' %} {{ spectacle.easy_happiness_meter }}  {% else %} {{ spectacle.hard_happiness_meter }} {% endif %}</span>
 </div>
 
 {% endblock %}

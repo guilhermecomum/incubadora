@@ -137,15 +137,9 @@ def frontal_projection(request, s_id):
 
     spectacle = get_object_or_404(Spectacle, pk=s_id)
 
-    if spectacle.mode == SPECTACLE_MODE_EASY:
-        template = 'easy_frontal_projection.html'
-    else:
-        template = 'hard_frontal_projection.html'
-
-
     c = { 'spectacle':spectacle }
 
-    return render(request, template, c)
+    return render(request, "frontal_projection.html", c)
 
 def frontal_projection_commands(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)
