@@ -16,11 +16,10 @@ $(document).ready(function() {
     });
 });
 
-var url = '{{ spectacle.get_easy_happiness_meter_url }}';
 var happiness_meter_refresh = setInterval(
     function (){
-        $.get(url,
-        function( data ) {
+        var url = '{{ spectacle.get_easy_happiness_meter_url }}';
+        $.get( url, function( data ) {
            if (!data.error) {
                $('#easy-happiness-meter').html(data.value);
            }
