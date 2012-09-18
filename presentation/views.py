@@ -23,13 +23,11 @@ from django.utils import simplejson
 from django.forms.widgets import HiddenInput
 from django.db.models import Count
 from presentation.models import Command, EasyMode, Spectacle, HardMode, Actor
+from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD
 from presentation.forms import EasyModeForm, HardModeForm
 
 
 MAX_SAME_COMMAND = 3
-# FIXME
-SPECTACLE_MODE_EASY = 1
-SPECTACLE_MODE_HARD = 2
 
 
 def easy_show(request, s_id):

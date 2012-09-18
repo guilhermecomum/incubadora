@@ -22,9 +22,12 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 
 
-MODEL_CHOICES = (
-    (u'1', u'Easy',),
-    (u'2', u'Hard',),
+SPECTACLE_MODE_EASY = '1'
+SPECTACLE_MODE_HARD = '2'
+
+MODE_CHOICES = (
+    (SPECTACLE_MODE_EASY, u'Easy',),
+    (SPECTACLE_MODE_HARD, u'Hard',),
 )
 
 class Spectacle(models.Model):
@@ -32,7 +35,7 @@ class Spectacle(models.Model):
     mode = models.CharField(
         verbose_name=_('Mode'),
         max_length=1,
-        choices=MODEL_CHOICES,
+        choices=MODE_CHOICES,
         default='1')
     mobile_interaction = models.BooleanField(
         verbose_name=_('Mobile Interaction'),
