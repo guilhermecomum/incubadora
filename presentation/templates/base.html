@@ -5,23 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <noscript>Your browser does not support JavaScript!</noscript>
-    <!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/grid/grid.css" /> -->
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/base.css">
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}js/jquery-mobile/jquery.mobile.min.css">
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css">
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-mobile/jquery.mobile..min.js"></script>
     {% block head %}
     {% endblock %}
   </head>
   <body>
-    <div data-role="page">
-      <div data-role="header">...</div>
-      <div data-role="content">
-        {% block content %}
-        {% endblock %}
-      </div>
-      <div data-role="footer">...</div>
-    </div>
+    {% block content %}
+    {% endblock %}
   </body>
 </html>
