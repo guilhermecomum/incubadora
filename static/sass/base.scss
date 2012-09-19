@@ -1,0 +1,75 @@
+/*
+  Copyright (C) 2012 Marcelo Jorge Vieira <metal@alucinados.com>
+  Copyright (C) 2012 Guilherme Guerra <guerrinha@comum.org>
+  
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License along
+  with this program; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
+
+
+$blue: #33B5E5;
+$purple: #AA66CC;
+$green: #99CC00;
+$orange: #FFBB33;
+$red: #FF4444;
+
+$dblue: #0099CC;
+$dpurple: #9933CC;
+$dgreen: #669900;
+$dorange: #FF8800;
+$dred: #CC0000;
+
+
+@import "compass/reset";
+@import "grid";
+
+.container { 
+    width: 100%; 
+    min-height: 100%; 
+    font-family: 'Open Sans';
+    padding-top: 20px;
+}
+
+#easy-commands li {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.btn {
+    background-color: $blue;
+    height: 50px;
+    width: 90%;
+    margin: 0 auto;
+    color: white;
+    font-weight: bold;
+    text-transform: capitalize;
+    padding-top: 50px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: $dblue;
+}
+
+.hard-command-selected,
+.hard-actors-selected {
+    background-color: red;
+    color: white;
+}
+
+#id_message {
+    width: 80%;
+    height: 50px;
+}
+
