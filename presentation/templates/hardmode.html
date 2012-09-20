@@ -40,28 +40,36 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block content %}
-
-<form id="hard-mode-form" method="post" action="/hard/command/add/">{% csrf_token %}
+<div class="container">
+  <form id="hard-mode-form" method="post" action="/hard/command/add/">{% csrf_token %}
     {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
-    <div id="hard-actors" class="column grid_6">
-        <ul>
+    <div id="hard-actors" class="row">
+      <ul>
         {% for a in actors %}
-            <li id="actor-{{ a.id }}" class="actor">{{ a.name }}</li>
+        <li class="actor block-b">
+          <div  id="actor-{{ a.id }}" class="btn">
+          {{ a.name }}
+          </div>
+        </li>
         {% endfor %}
-        </ul>
+      </ul>
     </div>
 
-    <div id="hard-commands" class="column grid_6">
-        <ul>
+    <div id="hard-commands" class="row">
+      <ul>
         {% for c in commands %}
-            <li id="command-{{ c.id }}" class="command">{{ c.name }}</li>
+        <li class="block">
+          <div id="command-{{ c.id }}" class="stick command">
+            {{ c.name }}
+          </div>
+        </li>
         {% endfor %}
-        </ul>
+      </ul>
     </div>
-    <div id="hard-commands" class="column grid_6">
-        <div class="column grid_4">{{ form.message }}</div>
-        <div class="column grid_1"><input type="button" id="hard-submit" value="Submit"></div>
+    <div id="hard-commands" class="row">
+      <div class="block-a">{{ form.message }}</div>
+      <div class="block-a"><input type="button" id="hard-submit" class="submit" value="Submit"></div>
     </div>
-</form>
-
+  </form>
+</div>
 {% endblock %}

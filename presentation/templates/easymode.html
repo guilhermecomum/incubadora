@@ -24,10 +24,10 @@
     {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
   </form>
 
-  <div id="easy-commands" class="ui-grid-a">
+  <div id="easy-commands" class="row">
     <ul>
       {% for c in commands %}
-      <li id="command-{{ c.id }}" class="{% cycle 'ui-block-a' 'ui-block-b' %}">
+      <li id="command-{{ c.id }}" class="block-a">
         <div class="btn command">
           {{ c.name }}
         </div>

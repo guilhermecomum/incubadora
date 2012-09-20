@@ -1,36 +1,41 @@
 /*
-* jQuery Mobile Framework Git Build: SHA1: db342b1f315c282692791aa870455901fdb46a55 <> Date: Thu Apr 12 15:34:53 2012 -0700
-* http://jquerymobile.com
-*
-* Copyright 2011 (c) jQuery Project
-* Dual licensed under the MIT or GPL Version 2 licenses.
-* http://jquery.org/license
-*
+  Copyright (C) 2012 Guilherme Guerra <guerrinha@comum.org>
+  
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License along
+  with this program; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-/* content configurations. */
-.ui-grid-a, .ui-grid-b, .ui-grid-c, .ui-grid-d { overflow: hidden; }
-.ui-block-a, .ui-block-b, .ui-block-c, .ui-block-d, .ui-block-e { margin: 0; padding: 0; border: 0; float: left; min-height:1px;}
-/* grid solo: 100 - single item fallback */
-.ui-grid-solo .ui-block-a { width: 100%; float: none; }
-/* grid a: 50/50 */
-.ui-grid-a .ui-block-a, .ui-grid-a .ui-block-b { width: 50%; }
-.ui-grid-a .ui-block-a { clear: left; }
-/* grid b: 33/33/33 */
-.ui-grid-b .ui-block-a, .ui-grid-b .ui-block-b, .ui-grid-b .ui-block-c { width: 33.333%; }
-.ui-grid-b .ui-block-a { clear: left; }
-/* grid c: 25/25/25/25 */
-.ui-grid-c .ui-block-a, .ui-grid-c .ui-block-b, .ui-grid-c .ui-block-c, .ui-grid-c .ui-block-d { width: 25%; }
-.ui-grid-c .ui-block-a { clear: left; }
-/* grid d: 20/20/20/20/20 */
-.ui-grid-d .ui-block-a, .ui-grid-d .ui-block-b, .ui-grid-d .ui-block-c, .ui-grid-d .ui-block-d, .ui-grid-d .ui-block-e { width: 20%; }
-.ui-grid-d .ui-block-a { clear: left; }
-/* fixed page header & footer configuration */
-.ui-header-fixed,
-.ui-footer-fixed {
-	left: 0;
-	right: 0;
-	width: 100%;
-	position: fixed;
-	z-index: 1000;
+body {
+    padding-right: 10px;
+    padding-left: 10px;
 }
+
+.container {
+    width: auto;
+}
+
+.row {
+    width: 100%;
+}
+
+.row [class*="block"] {
+    float: left;
+    padding: 2%;
+    @include box-sizing(border-box);
+}
+.block { width: 100%; }
+.block-a { width: 50%; }
+.block-b { width: 33.333%; }
+.block-c { width: 25%; }
+.block-d { width: 20; }
