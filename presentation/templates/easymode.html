@@ -27,8 +27,8 @@
   <div id="easy-commands" class="row">
     <ul>
       {% for c in commands %}
-      <li id="command-{{ c.id }}" class="block-a">
-        <div class="btn command">
+      <li class="block-a">
+        <div id="command-{{ c.id }}" class="btn command">
           {{ c.name }}
         </div>
       </li>
