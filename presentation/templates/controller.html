@@ -14,6 +14,18 @@ $(document).ready(function() {
         return false;
     });
 });
+
+var happiness_meter_refresh = setInterval(
+    function (){
+        var url = '{{ spectacle.get_happiness_meter_url }}';
+        $.get( url, function( data ) {
+           if (!data.error) {
+               $('#happiness-meter').html(data.value);
+           }
+        });
+    },
+    10000); // 10s
+
 </script>
 
 {% endblock %}
@@ -30,7 +42,9 @@ EASY:
 
     Lista de comandos
 
-    Medidor
+    <div>
+        <span>Happiness Meter:</span> <span id="happiness-meter">{% if spectacle.mode == '1' %} {{ spectacle.easy_happiness_meter }}  {% else %} {{ spectacle.hard_happiness_meter }} {% endif %}</span>
+    </div>
 
     botão para da início à degradação do medidor de felicidade
 
