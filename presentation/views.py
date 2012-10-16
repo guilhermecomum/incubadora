@@ -55,9 +55,9 @@ def easy_add(request):
         total = EasyMode.objects.filter(player = instance.player,
                                         spectacle = instance.spectacle,
                                         command = instance.command).count()
-        if total < MAX_SAME_COMMAND:
+        spectacle = get_object_or_404(Spectacle, pk=instance.spectacle.pk)
+        if total < MAX_SAME_COMMAND and spectacle.mobile_interaction:
             instance.save()
-            spectacle = get_object_or_404(Spectacle, pk=instance.spectacle.pk)
             if total == 0:
                 spectacle.easy_happiness_meter += 10
             elif total == 1:
