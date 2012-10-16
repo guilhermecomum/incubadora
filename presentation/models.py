@@ -30,6 +30,16 @@ MODE_CHOICES = (
     (SPECTACLE_MODE_HARD, u'Hard',),
 )
 
+class Command(models.Model):
+    name = models.CharField(verbose_name=_('Name'), max_length=100)
+
+    class Meta:
+        verbose_name = _('Command')
+        verbose_name_plural = _('Commands')
+
+    def __unicode__(self):
+        return "%s" % (self.name)
+
 class Spectacle(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     mode = models.CharField(
@@ -56,6 +66,18 @@ class Spectacle(models.Model):
     date_created = models.DateTimeField(
         verbose_name=_('Date Created'),
         auto_now_add=True)
+    easy_commands = models.ManyToManyField(
+        Command,
+        verbose_name=_('Easy Commands'),
+        related_name='easy_commands',
+        blank=True,
+        null=True)
+    hard_commands = models.ManyToManyField(
+        Command,
+        verbose_name=_('Hard Commands'),
+        related_name='hard_commands',
+        blank=True,
+        null=True)
 
     class Meta:
         verbose_name = _('Spectacle')
@@ -95,17 +117,6 @@ class Spectacle(models.Model):
     @models.permalink
     def set_mobile_interaction_url(self):
         return ('set-mobile-interaction', [str(self.pk)])
-
-class Command(models.Model):
-    name = models.CharField(verbose_name=_('Name'), max_length=100)
-    spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
-
-    class Meta:
-        verbose_name = _('Command')
-        verbose_name_plural = _('Commands')
-
-    def __unicode__(self):
-        return "%s" % (self.name)
 
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)

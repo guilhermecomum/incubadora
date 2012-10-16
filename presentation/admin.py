@@ -18,10 +18,17 @@
 ##
 
 from django.contrib import admin
+from django.forms import CheckboxSelectMultiple
 from presentation.models import *
 
 
-admin.site.register(Spectacle)
+class SpectacleAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        models.ManyToManyField: {'widget': CheckboxSelectMultiple},
+    }
+
+
+admin.site.register(Spectacle, SpectacleAdmin)
 admin.site.register(Command)
 admin.site.register(Actor)
 admin.site.register(EasyMode)

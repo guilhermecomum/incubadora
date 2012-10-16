@@ -34,7 +34,7 @@ MAX_SAME_COMMAND = 3
 def easy_show(request, s_id):
     user = request.user
     spectacle = get_object_or_404(Spectacle, pk=s_id)
-    commands = Command.objects.filter(spectacle=spectacle).all()
+    commands = spectacle.easy_commands.all()
 
     form = EasyModeForm()
     form.fields['player'].widget = HiddenInput(attrs={'value':user.id})
@@ -87,7 +87,7 @@ def happiness_meter(request, s_id):
 def hard_show(request, s_id):
     user = request.user
     spectacle = get_object_or_404(Spectacle, pk=s_id)
-    commands = Command.objects.filter(spectacle=spectacle).all()
+    commands = spectacle.hard_commands.all()
     actors = Actor.objects.filter(spectacle=spectacle).all()
 
     form = HardModeForm()
