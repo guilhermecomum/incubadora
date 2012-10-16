@@ -88,6 +88,14 @@ class Spectacle(models.Model):
     def get_controller_url(self):
         return ('controller', [str(self.pk)])
 
+    @models.permalink
+    def get_mobile_interaction_url(self):
+        return ('get-mobile-interaction', [str(self.pk)])
+
+    @models.permalink
+    def set_mobile_interaction_url(self):
+        return ('set-mobile-interaction', [str(self.pk)])
+
 class Command(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))

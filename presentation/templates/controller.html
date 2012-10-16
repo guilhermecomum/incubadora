@@ -1,12 +1,32 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+{% block head %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('.mobile-interaction').click(function() {
+        var elem = $(this);
+        $.getJSON( elem.attr('href'), function(data) {
+            // FIXME
+            elem.find('span').text(data.mobile_interaction.toString());
+        });
+        return false;
+    });
+});
+</script>
+
+{% endblock %}
+
+
 {% block content %}
 
 
 EASY:
 
-    Interação por celular On/Off
+    <div id="mobile_interaction">
+        Interação por celular: <a href="{{ spectacle.set_mobile_interaction_url }}" class="mobile-interaction"><span>{{ spectacle.mobile_interaction }}</span></a>
+    </div>
 
     Lista de comandos
 

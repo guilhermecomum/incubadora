@@ -22,6 +22,7 @@ from django.http import HttpResponse
 from django.utils import simplejson
 from django.forms.widgets import HiddenInput
 from django.db.models import Count
+from django.contrib.admin.views.decorators import staff_member_required
 from presentation.models import Command, EasyMode, Spectacle, HardMode, Actor
 from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD
 from presentation.forms import EasyModeForm, HardModeForm
@@ -165,3 +166,24 @@ def controller(request, s_id):
     c = { 'spectacle':spectacle }
 
     return render(request, "controller.html", c)
+
+@staff_member_required
+def set_mobile_interaction(request, s_id):
+
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+
+    mi = False if spectacle.mobile_interaction else True
+    spectacle.mobile_interaction = mi
+    spectacle.save()
+
+    message = simplejson.dumps( { 'error': 0,
+                                  'mobile_interaction': mi })
+
+    return HttpResponse(message, mimetype="application/json")
+
+def get_mobile_interaction(request, s_id):
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    mi = spectacle.mobile_interaction
+    message = simplejson.dumps( { 'error': 0,
+                                  'mobile_interaction': mi })
+    return HttpResponse(message, mimetype="application/json")

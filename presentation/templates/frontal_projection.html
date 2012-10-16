@@ -40,13 +40,26 @@ var commands_refresh = setInterval(
     },
     10000); // 10s
 
+var mobile_interaction_refresh = setInterval(
+    function (){
+        var url = '{{ spectacle.get_mobile_interaction_url }}';
+        $.get( url, function( data ) {
+            if (!data.error) {
+                // FIXME
+                $('#mobile-interaction').html(data.mobile_interaction.toString());
+            }
+        });
+    },
+    10000); // 10s
+
+
 </script>
 {% endblock %}
 
 {% block content %}
 
 <div class="column grid_12">
-    <span> Interação com celular: {{ spectacle.mobile_interaction }}</span>
+    <span> Interação com celular:</span> <span id="mobile-interaction">{{ spectacle.mobile_interaction }}</span>
 </div>
 
 <div class="column grid_6">

@@ -58,6 +58,14 @@ urlpatterns += patterns('presentation.views',
         name='happiness-meter'),
 
      # Controller
+     url(r'^controller/(?P<s_id>(.*))/set/mobile-interaction/$',
+         'set_mobile_interaction',
+         name='set-mobile-interaction'),
+
+    url(r'^controller/(?P<s_id>(.*))/mobile-interaction/$',
+         'get_mobile_interaction',
+         name='get-mobile-interaction'),
+
      url(r'^controller/(?P<s_id>(.*))/$', 'controller', name='controller'),
 
 )
