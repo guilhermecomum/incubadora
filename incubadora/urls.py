@@ -43,13 +43,14 @@ urlpatterns += patterns('presentation.views',
     url(r'^easy/command/add/$', 'easy_add', name='easy-add',),
 
     # Frontal Projection
-    url(r'^frontal-projection/(?P<s_id>(.*))/commands/$',
-        'frontal_projection_commands',
-        name='frontal-projection-commands'),
 
     url(r'^frontal-projection/(?P<s_id>(.*))/$',
         'frontal_projection',
         name='frontal-projection-show'),
+
+    # Commands
+
+    url(r'^commands/(?P<s_id>(.*))/$', 'get_commands', name='get-commands'),
 
     # Happiness Meter
 

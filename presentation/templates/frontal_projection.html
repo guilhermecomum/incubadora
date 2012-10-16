@@ -5,7 +5,7 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-    var url = '{{ spectacle.get_frontal_projection_commands_url }}';
+    var url = '{{ spectacle.get_commands_url }}';
     $('#command-list').html('');
     $.get( url, function ( data ) {
         if (!data.error) {
@@ -29,11 +29,15 @@ var happiness_meter_refresh = setInterval(
 
 var commands_refresh = setInterval(
     function (){
-        var url = '{{ spectacle.get_frontal_projection_commands_url }}';
+        var url = '{{ spectacle.get_commands_url }}';
         $.get( url, function ( data ) {
             if (!data.error) {
                 $.each(data.commands, function(i, item) {
-                    $('#command-count-'+item.pk).html(item.total);
+                    if ($('#command-count-'+item.pk).length > 0) {
+                        $('#command-count-'+item.pk).html(item.total);
+                    } else {
+                        $('<li id="command-'+item.pk+'"><span>'+item.name+'</span> : <span id="command-count-'+item.pk+'">'+item.total+'</span></li>').appendTo('#command-list');
+                    }
                 });
             }
         });

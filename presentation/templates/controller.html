@@ -13,6 +13,16 @@ $(document).ready(function() {
         });
         return false;
     });
+
+    var url = '{{ spectacle.get_commands_url }}';
+    $('#command-list').html('');
+    $.get( url, function ( data ) {
+        if (!data.error) {
+            $.each(data.commands, function(i, item) {
+                $('<li id="command-'+item.pk+'"><span>'+item.name+'</span> : <span id="command-count-'+item.pk+'">'+item.total+'</span></li>').appendTo('#command-list');
+            });
+        }
+    });
 });
 
 var happiness_meter_refresh = setInterval(
@@ -22,6 +32,23 @@ var happiness_meter_refresh = setInterval(
            if (!data.error) {
                $('#happiness-meter').html(data.value);
            }
+        });
+    },
+    10000); // 10s
+
+var commands_refresh = setInterval(
+    function (){
+        var url = '{{ spectacle.get_commands_url }}';
+        $.get( url, function ( data ) {
+            if (!data.error) {
+                $.each(data.commands, function(i, item) {
+                    if ($('#command-count-'+item.pk).length > 0) {
+                        $('#command-count-'+item.pk).html(item.total);
+                    } else {
+                        $('<li id="command-'+item.pk+'"><span>'+item.name+'</span> : <span id="command-count-'+item.pk+'">'+item.total+'</span></li>').appendTo('#command-list');
+                    }
+                });
+            }
         });
     },
     10000); // 10s
@@ -40,7 +67,10 @@ EASY:
         Interação por celular: <a href="{{ spectacle.set_mobile_interaction_url }}" class="mobile-interaction"><span>{{ spectacle.mobile_interaction }}</span></a>
     </div>
 
-    Lista de comandos
+    <div>
+        Lista de comandos:
+        <ul id="command-list"></ul>
+    </div>
 
     <div>
         <span>Happiness Meter:</span> <span id="happiness-meter">{% if spectacle.mode == '1' %} {{ spectacle.easy_happiness_meter }}  {% else %} {{ spectacle.hard_happiness_meter }} {% endif %}</span>

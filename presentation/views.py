@@ -142,7 +142,7 @@ def frontal_projection(request, s_id):
 
     return render(request, "frontal_projection.html", c)
 
-def frontal_projection_commands(request, s_id):
+def get_commands(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)
     if spectacle.mode == SPECTACLE_MODE_EASY:
         spectacle_mode = EasyMode.objects.filter(spectacle=spectacle)
