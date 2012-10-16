@@ -108,7 +108,7 @@ def hard_add(request):
     if request.POST and form.is_valid():
         instance = form.save(commit=False)
         spectacle = get_object_or_404(Spectacle, pk=instance.spectacle.pk)
-        if spectacle.receive_commands:
+        if spectacle.mobile_interaction:
             total = HardMode.objects.filter(spectacle = instance.spectacle,
                                             command = instance.command,
                                             actor = instance.actor).count()

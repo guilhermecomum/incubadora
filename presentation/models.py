@@ -60,9 +60,6 @@ class Spectacle(models.Model):
         default=0,
         blank=True,
         null=True)
-    receive_commands = models.BooleanField(
-        verbose_name=_('Receive Commands'),
-        default=False)
     date_created = models.DateTimeField(
         verbose_name=_('Date Created'),
         auto_now_add=True)
