@@ -23,7 +23,7 @@ $(document).ready(function() {
 
     $('#hard-submit').click(function() {
         $.post(
-            "/hard/command/add/",
+            $('#hard-mode-form').attr('action'),
             $("#hard-mode-form").serialize(),
                function( data ) {
                    // FIXME
@@ -41,7 +41,7 @@ $(document).ready(function() {
 
 {% block content %}
 <div class="container">
-  <form id="hard-mode-form" method="post" action="/hard/command/add/">{% csrf_token %}
+  <form id="hard-mode-form" method="post" action="{{ spectacle.hard_add_url }}">{% csrf_token %}
     {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
     <div id="hard-actors" class="row">
       <ul>

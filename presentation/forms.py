@@ -26,6 +26,7 @@ class EasyModeForm(forms.ModelForm):
         model = EasyMode
         widgets = {
             'spectacle': forms.HiddenInput(),
+            'scene': forms.HiddenInput(),
             'player': forms.HiddenInput(),
             'command': forms.HiddenInput(),
         }
@@ -36,6 +37,7 @@ class HardModeForm(forms.ModelForm):
         model = HardMode
         widgets = {
             'spectacle': forms.HiddenInput(),
+            'scene': forms.HiddenInput(),
             'player': forms.HiddenInput(),
             'command': forms.HiddenInput(),
             'actor': forms.HiddenInput(),

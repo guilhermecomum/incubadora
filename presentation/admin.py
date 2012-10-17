@@ -31,5 +31,6 @@ class SpectacleAdmin(admin.ModelAdmin):
 admin.site.register(Spectacle, SpectacleAdmin)
 admin.site.register(Command)
 admin.site.register(Actor)
+admin.site.register(Scene)
 admin.site.register(EasyMode)
 admin.site.register(HardMode)

@@ -9,7 +9,9 @@ $(document).ready(function() {
         var elem = $(this);
         $.getJSON( elem.attr('href'), function(data) {
             // FIXME
-            elem.find('span').text(data.mobile_interaction.toString());
+            if (data.mobile_interaction) {
+                elem.find('span').text(data.mobile_interaction.toString());
+            }
         });
         return false;
     });

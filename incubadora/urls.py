@@ -35,12 +35,12 @@ urlpatterns += patterns('presentation.views',
     # Hard
     url(r'^hard/spectacle/(?P<s_id>(.*))/$', 'hard_show', name='hard-show'),
 
-    url(r'^hard/command/add/$', 'hard_add', name='hard-add'),
+    url(r'^hard/command/add/(?P<s_id>(.*))/$', 'hard_add', name='hard-add'),
 
     # Easy
     url(r'^easy/spectacle/(?P<s_id>(.*))/$', 'easy_show', name='easy-show'),
 
-    url(r'^easy/command/add/$', 'easy_add', name='easy-add',),
+    url(r'^easy/command/add/(?P<s_id>(.*))/$', 'easy_add', name='easy-add',),
 
     # Frontal Projection
 

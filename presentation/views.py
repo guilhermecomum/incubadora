@@ -23,7 +23,8 @@ from django.utils import simplejson
 from django.forms.widgets import HiddenInput
 from django.db.models import Count
 from django.contrib.admin.views.decorators import staff_member_required
-from presentation.models import Command, EasyMode, Spectacle, HardMode, Actor
+from presentation.models import Command, EasyMode, Spectacle, HardMode, \
+                                Actor, Scene
 from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD
 from presentation.forms import EasyModeForm, HardModeForm
 
@@ -44,16 +45,30 @@ def easy_show(request, s_id):
 
     return render(request, 'easymode.html', c)
 
-def easy_add(request):
+def easy_add(request, s_id):
     user = request.user
+
+    post = request.POST.copy()
+    post['player'] = user.id
+
     # FIXME
-    form = EasyModeForm(request.POST or None)
-    form.fields['player'].widget = HiddenInput(attrs={'value':user.id})
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    try:
+        scene = Scene.objects.get(spectacle=spectacle,
+                                  status=True,
+                                  mode=spectacle.mode)
+        post['scene'] = scene.id
+    except Scene.DoesNotExist:
+        alert =  'Oops try again'
+        message = simplejson.dumps( { 'error': 1, 'msg': alert } )
+        return HttpResponse(message, mimetype="application/json")
+
+    form = EasyModeForm(post or None)
 
     if request.POST and form.is_valid():
         instance = form.save(commit=False)
         total = EasyMode.objects.filter(player = instance.player,
-                                        spectacle = instance.spectacle,
+                                        scene__spectacle = instance.spectacle,
                                         command = instance.command).count()
         spectacle = get_object_or_404(Spectacle, pk=instance.spectacle.pk)
         if total < MAX_SAME_COMMAND and spectacle.mobile_interaction:
@@ -99,11 +114,25 @@ def hard_show(request, s_id):
 
     return render(request, 'hardmode.html', c)
 
-def hard_add(request):
+def hard_add(request, s_id):
     user = request.user
+
+    post = request.POST.copy()
+    post['player'] = user.id
+
     # FIXME
-    form = HardModeForm(request.POST or None)
-    form.fields['player'].widget = HiddenInput(attrs={'value':user.id})
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    try:
+        scene = Scene.objects.get(spectacle=spectacle,
+                                  status=True,
+                                  mode=spectacle.mode)
+        post['scene'] = scene.id
+    except Scene.DoesNotExist:
+        alert =  'Oops try again'
+        message = simplejson.dumps( { 'error': 1, 'msg': alert } )
+        return HttpResponse(message, mimetype="application/json")
+
+    form = HardModeForm(post or None)
 
     if request.POST and form.is_valid():
         instance = form.save(commit=False)
@@ -171,8 +200,25 @@ def controller(request, s_id):
 def set_mobile_interaction(request, s_id):
 
     spectacle = get_object_or_404(Spectacle, pk=s_id)
+    if spectacle.mobile_interaction:
+        # Close
+        mi = False
+        try:
+            scene = Scene.objects.get(spectacle=spectacle,
+                                      status=True,
+                                      mode=spectacle.mode)
 
-    mi = False if spectacle.mobile_interaction else True
+            scene.status = False
+            scene.save()
+        except Scene.DoesNotExist:
+            message = simplejson.dumps( { 'error': 1 } )
+            return HttpResponse(message, mimetype="application/json")
+    else:
+        # Open
+        mi = True
+        scene = Scene(mode=spectacle.mode, spectacle=spectacle, status=True)
+        scene.save()
+
     spectacle.mobile_interaction = mi
     spectacle.save()
 

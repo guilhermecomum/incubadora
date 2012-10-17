@@ -115,6 +115,14 @@ class Spectacle(models.Model):
     def set_mobile_interaction_url(self):
         return ('set-mobile-interaction', [str(self.pk)])
 
+    @models.permalink
+    def easy_add_url(self):
+        return ('easy-add', [str(self.pk)])
+
+    @models.permalink
+    def hard_add_url(self):
+        return ('hard-add', [str(self.pk)])
+
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
@@ -126,8 +134,31 @@ class Actor(models.Model):
     def __unicode__(self):
         return "%s" % (self.name)
 
+class Scene(models.Model):
+    spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
+    status = models.BooleanField(verbose_name=_('Status'), default=True)
+    mode = models.CharField(
+        verbose_name=_('Mode'),
+        max_length=1,
+        choices=MODE_CHOICES,
+        default='1')
+    date_created = models.DateTimeField(
+        verbose_name=_('Date Created'),
+        auto_now_add=True)
+    last_changed = models.DateTimeField(
+        verbose_name=_('Last Changed'),
+        auto_now=True)
+
+    class Meta:
+        verbose_name = _('Scene')
+        verbose_name_plural = _('Scenes')
+
+    def __unicode__(self):
+        return "%s | %s" % (self.date_created, self.last_changed)
+
 class EasyMode(models.Model):
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
+    scene = models.ForeignKey(Scene, verbose_name=_('Scene'))
     command = models.ForeignKey(Command, verbose_name=_('Command'))
     player = models.ForeignKey(User, verbose_name=_('Player'))
     date_created = models.DateTimeField(
@@ -143,6 +174,7 @@ class EasyMode(models.Model):
 
 class HardMode(models.Model):
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
+    scene = models.ForeignKey(Scene, verbose_name=_('Scene'))
     actor = models.ForeignKey(Actor, verbose_name=_('Actor'))
     command = models.ForeignKey(Command, verbose_name=_('Command'))
     player = models.ForeignKey(User, verbose_name=_('Player'))
