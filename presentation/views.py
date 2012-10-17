@@ -24,7 +24,7 @@ from django.forms.widgets import HiddenInput
 from django.db.models import Count
 from django.contrib.admin.views.decorators import staff_member_required
 from presentation.models import Command, EasyMode, Spectacle, HardMode, \
-                                Actor, Scene
+                                Actor, Scene, ChosenCommand
 from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD
 from presentation.forms import EasyModeForm, HardModeForm
 
@@ -51,8 +51,9 @@ def easy_add(request, s_id):
     post = request.POST.copy()
     post['player'] = user.id
 
-    # FIXME
     spectacle = get_object_or_404(Spectacle, pk=s_id)
+    post['spectacle'] = spectacle.id
+
     try:
         scene = Scene.objects.get(spectacle=spectacle,
                                   status=True,
@@ -60,31 +61,51 @@ def easy_add(request, s_id):
         post['scene'] = scene.id
     except Scene.DoesNotExist:
         alert =  'Oops try again'
-        message = simplejson.dumps( { 'error': 1, 'msg': alert } )
+        message = simplejson.dumps( { 'error': 1, 'error-msg': alert } )
         return HttpResponse(message, mimetype="application/json")
 
     form = EasyModeForm(post or None)
 
     if request.POST and form.is_valid():
         instance = form.save(commit=False)
-        total = EasyMode.objects.filter(player = instance.player,
-                                        scene__spectacle = instance.spectacle,
-                                        command = instance.command).count()
-        spectacle = get_object_or_404(Spectacle, pk=instance.spectacle.pk)
-        if total < MAX_SAME_COMMAND and spectacle.mobile_interaction:
-            instance.save()
-            if total == 0:
+        command = instance.command
+        total_cc = ChosenCommand.objects.filter(spectacle = spectacle,
+                                                command = command,
+                                                mode = spectacle.mode).count()
+
+        if total_cc < MAX_SAME_COMMAND and spectacle.mobile_interaction:
+            total_scene_command = EasyMode.objects.filter(spectacle = spectacle,
+                                                          scene = scene,
+                                                          command = command)
+            total_scene_command = total_scene_command.count()
+
+            has_cc = ChosenCommand.objects.filter(spectacle = spectacle,
+                                                  scene = scene).count()
+
+            if total_scene_command == 1 and not has_cc:
+                cc = ChosenCommand(spectacle = spectacle,
+                                   scene = scene,
+                                   command = command,
+                                   mode = spectacle.mode)
+                cc.save()
+
+            if total_cc == 0:
                 spectacle.easy_happiness_meter += 10
-            elif total == 1:
+            elif total_cc == 1:
                 spectacle.easy_happiness_meter -= 5
-            elif total == 2:
+            elif total_cc == 2:
                 spectacle.easy_happiness_meter -= 10
+
+            instance.save()
             spectacle.save()
             message = simplejson.dumps( { 'error': 0 } )
             return HttpResponse(message, mimetype="application/json")
 
         else:
-            message = simplejson.dumps( { 'error': 1 } )
+            message = simplejson.dumps( { 'error': 1,
+                                          'error-msg': 'max-same-command',
+                                          'command': [ {'name': command.name,
+                                                        'pk': command.pk } ] } )
             return HttpResponse(message, mimetype="application/json")
     else:
         message = simplejson.dumps( { 'error': 1 } )

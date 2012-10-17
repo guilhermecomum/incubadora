@@ -156,6 +156,23 @@ class Scene(models.Model):
     def __unicode__(self):
         return "%s | %s" % (self.date_created, self.last_changed)
 
+class ChosenCommand(models.Model):
+    spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
+    scene = models.ForeignKey(Scene, verbose_name=_('Scene'))
+    command = models.ForeignKey(Command, verbose_name=_('Command'))
+    mode = models.CharField(
+        verbose_name=_('Mode'),
+        max_length=1,
+        choices=MODE_CHOICES,
+        default='1')
+
+    class Meta:
+        verbose_name = _('Chosen Command')
+        verbose_name_plural = _('Chosen Commands')
+
+    def __unicode__(self):
+        return "%s | %s" % (self.spectacle, self.command)
+
 class EasyMode(models.Model):
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
     scene = models.ForeignKey(Scene, verbose_name=_('Scene'))
