@@ -23,6 +23,7 @@ from django.utils import simplejson
 from django.forms.widgets import HiddenInput
 from django.db.models import Count
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from presentation.models import Command, EasyMode, Spectacle, HardMode, \
                                 Actor, Scene, ChosenCommand
 from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD
@@ -32,6 +33,7 @@ from presentation.forms import EasyModeForm, HardModeForm
 MAX_SAME_COMMAND = 3
 
 
+@login_required
 def easy_show(request, s_id):
     user = request.user
     spectacle = get_object_or_404(Spectacle, pk=s_id)
@@ -45,6 +47,7 @@ def easy_show(request, s_id):
 
     return render(request, 'easymode.html', c)
 
+@login_required
 def easy_add(request, s_id):
     user = request.user
 
@@ -120,6 +123,7 @@ def happiness_meter(request, s_id):
     message = simplejson.dumps( { 'error': 0, 'value':value } )
     return HttpResponse(message, mimetype="application/json")
 
+@login_required
 def hard_show(request, s_id):
     user = request.user
     spectacle = get_object_or_404(Spectacle, pk=s_id)
@@ -135,6 +139,7 @@ def hard_show(request, s_id):
 
     return render(request, 'hardmode.html', c)
 
+@login_required
 def hard_add(request, s_id):
     user = request.user
 
@@ -209,6 +214,7 @@ def get_commands(request, s_id):
 
     return HttpResponse(message, mimetype="application/json")
 
+@staff_member_required
 def controller(request, s_id):
 
     spectacle = get_object_or_404(Spectacle, pk=s_id)
