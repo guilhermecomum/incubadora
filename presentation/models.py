@@ -189,6 +189,7 @@ class EasyMode(models.Model):
     class Meta:
         verbose_name = _('Easy Mode')
         verbose_name_plural = _('EasyMode')
+        unique_together = ('spectacle', 'scene', 'player')
 
     def __unicode__(self):
         return "%s | %s | %s" % (self.spectacle, self.command, self.player)
