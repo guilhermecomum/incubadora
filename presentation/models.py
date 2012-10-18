@@ -104,6 +104,10 @@ class Spectacle(models.Model):
         return ('get-commands', [str(self.pk)])
 
     @models.permalink
+    def get_chosen_commands_url(self):
+        return ('get-chosen-commands', [str(self.pk)])
+
+    @models.permalink
     def get_controller_url(self):
         return ('controller', [str(self.pk)])
 

@@ -52,6 +52,12 @@ urlpatterns += patterns('presentation.views',
 
     url(r'^commands/(?P<s_id>(.*))/$', 'get_commands', name='get-commands'),
 
+    # Chosen commands
+
+    url(r'^chosen-commands/(?P<s_id>(.*))/$',
+        'get_chosen_commands',
+        name='get-chosen-commands'),
+
     # Happiness Meter
 
     url(r'^happiness-meter/(?P<s_id>(.*))/$',

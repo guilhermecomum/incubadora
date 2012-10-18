@@ -214,6 +214,19 @@ def get_commands(request, s_id):
 
     return HttpResponse(message, mimetype="application/json")
 
+def get_chosen_commands(request, s_id):
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    commands = ChosenCommand.objects.filter(spectacle=spectacle,
+                                            mode = spectacle.mode)
+
+    message = simplejson.dumps( { 'error': 0,
+                                  'commands': [ { 'name': c.command.name,
+                                                  'command-pk': c.command.pk,
+                                                  'pk': c.pk }
+                                                  for c in commands ] })
+
+    return HttpResponse(message, mimetype="application/json")
+
 @staff_member_required
 def controller(request, s_id):
 

@@ -25,6 +25,17 @@ $(document).ready(function() {
             });
         }
     });
+
+    var url = '{{ spectacle.get_chosen_commands_url }}';
+    $('#chosen-commands-list').html('');
+    $.get( url, function ( data ) {
+        if (!data.error) {
+            $.each(data.commands, function(i, item) {
+                $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+'</span></li>').appendTo('#chosen-commands-list');
+            });
+        }
+    });
+
 });
 
 var happiness_meter_refresh = setInterval(
@@ -55,6 +66,21 @@ var commands_refresh = setInterval(
     },
     10000); // 10s
 
+var chosen_commands_refresh = setInterval(
+    function (){
+        var url = '{{ spectacle.get_chosen_commands_url }}';
+        $.get( url, function ( data ) {
+            if (!data.error) {
+                $.each(data.commands, function(i, item) {
+                    if ($('#chosen-command-'+item.pk).length == 0) {
+                        $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+'</span>').appendTo('#chosen-commands-list');
+                    }
+                });
+            }
+        });
+    },
+    10000); // 10s
+
 </script>
 
 {% endblock %}
@@ -72,6 +98,11 @@ EASY:
     <div>
         Lista de comandos:
         <ul id="command-list"></ul>
+    </div>
+
+    <div>
+        Comandos Escolhidos:
+        <ul id="chosen-commands-list"></ul>
     </div>
 
     <div>
