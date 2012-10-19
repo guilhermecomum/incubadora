@@ -127,6 +127,10 @@ class Spectacle(models.Model):
     def hard_add_url(self):
         return ('hard-add', [str(self.pk)])
 
+    @models.permalink
+    def hard_message_add_url(self):
+        return ('hard-message-add', [str(self.pk)])
+
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
@@ -200,11 +204,6 @@ class HardMode(models.Model):
     actor = models.ForeignKey(Actor, verbose_name=_('Actor'))
     command = models.ForeignKey(Command, verbose_name=_('Command'))
     player = models.ForeignKey(User, verbose_name=_('Player'))
-    message = models.CharField(
-        verbose_name=_('Message'),
-        max_length=128,
-        blank=True,
-        null=True)
     date_created = models.DateTimeField(
         verbose_name=_('Date Created'),
         auto_now_add=True)
@@ -216,3 +215,17 @@ class HardMode(models.Model):
 
     def __unicode__(self):
         return "%s | %s | %s" % (self.spectacle, self.command, self.player)
+
+class HardModeMessage(models.Model):
+    spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
+    message = models.CharField(verbose_name=_('Message'), max_length=128)
+    date_created = models.DateTimeField(
+        verbose_name=_('Date Created'),
+        auto_now_add=True)
+
+    class Meta:
+        verbose_name = _('Hard Mode Message')
+        verbose_name_plural = _('Hard Mode Messages')
+
+    def __unicode__(self):
+        return "%s | %s" % (self.spectacle, self.message)

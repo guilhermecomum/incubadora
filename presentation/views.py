@@ -27,7 +27,7 @@ from django.contrib.auth.decorators import login_required
 from presentation.models import Command, EasyMode, Spectacle, HardMode, \
                                 Actor, Scene, ChosenCommand
 from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD
-from presentation.forms import EasyModeForm, HardModeForm
+from presentation.forms import EasyModeForm, HardModeForm, HardModeMessageForm
 
 
 MAX_SAME_COMMAND = 3
@@ -130,12 +130,19 @@ def hard_show(request, s_id):
     commands = spectacle.hard_commands.all()
     actors = Actor.objects.filter(spectacle=spectacle).all()
 
-    form = HardModeForm()
-    form.fields['player'].widget = HiddenInput(attrs={'value':user.id})
-    form.fields['spectacle'].widget = HiddenInput(attrs={'value':spectacle.id})
+    hard_mode_form = HardModeForm()
+    hard_mode_form.fields['player'].widget = HiddenInput(
+        attrs={'value':user.id})
+    hard_mode_form.fields['spectacle'].widget = HiddenInput(
+        attrs={'value':spectacle.id})
 
-    c = { 'form':form, 'commands':commands, 'spectacle':spectacle,
-          'actors':actors }
+    hard_mode_message_form = HardModeMessageForm()
+    hard_mode_message_form.fields['spectacle'].widget = HiddenInput(
+        attrs={'value':spectacle.id})
+
+    c = { 'hard_mode_form':hard_mode_form, 'commands':commands,
+          'spectacle':spectacle, 'actors':actors,
+          'hard_mode_message_form':hard_mode_message_form }
 
     return render(request, 'hardmode.html', c)
 
@@ -174,9 +181,6 @@ def hard_add(request, s_id):
             elif total == 2:
                 spectacle.hard_happiness_meter -= 15
 
-            if instance.message:
-                spectacle.hard_happiness_meter += 10
-
             spectacle.save()
             instance.save()
             message = simplejson.dumps( { 'error': 0 } )
@@ -188,6 +192,23 @@ def hard_add(request, s_id):
         message = simplejson.dumps( { 'error': 1 } )
         return HttpResponse(message, mimetype="application/json")
 
+def hard_message_add(request, s_id):
+    user = request.user
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    post = request.POST.copy()
+    post['player'] = user.id
+
+    form = HardModeMessageForm(post or None)
+
+    if request.POST and form.is_valid():
+        instance = form.save()
+        spectacle.hard_happiness_meter += 10
+        spectacle.save()
+        message = simplejson.dumps( { 'error': 0 } )
+        return HttpResponse(message, mimetype="application/json")
+    else:
+        message = simplejson.dumps( { 'error': 1 } )
+        return HttpResponse(message, mimetype="application/json")
 
 def frontal_projection(request, s_id):
 

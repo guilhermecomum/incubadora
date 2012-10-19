@@ -41,5 +41,13 @@ class HardModeForm(forms.ModelForm):
             'player': forms.HiddenInput(),
             'command': forms.HiddenInput(),
             'actor': forms.HiddenInput(),
-            'message': forms.Textarea(),
        }
+
+class HardModeMessageForm(forms.ModelForm):
+
+    class Meta:
+        model = HardModeMessage
+        widgets = {
+            'spectacle': forms.HiddenInput(),
+            'message': forms.Textarea(),
+        }

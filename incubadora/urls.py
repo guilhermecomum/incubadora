@@ -37,6 +37,10 @@ urlpatterns += patterns('presentation.views',
 
     url(r'^hard/command/add/(?P<s_id>(.*))/$', 'hard_add', name='hard-add'),
 
+    url(r'^hard/message/add/(?P<s_id>(.*))/$',
+        'hard_message_add',
+        name='hard-message-add'),
+
     # Easy
     url(r'^easy/spectacle/(?P<s_id>(.*))/$', 'easy_show', name='easy-show'),
 
