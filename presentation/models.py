@@ -54,12 +54,12 @@ class Spectacle(models.Model):
         default=False)
     easy_happiness_meter = models.IntegerField(
         verbose_name=_('Easy Happiness Meter'),
-        default=0,
+        default=50,
         blank=True,
         null=True)
     hard_happiness_meter = models.IntegerField(
         verbose_name=_('Hard Happiness Meter'),
-        default=0,
+        default=50,
         blank=True,
         null=True)
     date_created = models.DateTimeField(
