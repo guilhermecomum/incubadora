@@ -68,6 +68,10 @@ urlpatterns += patterns('presentation.views',
         'happiness_meter',
         name='happiness-meter'),
 
+    url(r'^decrease-happiness/(?P<s_id>(.*))/$',
+        'decrease_happiness',
+        name='decrease-happiness'),
+
      # Controller
      url(r'^controller/(?P<s_id>(.*))/set/mobile-interaction/$',
          'set_mobile_interaction',

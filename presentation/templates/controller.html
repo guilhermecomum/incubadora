@@ -36,6 +36,17 @@ $(document).ready(function() {
         }
     });
 
+    $('#decrease-happiness').click(function() {
+        var url = '{{ spectacle.decrease_happiness_url }}';
+        $.getJSON( url, function(data) {
+            if (data.happiness_value) {
+                $('#happiness-meter').html(data.happiness_value);
+            }
+        });
+        return false;
+    });
+
+
 });
 
 var happiness_meter_refresh = setInterval(
@@ -109,7 +120,9 @@ EASY:
         <span>Happiness Meter:</span> <span id="happiness-meter">{% if spectacle.mode == '1' %} {{ spectacle.easy_happiness_meter }}  {% else %} {{ spectacle.hard_happiness_meter }} {% endif %}</span>
     </div>
 
-    botão para da início à degradação do medidor de felicidade
+    <div>
+        <button id="decrease-happiness">degradação do medidor de felicidade</button>
+    </div>
 
     sequencia de slides ( fotos/videos )
 

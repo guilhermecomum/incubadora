@@ -294,3 +294,18 @@ def get_mobile_interaction(request, s_id):
     message = simplejson.dumps( { 'error': 0,
                                   'mobile_interaction': mi })
     return HttpResponse(message, mimetype="application/json")
+
+@staff_member_required
+def decrease_happiness(request, s_id):
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    if spectacle.mode == SPECTACLE_MODE_EASY:
+        spectacle.easy_happiness_meter -= 10
+        value = spectacle.easy_happiness_meter
+    else:
+        spectacle.hard_happiness_meter -= 30
+        value = spectacle.hard_happiness_meter
+
+    spectacle.save()
+    message = simplejson.dumps( { 'error': 0,
+                                  'happiness_value': value })
+    return HttpResponse(message, mimetype="application/json")

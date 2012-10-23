@@ -133,6 +133,10 @@ class Spectacle(models.Model):
     def hard_message_add_url(self):
         return ('hard-message-add', [str(self.pk)])
 
+    @models.permalink
+    def decrease_happiness_url(self):
+        return ('decrease-happiness', [str(self.pk)])
+
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
