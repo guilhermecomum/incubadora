@@ -18,86 +18,172 @@
 */
 
 
-$blue: #33B5E5;
-$purple: #AA66CC;
-$green: #99CC00;
-$orange: #FFBB33;
-$red: #FF4444;
+@import "compass/reset";
+@import "compass/css3";
 
-$dblue: #0099CC;
-$dpurple: #9933CC;
-$dgreen: #669900;
-$dorange: #FF8800;
-$dred: #CC0000;
-
-@import "grid";
-
-body {
-    background-color: #000;
-    color: #FFF;
+.container {
+    background-image: url(../images/bg.png);
+    width: 640px;
+    margin: 0 auto;
+    height: 960px;
+    displa: block;
 }
 
-#easy-commands li {
+.device {
+    background-image: url(../images/device.png);
+    width: 640px;
+    margin: 0 auto;
+    height: 960px;
+    displa: block;
 }
 
-.btn {
-    color: white;
-    font-weight: bold;
-    text-transform: capitalize;
-    padding: 25px 0;
-    cursor: pointer;
+.header {
+    padding-top: 60px;
+}
+
+.header h1 {
+    background-image: url(../images/logo.png);
+    font-size: 1px;
+    overflow: hidden;
+    text-indent: -3000px;
+    width: 488px;
+    height: 224px;
+    display: block;
+    margin: 0 auto;
+
+}
+
+.players {
+    background: url(../images/players.png) no-repeat;
+    font-size: 1px;
+    overflow: hidden;
+    text-indent: -3000px;
+    width: 144px;
+    display: block;
+    float: left;
+    margin-left: 100px;
+
+}
+
+.players ul {
+    width: 127px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.p1, .p2, .p3 {
+    font-size: 1px;
+    overflow: hidden;
+    text-indent: -3000px;
+}
+
+.players .p1 {
+    background-image: url(../images/p1.png);
+    width: 125px;
+    height: 104px;
+}
+
+.players .p2 {
+    background-image: url(../images/p2.png);
+    width: 127px;
+    height: 96px;
+}
+
+.players .p3 {
+    background-image: url(../images/p3.png);
+    width: 127px;
+    height: 103px;
+}
+
+.players .spkr {
+    background-image: url(../images/spkr.png);
+    height: 92px;
+    margin-top: 30px;
+    width: 144px;
+}
+
+.actions {
+    margin-left: 250px;
+}
+
+.actions .selected-p1 {
+    background: url(../images/j1.png) no-repeat;
+    width: 54px;
+    height: 54px;
+    margin-top: 20px;
+    float: right;
+}
+
+.actions .selected-p2 {
+    background: url(../images/j2.png) no-repeat;
+    width: 55px;
+    height: 55px;
+    margin-top: 19px;
+    float: right;
+}
+
+.actions .selected-p3 {
+    background: url(../images/j3.png) no-repeat;
+    width: 55px;
+    height: 55px;
+    margin-top: 19px;
+    float: right;
+}
+
+.actions .coordenacao {
+    background-image: url(../images/coor.png);
+    width: 311px;
+    height: 99px;
+}
+
+.actions .equilibrio {
+    background-image: url(../images/equi.png);
+    width: 311px;
+    height: 89px;
+}
+
+.actions .ataque-e-defesa {
+    background-image: url(../images/atk.png);
+    width: 311px;
+    height: 90px;
+}
+
+.actions .resistencia {
+    background-image: url(../images/resi.png);
+    width: 311px;
+    height: 92px;
+}
+
+.actions .concentracao {
+    background-image: url(../images/conc.png);
+    width: 311px;
+    height: 92px;
+}
+
+.footer {
+    width: 500px;
+    margin: 0 auto;
     text-align: center;
-    @include border-radius(4px);
-    @include background-image(linear-gradient($blue, $dblue));
 }
 
-.btn:hover {
-    @include background-image(linear-gradient($dgreen, $green));
+.footer .textarea {
+    background: url(../images/textarea.png) no-repeat;
+    width: 314px;
+    height: 105px;
+    float: left;
+    text-align: left;
 }
 
-.btn-selected {
-    @include background-image(linear-gradient($green, $dgreen));
-    color: white;
-}
-
-.stick {
-    color: white;
-    font-weight: bold;
-    text-transform: capitalize;
-    padding: 10px 0;
-    cursor: pointer;
-    text-align: center;
-    @include border-radius(4px);
-    @include background-image(linear-gradient($blue, $dblue));
-}
-
-.stick:hover {
-    @include background-image(linear-gradient($dgreen, $green));
-}
-
-.stick-selected {
-    @include background-image(linear-gradient($green, $dgreen));
-    color: white;
-}
-
-
-.submit {
+.footer textarea {
+    background-color: transparent;
     border: 0;
-    color: white;
-    font-weight: bold;
-    text-transform: capitalize;
-    padding: 20px;
-    cursor: pointer;
-    text-align: center;
-    @include border-radius(4px);
-    @include background-image(linear-gradient($blue, $dblue));
+    color: #000;
+    height: 55px;
+    margin-left: 23px;
+    margin-top: 28px;
+    width: 266px;
 }
 
-#id_message {
-    height: 50px;
-    width: 100%;
-    background-color: black;
-    color: white;
-    border: 2px solid $blue;
-    margin-top: 2px;
+.footer input {
+    margin-top: 13px;
 }

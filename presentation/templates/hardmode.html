@@ -8,46 +8,46 @@ $(document).ready(function() {
     $.selected = [];
 
     $('.actor').click(function() {
-        var aid = $(this).attr('id').split('-')[1];
-        $.actor = aid;
-        // FIXME
-        $('.actor').removeClass('btn-selected');
-        $(this).addClass('btn-selected');
-        $('.command').removeClass('stick-selected');
+        $.actor = $(this).attr('id').split('-')[1];
+        var actor_classes = $(this).attr('class').split(' ');
+        $.actor_slug = jQuery.grep(actor_classes,
+                                   function(value) {
+                                        return value != "actor";
+                                   })[0];
     });
 
     $('.command').click(function() {
         var cid = $(this).attr('id').split('-')[1];
         $.selected[$.actor] = { 'actor': $.actor ,'command': cid };
-        // FIXME
-        $('.command').removeClass('stick-selected');
-        $(this).addClass('stick-selected');
+        var selected_class = 'selected-'+ $.actor_slug;
+        $(this).html('');
+        $('.command').find('div.' + selected_class).remove();
+        $('<div class="' + selected_class + '"></div>').appendTo($(this));
     });
 
     $('#hard-submit').click(function() {
         for (var item in $.selected) {
             $("#id_actor").val($.selected[item].actor);
             $("#id_command").val($.selected[item].command);
-            $.post(
-                $('#hard-mode-form').attr('action'),
-                $("#hard-mode-form").serialize(),
-                    function( data ) {
+            $.post($('#hard-mode-form').attr('action'),
+                   $("#hard-mode-form").serialize(),
+                   function( data ) {
                         $('#id_actor').val('');
                         $('#id_command').val('');
-                    });
+                   });
         }
         $('.actor').removeClass('btn-selected');
         $('.command').removeClass('stick-selected');
+        return false;
     });
 
     $('#hard-mode-message-submit').click(function() {
-        $.post(
-            $('#hard-mode-message-form').attr('action'),
-            $("#hard-mode-message-form").serialize(),
+        $.post($('#hard-mode-message-form').attr('action'),
+               $("#hard-mode-message-form").serialize(),
                function( data ) {
-                   // FIXME
                    $('#id_message').val('');
-              });
+               });
+        return false;
     });
 
 
@@ -57,34 +57,32 @@ $(document).ready(function() {
 
 {% block content %}
 <div class="container">
-    <form id="hard-mode-form" method="post" action="{{ spectacle.hard_add_url }}">{% csrf_token %}
-        {% for hidden in hard_mode_form.hidden_fields %} {{ hidden }} {% endfor %}
-        <div id="hard-actors" class="row">
-            <ul>
-                {% for a in actors %}
-                <li class="block-b">
-                    <div  id="actor-{{ a.id }}" class="actor btn">{{ a.name }}</div>
-                </li>
-                {% endfor %}
-            </ul>
+    <div class="device">
+        <div class="header"><h1>INCUBADORA</h1></div>
+        <div class="panel">
+            <form id="hard-mode-form" method="post" action="{{ spectacle.hard_add_url }}">{% csrf_token %}
+                {% for hidden in hard_mode_form.hidden_fields %} {{ hidden }} {% endfor %}
+                <div class="players">
+                    <ul>
+                        {% for a in actors %}<li id="actor-{{ a.id }}" class="actor {{ a.slug }}">{{ a.name }}</li>{% endfor %}
+                    </ul>
+                    <div class="spkr"></div>
+                </div>
+                <div class="actions">
+                    <ul>
+                        {% for c in commands %}<li><div id="command-{{ c.id }}" class="command {{ c.slug }}"></div></li>{% endfor %}
+                    </ul>
+                </div>
+                <input type="image" id="hard-submit" src="{{ STATIC_URL }}images/ok.png" height="92px" width="178px" border="0">
+            </form>
+            <form id="hard-mode-message-form" method="post" action="{{ spectacle.hard_message_add_url }}">{% csrf_token %}
+                {% for hidden in hard_mode_message_form.hidden_fields %} {{ hidden }} {% endfor %}
+                <div class="footer">
+                    <div class="textarea">{{ hard_mode_message_form.message }}</div>
+                    <input type="image" id="hard-mode-message-submit" src="{{ STATIC_URL }}images/ok.png" height="92px" width="178px" border="0">
+                </div>
+            </form>
         </div>
-        <div id="hard-commands" class="row">
-            <ul>
-            {% for c in commands %}
-            <li class="block">
-                <div id="command-{{ c.id }}" class="stick command">{{ c.name }}</div>
-            </li>
-            {% endfor %}
-            </ul>
-        </div>
-        <div class="block-a"><input type="button" id="hard-submit" class="submit" value="Submit"></div>
-    </form>
-    <form id="hard-mode-message-form" method="post" action="{{ spectacle.hard_message_add_url }}">{% csrf_token %}
-        {% for hidden in hard_mode_message_form.hidden_fields %} {{ hidden }} {% endfor %}
-        <div id="hard-mode-message" class="row">
-            <div class="block-a">{{ hard_mode_message_form.message }}</div>
-            <div class="block-a"><input type="button" id="hard-mode-message-submit" class="submit" value="Submit"></div>
-        </div>
-    </form>
+    </div>
 </div>
 {% endblock %}
