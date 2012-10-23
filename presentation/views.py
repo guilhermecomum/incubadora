@@ -93,11 +93,11 @@ def easy_add(request, s_id):
                 cc.save()
 
             if total_cc == 0:
-                spectacle.easy_happiness_meter += 10
+                spectacle.easy_happiness_meter += 5
             elif total_cc == 1:
-                spectacle.easy_happiness_meter -= 5
+                spectacle.easy_happiness_meter += 5
             elif total_cc == 2:
-                spectacle.easy_happiness_meter -= 10
+                spectacle.easy_happiness_meter += 5
 
             instance.save()
             spectacle.save()
