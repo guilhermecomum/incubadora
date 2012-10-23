@@ -32,6 +32,7 @@ MODE_CHOICES = (
 
 class Command(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
+    slug = models.SlugField(verbose_name=_('Slug'), max_length=100, unique=True)
 
     class Meta:
         verbose_name = _('Command')
@@ -42,6 +43,7 @@ class Command(models.Model):
 
 class Spectacle(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
+    slug = models.SlugField(verbose_name=_('Slug'), max_length=100, unique=True)
     mode = models.CharField(
         verbose_name=_('Mode'),
         max_length=1,
@@ -134,6 +136,7 @@ class Spectacle(models.Model):
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
+    slug = models.SlugField(verbose_name=_('Slug'), max_length=100, unique=True)
 
     class Meta:
         verbose_name = _('Actor')

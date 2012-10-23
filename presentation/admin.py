@@ -26,11 +26,21 @@ class SpectacleAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.ManyToManyField: {'widget': CheckboxSelectMultiple},
     }
+    prepopulated_fields = {"slug": ("name",)}
+    list_display = ['__str__', 'slug']
+
+class CommandAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+    list_display = ['__str__', 'slug']
+
+class ActorAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+    list_display = ['__str__', 'slug']
 
 
 admin.site.register(Spectacle, SpectacleAdmin)
-admin.site.register(Command)
-admin.site.register(Actor)
+admin.site.register(Command, CommandAdmin)
+admin.site.register(Actor, ActorAdmin)
 admin.site.register(Scene)
 admin.site.register(EasyMode)
 admin.site.register(HardMode)
