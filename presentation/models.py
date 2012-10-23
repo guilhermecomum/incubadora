@@ -211,7 +211,7 @@ class HardMode(models.Model):
     class Meta:
         verbose_name = _('Hard Mode')
         verbose_name_plural = _('Hard Mode')
-        unique_together = ('spectacle', 'actor', 'command', 'player')
+        unique_together = ('spectacle', 'actor', 'command', 'player', 'scene')
 
     def __unicode__(self):
         return "%s | %s | %s" % (self.spectacle, self.command, self.player)
