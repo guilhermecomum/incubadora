@@ -100,7 +100,9 @@ var chosen_commands_refresh = setInterval(
 {% block content %}
 
 
-EASY:
+    <div id="mode">
+        Modo: {% if spectacle.mode == '1' %} EASY {% elif spectacle.mode == '2' %} HARD {% endif %}
+    </div>
 
     <div id="mobile_interaction">
         Interação por celular: <a href="{{ spectacle.set_mobile_interaction_url }}" class="mobile-interaction"><span>{{ spectacle.mobile_interaction }}</span></a>
