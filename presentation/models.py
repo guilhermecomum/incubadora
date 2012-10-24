@@ -137,6 +137,10 @@ class Spectacle(models.Model):
     def decrease_happiness_url(self):
         return ('decrease-happiness', [str(self.pk)])
 
+    @models.permalink
+    def set_hard_chosen_commands_url(self):
+        return ('set-hard-chosen-commands', [str(self.pk)])
+
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
@@ -175,6 +179,11 @@ class ChosenCommand(models.Model):
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
     scene = models.ForeignKey(Scene, verbose_name=_('Scene'))
     command = models.ForeignKey(Command, verbose_name=_('Command'))
+    actor = models.ForeignKey(
+        Actor,
+        verbose_name=_('Actor'),
+        blank=True,
+        null=True)
     mode = models.CharField(
         verbose_name=_('Mode'),
         max_length=1,
@@ -236,3 +245,14 @@ class HardModeMessage(models.Model):
 
     def __unicode__(self):
         return "%s | %s" % (self.spectacle, self.message)
+
+class HardModeDuration(models.Model):
+    spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
+    duration = models.TimeField(verbose_name=_('Duration'))
+
+    class Meta:
+        verbose_name = _('Hard Mode Duration')
+        verbose_name_plural = _('Hard Mode Duration')
+
+    def __unicode__(self):
+        return "%s" % (self.duration)

@@ -37,6 +37,9 @@ class ActorAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ['__str__', 'slug']
 
+class HardModeDurationAdmin(admin.ModelAdmin):
+    list_filter = ['spectacle']
+
 
 admin.site.register(Spectacle, SpectacleAdmin)
 admin.site.register(Command, CommandAdmin)
@@ -46,3 +49,4 @@ admin.site.register(EasyMode)
 admin.site.register(HardMode)
 admin.site.register(ChosenCommand)
 admin.site.register(HardModeMessage)
+admin.site.register(HardModeDuration, HardModeDurationAdmin)

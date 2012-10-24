@@ -30,9 +30,20 @@ $(document).ready(function() {
     $('#chosen-commands-list').html('');
     $.get( url, function ( data ) {
         if (!data.error) {
-            $.each(data.commands, function(i, item) {
-                $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+'</span></li>').appendTo('#chosen-commands-list');
-            });
+            // Easy Mode
+            if (data.commands) {
+                $.each(data.commands, function(i, item) {
+                    $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+'</span></li>').appendTo('#chosen-commands-list');
+                });
+            } else if (data.actors) {
+                // Hard Mode
+                $.each(data.actors, function(i, item) {
+                    $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+': </span></li>').appendTo('#chosen-commands-list');
+                    $.each(item.commands, function(i, c) {
+                        $('<span id="command-'+ c.pk +'">'+c.name+', </span>').appendTo('#chosen-command-'+item.pk);
+                    });
+                });
+            }
         }
     });
 
@@ -82,11 +93,31 @@ var chosen_commands_refresh = setInterval(
         var url = '{{ spectacle.get_chosen_commands_url }}';
         $.get( url, function ( data ) {
             if (!data.error) {
-                $.each(data.commands, function(i, item) {
-                    if ($('#chosen-command-'+item.pk).length == 0) {
-                        $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+'</span>').appendTo('#chosen-commands-list');
-                    }
-                });
+                // Easy Mode
+                if (data.commands) {
+                    $.each(data.commands, function(i, item) {
+                        if ($('#chosen-command-'+item.pk).length == 0) {
+                            $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+'</span>').appendTo('#chosen-commands-list');
+                        }
+                    });
+                } else if (data.actors) {
+                    // Hard Mode
+                    $.each(data.actors, function(i, item) {
+                        if ($('#chosen-command-'+item.pk).length == 0) {
+                            $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+': </span></li>').appendTo('#chosen-commands-list');
+                            $.each(item.commands, function(i, c) {
+                                $('<span id="command-'+ c.pk +'">'+c.name+', </span>').appendTo('#chosen-command-'+item.pk);
+                            });
+                        }
+                        else {
+                            $.each(item.commands, function(i, c) {
+                                if ( $('#command-'+ c.pk).length == 0 ) {
+                                    $('<span id="command-'+ c.pk +'">'+c.name+', </span>').appendTo('#chosen-command-'+item.pk);
+                                }
+                            });
+                        }
+                    });
+                }
             }
         });
     },
@@ -94,19 +125,75 @@ var chosen_commands_refresh = setInterval(
 
 </script>
 
+{% if spectacle.mode == '2' %}
+<script src="{{ STATIC_URL }}js/jquery-countdown/jquery.countdown.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $("#hard_duration").change(function () {
+        var d = $('#hard_duration option:selected').val().split(':')
+        if ( d != '' ) {
+            // FIXME
+            var duration = parseInt(d[0])*60*60 + parseInt(d[1])*60 + parseInt(d[2]);
+            $('#hard-countdown').countdown('destroy');
+            $('#hard-countdown').countdown({
+                until: duration,
+                onExpiry: hard_chosen_command,
+                format: 'MS',
+                compact: true,
+            });
+            $('#hard_duration').val('').attr('selected', true);
+
+            var url = '{{ spectacle.set_mobile_interaction_url }}';
+            $.get( url, function ( data ) {
+                // FIXME
+                if (data.mobile_interaction) {
+                    $('#mobile_interaction').find('span').text(data.mobile_interaction.toString());
+                }
+            });
+        }
+    });
+
+    function hard_chosen_command() {
+        var url = '{{ spectacle.set_mobile_interaction_url }}';
+        $.get( url, function ( data ) {
+            // FIXME
+            if (data.mobile_interaction) {
+                $('#mobile_interaction').find('span').text(data.mobile_interaction.toString());
+            }
+        });
+        var url = '{{ spectacle.set_hard_chosen_commands_url }}';
+        $.get( url, function ( data ) {
+            if (!data.error) {
+
+            }
+        });
+    }
+
+});
+</script>
+{% endif %}
+
+
 {% endblock %}
 
 
 {% block content %}
 
-
     <div id="mode">
         Modo: {% if spectacle.mode == '1' %} EASY {% elif spectacle.mode == '2' %} HARD {% endif %}
     </div>
 
+
+    {% if spectacle.mode == '1' %}
     <div id="mobile_interaction">
         Interação por celular: <a href="{{ spectacle.set_mobile_interaction_url }}" class="mobile-interaction"><span>{{ spectacle.mobile_interaction }}</span></a>
     </div>
+    {% else %}
+    <div id="mobile_interaction">
+        Interação por celular: <span>{{ spectacle.mobile_interaction }}</span>
+    </div>
+    {% endif %}
 
     <div>
         Lista de comandos:
@@ -124,6 +211,18 @@ var chosen_commands_refresh = setInterval(
 
     <div>
         <button id="decrease-happiness">degradação do medidor de felicidade</button>
+    </div>
+
+    <div>
+        <select id="hard_duration">
+        <option value="">------</option>
+        {% for d in hard_duration %}
+            <option value="{{ d.duration|date:"H:i:s" }}">{{ d.duration|date:"H:i:s" }}</option>
+        {% endfor %}
+        </select>
+
+        <div id="hard-countdown"></div>
+        <div id="blah"></div>
     </div>
 
     sequencia de slides ( fotos/videos )

@@ -25,7 +25,7 @@ from django.db.models import Count
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from presentation.models import Command, EasyMode, Spectacle, HardMode, \
-                                Actor, Scene, ChosenCommand
+                                Actor, Scene, ChosenCommand, HardModeDuration
 from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD
 from presentation.forms import EasyModeForm, HardModeForm, HardModeMessageForm
 
@@ -237,15 +237,74 @@ def get_commands(request, s_id):
 
 def get_chosen_commands(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)
-    commands = ChosenCommand.objects.filter(spectacle=spectacle,
-                                            mode = spectacle.mode)
+    if spectacle.mode == SPECTACLE_MODE_EASY:
+        commands = ChosenCommand.objects.filter(spectacle=spectacle,
+                                                mode = spectacle.mode)
 
-    message = simplejson.dumps( { 'error': 0,
-                                  'commands': [ { 'name': c.command.name,
-                                                  'command-pk': c.command.pk,
+        message = simplejson.dumps( { 'error': 0,
+                                      'commands': [ { 'name': c.command.name,
+                                                      'command-pk': c.command.pk,
+                                                      'pk': c.pk }
+                                                      for c in commands ] })
+    else:
+        actors = []
+        for a in Actor.objects.all():
+           commands = a.chosencommand_set.all()
+           if commands:
+               actors.append ( { 'pk': a.pk,
+                                 'name': a.name,
+                                 'commands': [ { 'name': c.command.name,
                                                   'pk': c.pk }
                                                   for c in commands ] })
 
+        message = simplejson.dumps( { 'error': 0, 'actors': actors })
+
+    return HttpResponse(message, mimetype="application/json")
+
+@staff_member_required
+def set_hard_chosen_commands(request, s_id):
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+
+    try:
+        scene = Scene.objects.get(spectacle=spectacle,
+                                  status=True,
+                                  mode=spectacle.mode)
+    except Scene.DoesNotExist:
+        alert =  'Oops try again'
+        message = simplejson.dumps( { 'error': 1, 'msg': alert } )
+        return HttpResponse(message, mimetype="application/json")
+
+    # sum commands in the last scene
+
+    actors = []
+    chosen_command = None
+    for a in Actor.objects.all():
+        commands = a.hardmode_set.filter(spectacle=spectacle, scene=scene)
+        if commands:
+            commands = commands.values('command__pk', 'command__name')
+            commands = commands.annotate(total=Count('command__pk'))
+
+            # FIXME
+            max_value = 0
+            for c in commands:
+                if c['total'] > max_value:
+                    max_value = c['total']
+                    chosen_command = Command.objects.get(pk=c['command__pk'])
+
+            # save the chosen one
+            cc = ChosenCommand(spectacle = spectacle,
+                               scene = scene,
+                               command = chosen_command,
+                               mode = spectacle.mode,
+                               actor = a)
+            cc.save()
+
+            actors.append ({ 'actor': { 'name':a.name,
+                                         'pk': a.pk },
+                             'command': { 'name':chosen_command.name,
+                                          'pk': chosen_command.pk } })
+
+    message = simplejson.dumps( { 'error': 0, 'actors':actors })
     return HttpResponse(message, mimetype="application/json")
 
 @staff_member_required
@@ -253,7 +312,9 @@ def controller(request, s_id):
 
     spectacle = get_object_or_404(Spectacle, pk=s_id)
 
-    c = { 'spectacle':spectacle }
+    duration = HardModeDuration.objects.filter(spectacle=spectacle)
+
+    c = { 'spectacle':spectacle, 'hard_duration':duration }
 
     return render(request, "controller.html", c)
 
