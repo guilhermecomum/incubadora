@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block head %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/hard.css">
 <script type="text/javascript">
 $(document).ready(function() {
 
@@ -73,13 +74,13 @@ $(document).ready(function() {
                         {% for c in commands %}<li><div id="command-{{ c.id }}" class="command {{ c.slug }}"></div></li>{% endfor %}
                     </ul>
                 </div>
-                <input type="image" id="hard-submit" src="{{ STATIC_URL }}images/ok.png" height="92px" width="178px" border="0">
+                <input type="image" id="hard-submit" src="{{ STATIC_URL }}images/hard/ok.png" height="92px" width="178px" border="0">
             </form>
             <form id="hard-mode-message-form" method="post" action="{{ spectacle.hard_message_add_url }}">{% csrf_token %}
                 {% for hidden in hard_mode_message_form.hidden_fields %} {{ hidden }} {% endfor %}
                 <div class="footer">
                     <div class="textarea">{{ hard_mode_message_form.message }}</div>
-                    <input type="image" id="hard-mode-message-submit" src="{{ STATIC_URL }}images/ok.png" height="92px" width="178px" border="0">
+                    <input type="image" id="hard-mode-message-submit" src="{{ STATIC_URL }}images/hard/ok.png" height="92px" width="178px" border="0">
                 </div>
             </form>
         </div>

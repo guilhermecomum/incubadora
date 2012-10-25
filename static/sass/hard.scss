@@ -1,0 +1,193 @@
+/*
+  Copyright (C) 2012 Marcelo Jorge Vieira <metal@alucinados.com>
+  Copyright (C) 2012 Guilherme Guerra <guerrinha@comum.org>
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License along
+  with this program; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
+
+
+@import "compass/reset";
+@import "compass/css3";
+
+body {
+    background-image: url(../images/hard/bg.png);
+}
+
+.container {
+
+    width: 640px;
+    margin: 0 auto;
+    height: 960px;
+    displa: block;
+}
+
+.device {
+    background-image: url(../images/hard/device.png);
+    width: 640px;
+    margin: 0 auto;
+    height: 960px;
+    displa: block;
+}
+
+.header {
+    padding-top: 60px;
+}
+
+.header h1 {
+    background-image: url(../images/hard/logo.png);
+    font-size: 1px;
+    overflow: hidden;
+    text-indent: -3000px;
+    width: 488px;
+    height: 224px;
+    display: block;
+    margin: 0 auto;
+
+}
+
+.players {
+    background: url(../images/hard/players.png) no-repeat;
+    font-size: 1px;
+    overflow: hidden;
+    text-indent: -3000px;
+    width: 144px;
+    display: block;
+    float: left;
+    margin-left: 100px;
+
+}
+
+.players ul {
+    width: 127px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.p1, .p2, .p3 {
+    font-size: 1px;
+    overflow: hidden;
+    text-indent: -3000px;
+}
+
+.players .p1 {
+    background-image: url(../images/hard/p1.png);
+    width: 125px;
+    height: 104px;
+}
+
+.players .p2 {
+    background-image: url(../images/hard/p2.png);
+    width: 127px;
+    height: 96px;
+}
+
+.players .p3 {
+    background-image: url(../images/hard/p3.png);
+    width: 127px;
+    height: 103px;
+}
+
+.players .spkr {
+    background-image: url(../images/hard/spkr.png);
+    height: 92px;
+    margin-top: 30px;
+    width: 144px;
+}
+
+.actions {
+    margin-left: 250px;
+}
+
+.actions .selected-p1 {
+    background: url(../images/hard/j1.png) no-repeat;
+    width: 54px;
+    height: 54px;
+    margin-top: 20px;
+    float: right;
+}
+
+.actions .selected-p2 {
+    background: url(../images/hard/j2.png) no-repeat;
+    width: 55px;
+    height: 55px;
+    margin-top: 19px;
+    float: right;
+}
+
+.actions .selected-p3 {
+    background: url(../images/hard/j3.png) no-repeat;
+    width: 55px;
+    height: 55px;
+    margin-top: 19px;
+    float: right;
+}
+
+.actions .coordenacao {
+    background-image: url(../images/hard/coor.png);
+    width: 311px;
+    height: 99px;
+}
+
+.actions .equilibrio {
+    background-image: url(../images/hard/equi.png);
+    width: 311px;
+    height: 89px;
+}
+
+.actions .ataque-e-defesa {
+    background-image: url(../images/hard/atk.png);
+    width: 311px;
+    height: 90px;
+}
+
+.actions .resistencia {
+    background-image: url(../images/hard/resi.png);
+    width: 311px;
+    height: 92px;
+}
+
+.actions .concentracao {
+    background-image: url(../images/hard/conc.png);
+    width: 311px;
+    height: 92px;
+}
+
+.footer {
+    width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer .textarea {
+    background: url(../images/hard/textarea.png) no-repeat;
+    width: 314px;
+    height: 105px;
+    float: left;
+    text-align: left;
+}
+
+.footer textarea {
+    background-color: transparent;
+    border: 0;
+    color: #000;
+    height: 55px;
+    margin-left: 23px;
+    margin-top: 28px;
+    width: 266px;
+}
+
+.footer input {
+    margin-top: 13px;
+}
