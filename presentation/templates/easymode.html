@@ -3,6 +3,7 @@
 
 {% block head %}
 
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/easy.css">
 <script type="text/javascript">
   $(document).ready(function() {
 
@@ -20,20 +21,65 @@
 
 {% block content %}
 <div class="container">
-  <form id="easy-mode-form" method="post" action="{{ spectacle.easy_add_url }}">{% csrf_token %}
-    {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
-  </form>
+  <div class="device">
+    <div class="header">
+      <h1>INCUBADORA</h1>
+    </div>
+    <form id="easy-mode-form" method="post" action="{{ spectacle.easy_add_url }}">{% csrf_token %}
+      {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
+    </form>
+    <div class="boarder">
+          <div class="row">
+            <div class="actions confra inativo left">
+              <ul>
+                <li class="carga"></li>
+                <li class="carga"></li>
+              </ul>
+              <a  href="#confra"></a>
+            </div>
+            <div class="actions alimentar inativo">
+              <ul>
+                <li class="carga"></li>
+                <li class="carga"></li>
+                <li class="carga"></li>
+              </ul>
+              <a href="#alimenta"></a>
+            </div>
+          </div>
 
-  <div id="easy-commands" class="row">
-    <ul>
-      {% for c in commands %}
-      <li class="block-a">
-        <div id="command-{{ c.id }}" class="btn command">
-          {{ c.name }}
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
+          <div class="row">
+            <div class="actions arrepender inativo left">
+              <ul>
+                <li class="carga"></li>
+              </ul>
+              <a href="#arr"></a>
+            </div>
+            <div class="actions desculpar inativo">
+              <a href="#desc"></a>
+            </div>
+          </div>
+
+          <div class="row">
+
+            <div class="actions vergonha inativo left">
+              <ul>
+                <li class="carga"></li>
+                <li class="carga"></li>
+                <li class="carga"></li>
+              </ul>
+              <a href="#vergonha"></a>
+            </div>
+
+            <div class="actions relax inativo">
+              <ul>
+                <li class="carga"></li>
+              </ul>
+              <a href="#relax"></a>
+            </div>
+
+          </div>
+
+    </div>
   </div>
 </div>
 {% endblock %}

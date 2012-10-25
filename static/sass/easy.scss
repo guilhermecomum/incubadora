@@ -1,0 +1,168 @@
+@import "compass/reset";
+@import "compass/css3";
+
+.container {
+    background-image: url(../images/easy/bg.png);
+    width: 640px;
+    margin: 0 auto;
+    height: 960px;
+    displa: block;
+}
+
+.header {
+    padding-top: 90px;
+    padding-bottom: 20px;
+}
+
+.header h1 {
+    background: url(../images/easy/logo.png) no-repeat;
+    font-size: 1px;
+    overflow: hidden;
+    text-indent: -3000px;
+    width: 417px;
+    height: 176px;
+    display: block;
+    margin: 0 auto;
+}
+
+.boarder {
+    background: url(../images/easy/boarder.png) no-repeat;
+    width: 640px;
+    margin: 0 auto;
+    height: 658px;
+    displa: block;
+    padding: 48px 55px;
+}
+
+.boarder .row {
+    width: 630px;
+    height: 184px;
+    margin: 0 auto;
+}
+
+.actions ul {
+    padding-top: 4px;
+}
+
+.action, .confra, .alimentar, .arrepender,
+.desculpar, .vergonha, .relax {
+    display: block;
+    width: 258px;
+    height: 182px;
+    overflow: hidden;
+}
+
+.action a {
+    display: block;
+    width: 250px;
+    height: 182px;
+}
+
+.carga {
+    background: url(../images/easy/carga.png) no-repeat;
+    width: 22px;
+    height: 23px;
+    display: block;
+    float: right;
+    clear: both;
+}
+
+.confra.ativo {
+    background: url(../images/easy/confra.png);
+    background-position: 0 0;
+}
+
+.confra.inativo {
+    background: url(../images/easy/confra.png);
+    background-position: -258px 0;
+}
+
+.confra.blocked {
+    background: url(../images/easy/confra.png);
+    background-position: -516px 0;
+}
+
+.alimentar.ativo {
+    background: url(../images/easy/alimentar.png);
+    background-position: 0 0;
+}
+
+.alimentar.inativo {
+    background: url(../images/easy/alimentar.png);
+    background-position: -258px 0;
+}
+
+.alimentar.blocked {
+    background: url(../images/easy/alimentar.png);
+    background-position: -516px 0;
+}
+
+.arrepender.ativo {
+    background: url(../images/easy/arrepender.png);
+    background-position: 0 0;
+}
+
+.arrepender.inativo {
+    background: url(../images/easy/arrepender.png);
+    background-position: -258px 0;
+}
+
+.arrepender.blocked {
+    background: url(../images/easy/arrepender.png);
+    background-position: -516px 0;
+}
+
+.desculpar.ativo {
+    background: url(../images/easy/desculpar.png);
+    background-position: 0 0;
+}
+
+.desculpar.inativo {
+    background: url(../images/easy/desculpar.png);
+    background-position: -258px 0;
+}
+
+.desculpar.blocked {
+    background: url(../images/easy/desculpar.png);
+    background-position: -516px 0;
+}
+
+.vergonha.ativo {
+    background: url(../images/easy/vergonha.png);
+    background-position: 0 0;
+}
+
+.vergonha.inativo {
+    background: url(../images/easy/vergonha.png);
+    background-position: -258px 0;
+}
+
+.vergonha.blocked {
+    background: url(../images/easy/vergonha.png);
+    background-position: -516px 0;
+}
+
+.relax.ativo {
+    background: url(../images/easy/relax.png);
+    background-position: 0 0;
+}
+
+.relax.inativo {
+    background: url(../images/easy/relax.png);
+    background-position: -258px 0;
+}
+
+.relax.blocked {
+    background: url(../images/easy/relax.png);
+    background-position: -516px 0;
+}
+
+
+.left {
+    float: left;
+    margin-right: 3px;
+}
+
+.right {
+    float: right;
+}
