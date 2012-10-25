@@ -128,3 +128,11 @@ reset_spectacle = function () {
         }
     });
 }
+
+get_last_hard_message = function () {
+    $.get($.m_get_last_hard_message_url, function(data) {
+        if (!data.error) {
+            $('#box-message').find('p').html(data.msg.text);
+        }
+    });
+}

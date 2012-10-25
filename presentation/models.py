@@ -145,6 +145,10 @@ class Spectacle(models.Model):
     def reset_spectacle_url(self):
         return ('reset-spectacle', [str(self.pk)])
 
+    @models.permalink
+    def get_last_hard_message_url(self):
+        return ('get-last-hard-message', [str(self.pk)])
+
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))

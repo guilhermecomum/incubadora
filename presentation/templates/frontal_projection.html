@@ -10,6 +10,7 @@ $(document).ready(function() {
     $.m_get_happiness_meter_url = '{{ spectacle.get_happiness_meter_url }}';
     $.m_get_mobile_interaction_url = '{{ spectacle.get_mobile_interaction_url }}';
     $.m_get_commands_url = '{{ spectacle.get_commands_url }}';
+    $.m_get_last_hard_message_url = '{{ spectacle.get_last_hard_message_url }}';
 
     get_commands();
 
@@ -21,6 +22,15 @@ var commands_refresh = setInterval(function (){ get_commands();}, s10);
 var mobile_interaction_refresh = setInterval(function (){ get_mobile_interaction(); }, s10);
 
 </script>
+
+{% if spectacle.mode == '2' %}
+<script type="text/javascript">
+
+var last_hard_message_refresh = setInterval(function (){ get_last_hard_message(); }, s10);
+
+</script>
+{% endif %}
+
 {% endblock %}
 
 {% block content %}
@@ -40,4 +50,9 @@ var mobile_interaction_refresh = setInterval(function (){ get_mobile_interaction
     <span>Happiness Meter:</span> <span id="happiness-meter">{% if spectacle.mode == '1' %} {{ spectacle.easy_happiness_meter }}  {% else %} {{ spectacle.hard_happiness_meter }} {% endif %}</span>
 </div>
 
+{% if spectacle.mode == '2' %}
+<div id="box-message">
+    Mensagem: <p></p>
+</div>
+{% endif %}
 {% endblock %}

@@ -48,6 +48,10 @@ urlpatterns += patterns('presentation.views',
 
     # Frontal Projection
 
+    url(r'^frontal-projection/(?P<s_id>(.*))/get/lastmessage/$',
+        'get_last_hard_message',
+        name='get-last-hard-message'),
+
     url(r'^frontal-projection/(?P<s_id>(.*))/$',
         'frontal_projection',
         name='frontal-projection-show'),

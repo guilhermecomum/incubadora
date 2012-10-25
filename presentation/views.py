@@ -25,7 +25,8 @@ from django.db.models import Count
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from presentation.models import Command, EasyMode, Spectacle, HardMode, \
-                                Actor, Scene, ChosenCommand, HardModeDuration
+                                Actor, Scene, ChosenCommand, HardModeDuration,\
+                                HardModeMessage
 from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD
 from presentation.forms import EasyModeForm, HardModeForm, HardModeMessageForm
 
@@ -379,4 +380,18 @@ def reset_spectacle(request, s_id):
     spectacle.scene_set.all().delete()
     spectacle.save()
     message = simplejson.dumps( { 'error': 0 })
+    return HttpResponse(message, mimetype="application/json")
+
+def get_last_hard_message(request, s_id):
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+
+    try:
+        msg = HardModeMessage.objects.filter(spectacle=spectacle)
+        msg = msg.latest('date_created')
+    except HardModeMessage.DoesNotExist:
+        message = simplejson.dumps( { 'error': 1 } )
+        return HttpResponse(message, mimetype="application/json")
+
+    message = simplejson.dumps( { 'error': 0,
+                                  'msg': {'pk': msg.pk, 'text': msg.message} })
     return HttpResponse(message, mimetype="application/json")
