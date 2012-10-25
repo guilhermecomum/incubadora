@@ -12,7 +12,7 @@ $(document).ready(function() {
     $.m_decrease_happiness_url = '{{ spectacle.decrease_happiness_url }}';
     $.m_get_happiness_meter_url = '{{ spectacle.get_happiness_meter_url }}';
     $.m_set_hard_chosen_commands_url = '{{ spectacle.set_hard_chosen_commands_url }}';
-
+    $.m_reset_spectacle_url = '{{ spectacle.reset_spectacle_url }}';
 
     $('.mobile-interaction').click(function() {
         set_mobile_interaction();
@@ -24,6 +24,13 @@ $(document).ready(function() {
 
     $('#decrease-happiness').click(function() {
         decrease_happiness();
+        return false;
+    });
+
+    $('#reset-spectacle').click(function() {
+        if (confirm("Do you really want to delete all spectacle data?")) {
+            reset_spectacle();
+        }
         return false;
     });
 
@@ -104,6 +111,10 @@ $(document).ready(function() {
 
     <div>
         <button id="decrease-happiness">degradação do medidor de felicidade</button>
+    </div>
+
+    <div>
+        <button id="reset-spectacle">Reiniciar o Espetáculo</button>
     </div>
 
     {% if spectacle.mode == '2' %}

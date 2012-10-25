@@ -370,3 +370,13 @@ def decrease_happiness(request, s_id):
     message = simplejson.dumps( { 'error': 0,
                                   'happiness_value': value })
     return HttpResponse(message, mimetype="application/json")
+
+@staff_member_required
+def reset_spectacle(request, s_id):
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle.easy_happiness_meter = 50
+    spectacle.hard_happiness_meter = 50
+    spectacle.scene_set.all().delete()
+    spectacle.save()
+    message = simplejson.dumps( { 'error': 0 })
+    return HttpResponse(message, mimetype="application/json")

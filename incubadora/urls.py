@@ -85,6 +85,10 @@ urlpatterns += patterns('presentation.views',
          'get_mobile_interaction',
          name='get-mobile-interaction'),
 
+     url(r'^controller/(?P<s_id>(.*))/reset/spectacle/$',
+         'reset_spectacle',
+         name='reset-spectacle'),
+
      url(r'^controller/(?P<s_id>(.*))/$', 'controller', name='controller'),
 
 )

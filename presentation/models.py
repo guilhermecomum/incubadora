@@ -141,6 +141,10 @@ class Spectacle(models.Model):
     def set_hard_chosen_commands_url(self):
         return ('set-hard-chosen-commands', [str(self.pk)])
 
+    @models.permalink
+    def reset_spectacle_url(self):
+        return ('reset-spectacle', [str(self.pk)])
+
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))

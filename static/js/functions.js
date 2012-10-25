@@ -46,14 +46,18 @@ get_mobile_interaction = function() {
 
 get_commands = function() {
     $.get($.m_get_commands_url, function ( data ) {
-        if (!data.error) {
-            $.each(data.commands, function(i, item) {
-                if ($('#command-count-'+item.pk).length > 0) {
-                    $('#command-count-'+item.pk).html(item.total);
-                } else {
-                    $('<li id="command-'+item.pk+'"><span>'+item.name+'</span> : <span id="command-count-'+item.pk+'">'+item.total+'</span></li>').appendTo('#command-list');
-                }
-            });
+        if (!data.error && data.commands) {
+            if (data.commands.length > 0) {
+                $.each(data.commands, function(i, item) {
+                    if ($('#command-count-'+item.pk).length > 0) {
+                        $('#command-count-'+item.pk).html(item.total);
+                    } else {
+                        $('<li id="command-'+item.pk+'"><span>'+item.name+'</span> : <span id="command-count-'+item.pk+'">'+item.total+'</span></li>').appendTo('#command-list');
+                    }
+                });
+            } else {
+                $('#command-list').html('');
+            }
         }
     });
 }
@@ -63,28 +67,37 @@ get_chosen_commands = function() {
         if (!data.error) {
             // Easy Mode
             if (data.commands) {
-                $.each(data.commands, function(i, item) {
-                    if ($('#chosen-command-'+item.pk).length == 0) {
-                        $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+'</span>').appendTo('#chosen-commands-list');
-                    }
-                });
-            } else if (data.actors) {
-                // Hard Mode
-                $.each(data.actors, function(i, item) {
-                    if ($('#chosen-command-'+item.pk).length == 0) {
-                        $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+': </span></li>').appendTo('#chosen-commands-list');
-                        $.each(item.commands, function(i, c) {
-                            $('<span id="command-'+ c.pk +'">'+c.name+', </span>').appendTo('#chosen-command-'+item.pk);
-                        });
-                    }
-                    else {
-                        $.each(item.commands, function(i, c) {
-                            if ( $('#command-'+ c.pk).length == 0 ) {
+                if (data.commands.length > 0) {
+                    $.each(data.commands, function(i, item) {
+                        if ($('#chosen-command-'+item.pk).length == 0) {
+                            $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+'</span>').appendTo('#chosen-commands-list');
+                        }
+                    });
+                } else {
+                    $('#chosen-commands-list').html('');
+                }
+            }
+            // Hard Mode
+            if (data.actors) {
+                if (data.actors.length > 0) {
+                    $.each(data.actors, function(i, item) {
+                        if ($('#chosen-command-'+item.pk).length == 0) {
+                            $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+': </span></li>').appendTo('#chosen-commands-list');
+                            $.each(item.commands, function(i, c) {
                                 $('<span id="command-'+ c.pk +'">'+c.name+', </span>').appendTo('#chosen-command-'+item.pk);
-                            }
-                        });
-                    }
-                });
+                            });
+                        }
+                        else {
+                            $.each(item.commands, function(i, c) {
+                                if ( $('#command-'+ c.pk).length == 0 ) {
+                                    $('<span id="command-'+ c.pk +'">'+c.name+', </span>').appendTo('#chosen-command-'+item.pk);
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    $('#chosen-commands-list').html('');
+                }
             }
         }
     });
@@ -102,6 +115,16 @@ decrease_happiness = function() {
     $.get($.m_decrease_happiness_url, function(data) {
         if (data.happiness_value) {
             $('#happiness-meter').html(data.happiness_value);
+        }
+    });
+}
+
+reset_spectacle = function () {
+    $.get($.m_reset_spectacle_url, function(data) {
+        if (!data.error) {
+            get_commands();
+            get_chosen_commands();
+            get_happiness_meter();
         }
     });
 }
