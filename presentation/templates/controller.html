@@ -106,6 +106,7 @@ $(document).ready(function() {
         <button id="decrease-happiness">degradação do medidor de felicidade</button>
     </div>
 
+    {% if spectacle.mode == '2' %}
     <div>
         <select id="hard_duration">
         <option value="">------</option>
@@ -117,6 +118,7 @@ $(document).ready(function() {
         <div id="hard-countdown"></div>
         <div id="blah"></div>
     </div>
+    {% endif %}
 
     sequencia de slides ( fotos/videos )
 
