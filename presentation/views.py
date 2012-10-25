@@ -21,9 +21,11 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.utils import simplejson
 from django.forms.widgets import HiddenInput
+from django.forms.formsets import formset_factory
 from django.db.models import Count
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from collections import Counter
 from presentation.models import Command, EasyMode, Spectacle, HardMode, \
                                 Actor, Scene, ChosenCommand, HardModeDuration,\
                                 HardModeMessage
@@ -131,19 +133,21 @@ def hard_show(request, s_id):
     commands = spectacle.hard_commands.all()
     actors = Actor.objects.filter(spectacle=spectacle).all()
 
-    hard_mode_form = HardModeForm()
-    hard_mode_form.fields['player'].widget = HiddenInput(
-        attrs={'value':user.id})
-    hard_mode_form.fields['spectacle'].widget = HiddenInput(
-        attrs={'value':spectacle.id})
+    HardModeFormSet = formset_factory(HardModeForm, extra=1, max_num=3)
+    formset = HardModeFormSet(initial=[ {'user': user.id,
+                                         'spectacle': spectacle.id},
+                                        {'user': user.id,
+                                         'spectacle': spectacle.id},
+                                        {'user': user.id,
+                                         'spectacle': spectacle.id}])
 
     hard_mode_message_form = HardModeMessageForm()
     hard_mode_message_form.fields['spectacle'].widget = HiddenInput(
         attrs={'value':spectacle.id})
 
-    c = { 'hard_mode_form':hard_mode_form, 'commands':commands,
-          'spectacle':spectacle, 'actors':actors,
-          'hard_mode_message_form':hard_mode_message_form }
+    c = {  'commands':commands, 'spectacle':spectacle, 'actors':actors,
+           'hard_mode_message_form':hard_mode_message_form,
+           'formset': formset }
 
     return render(request, 'hardmode.html', c)
 
@@ -152,43 +156,39 @@ def hard_add(request, s_id):
     user = request.user
 
     post = request.POST.copy()
-    post['player'] = user.id
+
+    post['form-0-player'] = user.id
+    post['form-1-player'] = user.id
+    post['form-2-player'] = user.id
 
     # FIXME
     spectacle = get_object_or_404(Spectacle, pk=s_id)
+
+    post['form-0-spectacle'] = spectacle.id
+    post['form-1-spectacle'] = spectacle.id
+    post['form-2-spectacle'] = spectacle.id
+
     try:
         scene = Scene.objects.get(spectacle=spectacle,
                                   status=True,
                                   mode=spectacle.mode)
-        post['scene'] = scene.id
+        post['form-0-scene'] = scene.id
+        post['form-1-scene'] = scene.id
+        post['form-2-scene'] = scene.id
     except Scene.DoesNotExist:
         alert =  'Oops try again'
         message = simplejson.dumps( { 'error': 1, 'msg': alert } )
         return HttpResponse(message, mimetype="application/json")
 
-    form = HardModeForm(post or None)
+    HardModeFormSet = formset_factory(HardModeForm)
+    formset = HardModeFormSet(post or None)
 
-    if request.POST and form.is_valid():
-        instance = form.save(commit=False)
-        spectacle = get_object_or_404(Spectacle, pk=instance.spectacle.pk)
-        if spectacle.mobile_interaction:
-            total = HardMode.objects.filter(spectacle = instance.spectacle,
-                                            command = instance.command,
-                                            actor = instance.actor).count()
-            if total == 0:
-                spectacle.hard_happiness_meter += 15
-            elif total == 1:
-                spectacle.hard_happiness_meter -= 5
-            elif total == 2:
-                spectacle.hard_happiness_meter -= 15
+    if request.POST and formset.is_valid() and spectacle.mobile_interaction:
+        for form in formset.forms:
+            form.save()
 
-            spectacle.save()
-            instance.save()
-            message = simplejson.dumps( { 'error': 0 } )
-            return HttpResponse(message, mimetype="application/json")
-        else:
-            message = simplejson.dumps( { 'error': 1 } )
-            return HttpResponse(message, mimetype="application/json")
+        message = simplejson.dumps( { 'error': 0 } )
+        return HttpResponse(message, mimetype="application/json")
     else:
         message = simplejson.dumps( { 'error': 1 } )
         return HttpResponse(message, mimetype="application/json")
@@ -275,10 +275,7 @@ def set_hard_chosen_commands(request, s_id):
         message = simplejson.dumps( { 'error': 1, 'msg': alert } )
         return HttpResponse(message, mimetype="application/json")
 
-    # sum commands in the last scene
-
     actors = []
-    chosen_command = None
     for a in Actor.objects.all():
         commands = a.hardmode_set.filter(spectacle=spectacle, scene=scene)
         if commands:
@@ -287,23 +284,42 @@ def set_hard_chosen_commands(request, s_id):
 
             # FIXME
             max_value = 0
+            command_id = None
             for c in commands:
                 if c['total'] > max_value:
                     max_value = c['total']
-                    chosen_command = Command.objects.get(pk=c['command__pk'])
+                    command_id = c['command__pk']
 
-            # save the chosen one
+            command = Command.objects.get(pk = command_id)
+
             cc = ChosenCommand(spectacle = spectacle,
                                scene = scene,
-                               command = chosen_command,
+                               command = command,
                                mode = spectacle.mode,
                                actor = a)
             cc.save()
 
             actors.append ({ 'actor': { 'name':a.name,
                                          'pk': a.pk },
-                             'command': { 'name':chosen_command.name,
-                                          'pk': chosen_command.pk } })
+                             'command': { 'name':command.name,
+                                          'pk': command.pk } })
+
+        else:
+            # FIXME
+            actors.append ({ 'actor': { 'name':a.name,
+                                        'pk': a.pk },
+                             'command': { 'name': '',
+                                          'pk': '' } })
+
+    total_cc = len(Counter(actor['command']['pk'] for actor in actors))
+
+    if total_cc == 3:
+        spectacle.hard_happiness_meter += 15
+    elif total_cc == 2:
+        spectacle.hard_happiness_meter -= 5
+    elif total_cc == 1:
+        spectacle.hard_happiness_meter -= 15
+    spectacle.save()
 
     message = simplejson.dumps( { 'error': 0, 'actors':actors })
     return HttpResponse(message, mimetype="application/json")
@@ -325,13 +341,13 @@ def set_mobile_interaction(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)
     if spectacle.mobile_interaction:
         # Close
-        mi = False
         try:
+            mi = False
             scene = Scene.objects.get(spectacle=spectacle,
                                       status=True,
                                       mode=spectacle.mode)
 
-            scene.status = False
+            scene.status = mi
             scene.save()
         except Scene.DoesNotExist:
             message = simplejson.dumps( { 'error': 1 } )
@@ -339,12 +355,11 @@ def set_mobile_interaction(request, s_id):
     else:
         # Open
         mi = True
-        scene = Scene(mode=spectacle.mode, spectacle=spectacle, status=True)
+        scene = Scene(mode=spectacle.mode, spectacle=spectacle, status=mi)
         scene.save()
 
     spectacle.mobile_interaction = mi
     spectacle.save()
-
     message = simplejson.dumps( { 'error': 0,
                                   'mobile_interaction': mi })
 
