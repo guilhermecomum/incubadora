@@ -1,0 +1,75 @@
+@import "compass/reset";
+@import "compass/css3";
+
+body {
+    background-color: #000;
+}
+
+.container {
+    background: url(../images/login/bg.png) no-repeat #000 ;
+    width: 640px;
+    margin: 0 auto;
+    height: 960px;
+    displa: block;
+}
+
+.header {
+    padding-top: 90px;
+    padding-bottom: 20px;
+}
+
+.header h1 {
+    background: url(../images/login/logo.png) no-repeat;
+    font-size: 1px;
+    overflow: hidden;
+    text-indent: -3000px;
+    width: 456px;
+    height: 210px;
+    display: block;
+    margin: 0 auto;
+}
+
+.nome {
+    background: url(../images/login/nome.png) no-repeat #000 ;
+    width: 456px;
+    margin: 0 auto;
+    height: 280px;
+    displa: block;
+    text-align: center;
+}
+
+.nome input {
+    background-color: #000;
+    color: #FFF;
+    border: 0;
+    width: 420px;
+    font-size: 15pt;
+    margin-top: 203px;
+}
+
+.mail {
+    background: url(../images/login/mail.png) no-repeat #000 ;
+    width: 456px;
+    margin: 0 auto;
+    height: 206px;
+    displa: block;
+    text-align: center;
+}
+
+.mail input {
+    background-color: #000;
+    color: #FFF;
+    border: 0;
+    width: 420px;
+    font-size: 15pt;
+    margin-top: 144px;
+}
+
+.send {
+    width: 456px;
+    margin: 0 auto;
+}
+
+.send input {
+    float: left;
+}

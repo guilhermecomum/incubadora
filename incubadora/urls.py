@@ -28,6 +28,10 @@ urlpatterns = patterns('',
     # index
     url(r'^$', 'index.views.index', name='index'),
 
+    # users
+    (r'^login/', 'users.views.user_login'),
+    (r'^logout/', 'users.views.user_logout'),
+
 )
 
 urlpatterns += patterns('presentation.views',

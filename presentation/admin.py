@@ -27,7 +27,7 @@ class SpectacleAdmin(admin.ModelAdmin):
         models.ManyToManyField: {'widget': CheckboxSelectMultiple},
     }
     prepopulated_fields = {"slug": ("name",)}
-    list_display = ['__str__', 'slug']
+    list_display = ['__str__', 'slug', 'status']
 
 class CommandAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}

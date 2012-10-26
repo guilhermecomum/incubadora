@@ -17,17 +17,17 @@
 # Boston, MA 02111-1307, USA.
 ##
 
-from django.shortcuts import render
-from presentation.models import Spectacle
-from django.http import HttpResponseRedirect
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
+from users.forms import UserForm
 
 
-def index(request):
-    user = request.user
+class UserAdmin(UserAdmin):
+    list_display = ('username', 'first_name', 'last_name', 'is_staff')
+    search_fields = ('username',)
+    list_filter = ["groups", 'is_staff', 'is_superuser', 'is_active']
 
-    if user.is_staff:
-        spectacles = Spectacle.objects.all()
-        c = { 'spectacles':spectacles }
-        return render(request, 'index.html', c)
-    else:
-        return HttpResponseRedirect('/login/')
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)

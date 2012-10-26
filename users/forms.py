@@ -17,17 +17,24 @@
 # Boston, MA 02111-1307, USA.
 ##
 
-from django.shortcuts import render
-from presentation.models import Spectacle
-from django.http import HttpResponseRedirect
+from django import forms
+from django.contrib.auth.models import User
+from django.utils.translation import ugettext as _
 
 
-def index(request):
-    user = request.user
+class UserForm(forms.ModelForm):
 
-    if user.is_staff:
-        spectacles = Spectacle.objects.all()
-        c = { 'spectacles':spectacles }
-        return render(request, 'index.html', c)
-    else:
-        return HttpResponseRedirect('/login/')
+    username = forms.EmailField(label=_("Email"))
+
+    def clean_email(self):
+        email = self.cleaned_data['username']
+        return email
+
+    def clean_first_name(self):
+        if not self.cleaned_data['first_name']:
+            raise forms.ValidationError(_("This field is required."))
+        return self.cleaned_data['first_name']
+
+    class Meta:
+        model = User
+        fields = ["first_name", "username"]

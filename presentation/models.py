@@ -44,6 +44,7 @@ class Command(models.Model):
 class Spectacle(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100, unique=True)
+    status = models.BooleanField(verbose_name=_('Status'), default=False)
     mode = models.CharField(
         verbose_name=_('Mode'),
         max_length=1,

@@ -17,17 +17,17 @@
 # Boston, MA 02111-1307, USA.
 ##
 
-from django.shortcuts import render
-from presentation.models import Spectacle
-from django.http import HttpResponseRedirect
+# http://blueapples.livejournal.com/178733.html
 
+from django.db.models.signals import post_syncdb
+from django.contrib.auth import models as auth_models
+from django.db import connection, transaction
 
-def index(request):
-    user = request.user
+def change_username(sender, **kwargs):
+    print 'Alter auth_user table ...'
+    cursor = connection.cursor()
+    cursor.execute("ALTER TABLE auth_user "
+                   "MODIFY username VARCHAR(75) NOT NULL")
+    transaction.commit_unless_managed()
 
-    if user.is_staff:
-        spectacles = Spectacle.objects.all()
-        c = { 'spectacles':spectacles }
-        return render(request, 'index.html', c)
-    else:
-        return HttpResponseRedirect('/login/')
+post_syncdb.connect(change_username, sender=auth_models)
