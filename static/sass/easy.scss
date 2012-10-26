@@ -52,9 +52,8 @@
     overflow: hidden;
 }
 
-.action a {
+.action .command {
     display: block;
-    width: 250px;
     height: 182px;
 }
 
@@ -67,18 +66,18 @@
     clear: both;
 }
 
-.confra.ativo {
-    background: url(../images/easy/confra.png);
+.confraternizar.ativo {
+    background: url(../images/easy/confraternizar.png);
     background-position: 0 0;
 }
 
-.confra.inativo {
-    background: url(../images/easy/confra.png);
+.confraternizar.inativo {
+    background: url(../images/easy/confraternizar.png);
     background-position: -258px 0;
 }
 
-.confra.blocked {
-    background: url(../images/easy/confra.png);
+.confraternizar.blocked {
+    background: url(../images/easy/confraternizar.png);
     background-position: -516px 0;
 }
 
@@ -127,36 +126,35 @@
     background-position: -516px 0;
 }
 
-.vergonha.ativo {
-    background: url(../images/easy/vergonha.png);
+.envergonhar.ativo {
+    background: url(../images/easy/envergonhar.png);
     background-position: 0 0;
 }
 
-.vergonha.inativo {
-    background: url(../images/easy/vergonha.png);
+.envergonhar.inativo {
+    background: url(../images/easy/envergonhar.png);
     background-position: -258px 0;
 }
 
-.vergonha.blocked {
-    background: url(../images/easy/vergonha.png);
+.envergonhar.blocked {
+    background: url(../images/easy/envergonhar.png);
     background-position: -516px 0;
 }
 
-.relax.ativo {
-    background: url(../images/easy/relax.png);
+.relaxar.ativo {
+    background: url(../images/easy/relaxar.png);
     background-position: 0 0;
 }
 
-.relax.inativo {
-    background: url(../images/easy/relax.png);
+.relaxar.inativo {
+    background: url(../images/easy/relaxar.png);
     background-position: -258px 0;
 }
 
-.relax.blocked {
-    background: url(../images/easy/relax.png);
+.relaxar.blocked {
+    background: url(../images/easy/relaxar.png);
     background-position: -516px 0;
 }
-
 
 .left {
     float: left;
@@ -165,4 +163,27 @@
 
 .right {
     float: right;
+}
+
+.thumbnails {
+    margin-left: -20px;
+    list-style: none;
+    *zoom: 1;
+}
+
+.thumbnails:before,
+.thumbnails:after {
+    display: table;
+    line-height: 0;
+    content: "";
+}
+
+.thumbnails:after {
+    clear: both;
+}
+
+.thumbnails > li {
+    float: left;
+    margin-left: 27px;
+    margin-right: -27px;
 }

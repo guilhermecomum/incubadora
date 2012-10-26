@@ -29,56 +29,15 @@
       {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
     </form>
     <div class="boarder">
-          <div class="row">
-            <div class="actions confra inativo left">
-              <ul>
-                <li class="carga"></li>
-                <li class="carga"></li>
-              </ul>
-              <a  href="#confra"></a>
-            </div>
-            <div class="actions alimentar inativo">
-              <ul>
-                <li class="carga"></li>
-                <li class="carga"></li>
-                <li class="carga"></li>
-              </ul>
-              <a href="#alimenta"></a>
-            </div>
+
+      <ul class="thumbnails">
+        {% for c in commands %}
+        <li class="action">
+          <div id="command-{{ c.id }}" class="command {{c.slug}} inativo">
           </div>
-
-          <div class="row">
-            <div class="actions arrepender inativo left">
-              <ul>
-                <li class="carga"></li>
-              </ul>
-              <a href="#arr"></a>
-            </div>
-            <div class="actions desculpar inativo">
-              <a href="#desc"></a>
-            </div>
-          </div>
-
-          <div class="row">
-
-            <div class="actions vergonha inativo left">
-              <ul>
-                <li class="carga"></li>
-                <li class="carga"></li>
-                <li class="carga"></li>
-              </ul>
-              <a href="#vergonha"></a>
-            </div>
-
-            <div class="actions relax inativo">
-              <ul>
-                <li class="carga"></li>
-              </ul>
-              <a href="#relax"></a>
-            </div>
-
-          </div>
-
+        </li>
+        {% endfor %}
+      </ul>
     </div>
   </div>
 </div>
