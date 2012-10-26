@@ -136,3 +136,21 @@ get_last_hard_message = function () {
         }
     });
 }
+
+easy_mobile_blah = function() {
+    $.get($.m_get_chosen_commands_url, function ( data ) {
+        if (!data.error) {
+            if (data.commands) {
+                if (data.commands.length > 0) {
+                    $.each(data.commands, function(i, item) {
+                        if ($('#easy-chosen-command-' + item.pk).length == 0) {
+                            $('#command-'+item.command_pk).find('ul').append('<li id="easy-chosen-command-'+ item.pk  +'" class="carga"></li>');
+                        }
+                    });
+                } else {
+                    $('#command-'+item.command_pk).find('ul').html('');
+                }
+            }
+        }
+    });
+}

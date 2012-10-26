@@ -4,6 +4,7 @@
 {% block head %}
 
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/easy.css">
+<script src="{{ STATIC_URL }}js/functions.js" type="text/javascript"></script>
 <script type="text/javascript">
   $(document).ready(function() {
 
@@ -14,7 +15,13 @@
           $.post( url, $("#easy-mode-form").serialize() );
       });
 
+    $.m_get_chosen_commands_url = '{{ spectacle.get_chosen_commands_url }}';
+
   });
+
+var s10 = 10000; // 10s
+var blah_refresh = setInterval(function (){ easy_mobile_blah(); }, s10);
+
 </script>
 
 {% endblock %}
@@ -34,6 +41,7 @@
         {% for c in commands %}
         <li class="action">
           <div id="command-{{ c.id }}" class="command {{c.slug}} inativo">
+              <ul></ul>
           </div>
         </li>
         {% endfor %}

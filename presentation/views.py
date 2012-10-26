@@ -244,7 +244,7 @@ def get_chosen_commands(request, s_id):
 
         message = simplejson.dumps( { 'error': 0,
                                       'commands': [ { 'name': c.command.name,
-                                                      'command-pk': c.command.pk,
+                                                      'command_pk':c.command.pk,
                                                       'pk': c.pk }
                                                       for c in commands ] })
     else:
