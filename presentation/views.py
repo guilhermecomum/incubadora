@@ -236,6 +236,39 @@ def get_commands(request, s_id):
 
     return HttpResponse(message, mimetype="application/json")
 
+def get_chosen_commands_total(request, s_id):
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    commands = ChosenCommand.objects.filter(spectacle=spectacle,
+                                            mode = spectacle.mode)
+    commands = commands.values('command__name', 'command__pk')
+    commands = commands.annotate(Count('pk'))
+
+    if spectacle.mode == SPECTACLE_MODE_EASY:
+
+        message = simplejson.dumps( {'error': 0,
+                                     'commands': [ {'name': m['command__name'],
+                                                    'pk': m['command__pk'],
+                                                    'total': m['pk__count'] }
+                                                    for m in commands ] })
+    else:
+        actors = []
+        for a in Actor.objects.all():
+           commands = a.chosencommand_set.all()
+           commands = commands.values('command__name', 'command__pk')
+           commands = commands.annotate(Count('pk'))
+
+           if commands:
+               actors.append ( { 'pk': a.pk,
+                                 'name': a.name,
+                                 'commands': [ {'name': m['command__name'],
+                                                'pk': m['command__pk'],
+                                                'total': m['pk__count'] }
+                                                for m in commands ] })
+
+        message = simplejson.dumps( { 'error': 0, 'actors': actors })
+
+    return HttpResponse(message, mimetype="application/json")
+
 def get_chosen_commands(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)
     if spectacle.mode == SPECTACLE_MODE_EASY:

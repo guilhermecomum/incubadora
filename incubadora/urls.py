@@ -62,6 +62,10 @@ urlpatterns += patterns('presentation.views',
 
     # Chosen commands
 
+    url(r'^chosen-commands/(?P<s_id>(.*))/total/$',
+        'get_chosen_commands_total',
+        name='get-chosen-commands-total'),
+
     url(r'^chosen-commands/(?P<s_id>(.*))/$',
         'get_chosen_commands',
         name='get-chosen-commands'),

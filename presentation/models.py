@@ -149,6 +149,10 @@ class Spectacle(models.Model):
     def get_last_hard_message_url(self):
         return ('get-last-hard-message', [str(self.pk)])
 
+    @models.permalink
+    def get_chosen_commands_total_url(self):
+        return ('get-chosen-commands-total', [str(self.pk)])
+
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))

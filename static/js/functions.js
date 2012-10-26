@@ -154,3 +154,29 @@ easy_mobile_blah = function() {
         }
     });
 }
+
+easy_active_commands = function() {
+    $.get($.m_get_mobile_interaction_url, function(data) {
+        if (!data.error) {
+            if (data.mobile_interaction) {
+                $('.command').addClass("ativo");
+                $('.command').removeClass("inativo");
+                $.get($.m_get_chosen_commands_total_url, function ( d ) {
+                    if (!d.error && d.commands) {
+                        if (d.commands.length > 0) {
+                            $.each(d.commands, function(i, item) {
+                                if (item.total >= 3) {
+                                    $('#command-'+item.pk).addClass("inativo");
+                                    $('#command-'+item.pk).removeClass("ativo");
+                                }
+                            });
+                        }
+                    }
+                });
+            } else {
+                $('.command').addClass("inativo");
+                $('.command').removeClass("ativo");
+            }
+        }
+    });
+}

@@ -8,19 +8,24 @@
 <script type="text/javascript">
   $(document).ready(function() {
 
-      $('.command').click(function() {
-          var cid = $(this).attr('id').split('-')[1];
-          $("#id_command").val(cid);
-          var url = $('#easy-mode-form').attr('action');
-          $.post( url, $("#easy-mode-form").serialize() );
-      });
+    $('.command').click(function() {
+        if ($(this).hasClass('ativo')) {
+            var cid = $(this).attr('id').split('-')[1];
+            $("#id_command").val(cid);
+            var url = $('#easy-mode-form').attr('action');
+            $.post( url, $("#easy-mode-form").serialize() );
+        }
+    });
 
     $.m_get_chosen_commands_url = '{{ spectacle.get_chosen_commands_url }}';
+    $.m_get_mobile_interaction_url = '{{ spectacle.get_mobile_interaction_url }}';
+    $.m_get_chosen_commands_total_url = '{{ spectacle.get_chosen_commands_total_url }}';
 
   });
 
 var s10 = 10000; // 10s
 var blah_refresh = setInterval(function (){ easy_mobile_blah(); }, s10);
+var easy_active_commands_refresh = setInterval(function (){ easy_active_commands(); }, s10);
 
 </script>
 
