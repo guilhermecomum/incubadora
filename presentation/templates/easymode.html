@@ -9,23 +9,28 @@
   $(document).ready(function() {
 
     $('.command').click(function() {
-        if ($(this).hasClass('ativo')) {
+        if ($(this).hasClass('inativo')) {
             var cid = $(this).attr('id').split('-')[1];
             $("#id_command").val(cid);
             var url = $('#easy-mode-form').attr('action');
             $.post( url, $("#easy-mode-form").serialize() );
+            $('#command-'+cid).removeClass("inativo");
+            $('#command-'+cid).addClass("ativo");
+            $('.command').each(function() {
+                if (! $(this).hasClass('ativo')) {
+                    $(this).addClass("blocked");
+                }
+            })
         }
     });
 
-    $.m_get_chosen_commands_url = '{{ spectacle.get_chosen_commands_url }}';
     $.m_get_mobile_interaction_url = '{{ spectacle.get_mobile_interaction_url }}';
     $.m_get_chosen_commands_total_url = '{{ spectacle.get_chosen_commands_total_url }}';
 
   });
 
 var s10 = 10000; // 10s
-var blah_refresh = setInterval(function (){ easy_mobile_blah(); }, s10);
-var easy_active_commands_refresh = setInterval(function (){ easy_active_commands(); }, s10);
+var easy_mobile_commands_refresh = setInterval(function (){ easy_mobile_commands(); }, s10);
 
 </script>
 
@@ -45,8 +50,12 @@ var easy_active_commands_refresh = setInterval(function (){ easy_active_commands
       <ul class="thumbnails">
         {% for c in commands %}
         <li class="action">
-          <div id="command-{{ c.id }}" class="command {{c.slug}} inativo">
-              <ul></ul>
+          <div id="command-{{ c.id }}" class="command {{c.slug}} blocked">
+              <ul>
+                {% for i in "XXX" %}
+                    <li class="carga"></li>
+                {% endfor %}
+              </ul>
           </div>
         </li>
         {% endfor %}

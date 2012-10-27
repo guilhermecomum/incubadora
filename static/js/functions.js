@@ -137,45 +137,43 @@ get_last_hard_message = function () {
     });
 }
 
-easy_mobile_blah = function() {
-    $.get($.m_get_chosen_commands_url, function ( data ) {
-        if (!data.error) {
-            if (data.commands) {
-                if (data.commands.length > 0) {
-                    $.each(data.commands, function(i, item) {
-                        if ($('#easy-chosen-command-' + item.pk).length == 0) {
-                            $('#command-'+item.command_pk).find('ul').append('<li id="easy-chosen-command-'+ item.pk  +'" class="carga"></li>');
-                        }
-                    });
-                } else {
-                    $('#command-'+item.command_pk).find('ul').html('');
-                }
-            }
-        }
-    });
-}
-
-easy_active_commands = function() {
+easy_mobile_commands = function() {
     $.get($.m_get_mobile_interaction_url, function(data) {
         if (!data.error) {
             if (data.mobile_interaction) {
-                $('.command').addClass("ativo");
-                $('.command').removeClass("inativo");
-                $.get($.m_get_chosen_commands_total_url, function ( d ) {
-                    if (!d.error && d.commands) {
-                        if (d.commands.length > 0) {
-                            $.each(d.commands, function(i, item) {
-                                if (item.total >= 3) {
-                                    $('#command-'+item.pk).addClass("inativo");
-                                    $('#command-'+item.pk).removeClass("ativo");
-                                }
-                            });
+                if ($('.command').hasClass('ativo')) {
+                    $('.command').each(function() {
+                        if (! $(this).hasClass('ativo')) {
+                            $(this).addClass("blocked");
+                            $(this).removeClass("inativo");
                         }
+                    })
+                } else {
+                    $('.command').removeClass("blocked");
+                    $('.command').addClass("inativo");
+                }
+
+            } else {
+                $('.command').addClass("blocked");
+                $('.command').removeClass("inativo");
+                $('.command').removeClass("ativo");
+            }
+        }
+    });
+    $.get($.m_get_chosen_commands_total_url, function ( data ) {
+        if (!data.error && data.commands) {
+            if (data.commands.length > 0) {
+                $.each(data.commands, function() {
+                    if (this.total >= 3) {
+                        $('#command-'+this.pk).addClass("blocked");
+                        $('#command-'+this.pk).removeClass("ativo");
+                        $('#command-'+this.pk).removeClass("inativo");
+                    }
+                    $('#command-'+this.pk).find('ul li').remove();
+                    for (var x=1; x<= 3-this.total; x++) {
+                        $('#command-'+item.pk).find('ul').append('<li class="carga"></li>');
                     }
                 });
-            } else {
-                $('.command').addClass("inativo");
-                $('.command').removeClass("ativo");
             }
         }
     });
