@@ -193,6 +193,7 @@ def hard_add(request, s_id):
         message = simplejson.dumps( { 'error': 1 } )
         return HttpResponse(message, mimetype="application/json")
 
+@login_required
 def hard_message_add(request, s_id):
     user = request.user
     spectacle = get_object_or_404(Spectacle, pk=s_id)
