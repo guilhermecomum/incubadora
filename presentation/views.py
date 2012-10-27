@@ -25,12 +25,12 @@ from django.forms.formsets import formset_factory
 from django.db.models import Count
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from collections import Counter
 from presentation.models import Command, EasyMode, Spectacle, HardMode, \
                                 Actor, Scene, ChosenCommand, HardModeDuration,\
                                 HardModeMessage
 from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD
 from presentation.forms import EasyModeForm, HardModeForm, HardModeMessageForm
+from collections import defaultdict
 
 
 MAX_SAME_COMMAND = 3
@@ -345,7 +345,14 @@ def set_hard_chosen_commands(request, s_id):
                              'command': { 'name': '',
                                           'pk': '' } })
 
-    total_cc = len(Counter(actor['command']['pk'] for actor in actors))
+    # FIXME Counter is only in pyhton2.7
+    # from django.db.models import Counter
+    # total_cc = len(Counter(actor['command']['pk'] for actor in actors))
+
+    total = defaultdict(int)
+    for actor in actors:
+        total[actor['command']['pk']] += 1
+    total_cc = len(total)
 
     if total_cc == 3:
         spectacle.hard_happiness_meter += 15
