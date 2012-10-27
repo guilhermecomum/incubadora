@@ -1,0 +1,47 @@
+/*
+  Copyright (C) 2012 Marcelo Jorge Vieira <metal@alucinados.com>
+  Copyright (C) 2012 Guilherme Guerra <guerrinha@comum.org>
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License along
+  with this program; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
+
+
+@import "compass/css3";
+
+body {
+
+}
+
+.happiness {
+    text-align: center;
+}
+
+.meter-border {
+    height: 103px;
+    border: 2px solid black;
+    width: 25px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.meter {
+    width: 25px;
+    height: 2px;
+    overflow: hidden;
+    bottom: 0;
+    position: absolute;
+    @include background-image(linear-gradient( #ff5416, #ffbc21));
+}

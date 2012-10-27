@@ -51,12 +51,32 @@ var get_last_scene_duration_refresh = setInterval(function (){ get_last_scene_du
 </div>
 
 <div class="column grid_6">
-    <ul id="command-list">
-    </ul>
+    <table class="table" id="command-list">
+      <thead>
+        <th>Comando</th>
+        <th>#</th>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
 </div>
 
 <div class="column grid_4">
-    <span>Happiness Meter:</span> <span id="happiness-meter">{% if spectacle.mode == '1' %} {{ spectacle.easy_happiness_meter }}  {% else %} {{ spectacle.hard_happiness_meter }} {% endif %}</span>
+  <div class="happiness">
+    <h4>Happiness Meter</h4>
+    100
+    <div class="meter-border">
+      <div id="happiness-meter" class="meter" style="height:
+                                                     {% if spectacle.mode == '1' %}
+                                                     {{ spectacle.easy_happiness_meter }}%;
+                                                     {% else %}
+                                                     {{ spectacle.hard_happiness_meter }}%;
+                                                     {% endif %}">
+      </div>
+    </div>
+    0
+  </div>
+</div>
 </div>
 
 {% if spectacle.mode == '2' %}

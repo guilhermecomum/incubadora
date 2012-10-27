@@ -2,7 +2,11 @@
 {% load i18n %}
 
 {% block head %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css">
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/controller.css">
 <script src="{{ STATIC_URL }}js/functions.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 
@@ -92,67 +96,108 @@ $(document).ready(function() {
 
 
 {% block content %}
-
-    <div id="mode">
-        Modo: {% if spectacle.mode == '1' %} EASY {% elif spectacle.mode == '2' %} HARD {% endif %}
+<div class="container">
+  <div class="page-header">
+    <h1>Painel de controle</h1>
+  </div>
+  <div class="row">
+    <div class="span3">
+      <div id="mode">
+        <h2>Modo</h2>
+        {% if spectacle.mode == '1' %}
+        <button class="btn">HARD</button> <button class="btn btn-info">EASY</button>
+        {% elif spectacle.mode == '2' %}
+        <button class="btn btn-info">HARD</button>  <button class="btn">EASY</button>
+        {% endif %}
+      </div>
     </div>
-
-
-    {% if spectacle.mode == '1' %}
-    <div id="mobile_interaction">
-        Interação por celular: <a href="{{ spectacle.set_mobile_interaction_url }}" class="mobile-interaction"><span>{{ spectacle.mobile_interaction }}</span></a>
+    <div class="span3">
+      <h2>Interação</h2>
+      <div id="mobile_interaction">
+      {% if spectacle.mode == '1' %}
+        <a href="{{ spectacle.set_mobile_interaction_url }}" class="btn btn-danger mobile-interaction"><span>{{ spectacle.mobile_interaction }}</span></a>
+      {% else %}
+        <span>{{ spectacle.mobile_interaction }}</span>
+      {% endif %}
+      </div>
     </div>
-    {% else %}
-    <div id="mobile_interaction">
-        Interação por celular: <span>{{ spectacle.mobile_interaction }}</span>
-    </div>
-    {% endif %}
+    <div class="span4">
+      <div>
+        <h2>Comandos</h2>
 
-    <div>
-        Lista de comandos:
-        <ul id="command-list"></ul>
-    </div>
+        <table class="table" id="command-list">
+          <thead>
+            <th>Comando</th>
+            <th>#</th>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
 
-    <div>
-        Comandos Escolhidos:
+      <div>
+        <h3>Escolhidos</h3>
         <ul id="chosen-commands-list"></ul>
+      </div>
     </div>
-
-    <div>
-        <span>Happiness Meter:</span> <span id="happiness-meter">{% if spectacle.mode == '1' %} {{ spectacle.easy_happiness_meter }}  {% else %} {{ spectacle.hard_happiness_meter }} {% endif %}</span>
+    <div class="span2">
+      <div class="happiness">
+        <h4>Happiness Meter</h4>
+        100
+        <div class="meter-border">
+          <div id="happiness-meter" class="meter" style="height:
+                                                         {% if spectacle.mode == '1' %}
+                                                         {{ spectacle.easy_happiness_meter }}%;
+                                                         {% else %}
+                                                         {{ spectacle.hard_happiness_meter }}%;
+                                                         {% endif %}">
+          </div>
+        </div>
+        0
+      </div>
     </div>
-
-    <div>
-        <button id="decrease-happiness">degradação do medidor de felicidade</button>
+  </div>
+  <div class="row">
+    <div class="span4">
+      <button id="decrease-happiness" class="btn btn-large btn-info">degradação do medidor de felicidade</button>
     </div>
-
-    <div>
-        <button id="reset-spectacle">Reiniciar o Espetáculo</button>
+    <div class="span4">
+      <button id="reset-spectacle" class="btn btn-large btn-danger">Reiniciar o Espetáculo</button>
     </div>
 
     {% if spectacle.mode == '2' %}
     <div>
-        <select id="hard_duration">
+      <div id="hard-countdown">00:00</div>
+      <select id="hard_duration">
         <option value="">------</option>
         {% for d in hard_duration %}
-            <option value="{{ d.duration|date:"H:i:s" }}">{{ d.duration|date:"H:i:s" }}</option>
+        <option value="{{ d.duration|date:"H:i:s" }}">{{ d.duration|date:"H:i:s" }}</option>
         {% endfor %}
-        </select>
+      </select>
 
-        <form id="form-scene-duration">{% csrf_token %}
-            <input type="hidden" id="duration" name="duration">
-        </form>
-        <div id="hard-countdown"></div>
+      <form id="form-scene-duration">{% csrf_token %}
+        <input type="hidden" id="duration" name="duration">
+      </form>
     </div>
     {% endif %}
 
     {% if spectacle.mode == '1' %}
     <div>
-        <button id="change-spectacle-mode">Mudar do Easy para o Hard</button>
+      <button id="change-spectacle-mode" class="btn btn-large btn-danger">Mudar do Easy para o Hard</button>
     </div>
     {% endif %}
-
-
-    sequencia de slides ( fotos/videos )
-
+  </div>
+  <div class="row">
+    <h2>Sequência de slides <small>( fotos/videos )</small></h2>
+    <div class="stage">
+      <ul class="thumbnails">
+        <li class="span2">
+          <div class="thumbnail">
+            <img src="http://placehold.it/350x150">
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
 {% endblock %}
