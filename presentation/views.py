@@ -433,6 +433,7 @@ def reset_spectacle(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)
     spectacle.easy_happiness_meter = 50
     spectacle.hard_happiness_meter = 50
+    spectacle.mobile_interaction = False
     spectacle.scene_set.all().delete()
     spectacle.save()
     message = simplejson.dumps( { 'error': 0 })

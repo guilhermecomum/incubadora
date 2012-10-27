@@ -125,6 +125,7 @@ reset_spectacle = function () {
             get_commands();
             get_chosen_commands();
             get_happiness_meter();
+            get_mobile_interaction();
         }
     });
 }
