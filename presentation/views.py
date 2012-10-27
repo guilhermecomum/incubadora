@@ -452,3 +452,57 @@ def get_last_hard_message(request, s_id):
     message = simplejson.dumps( { 'error': 0,
                                   'msg': {'pk': msg.pk, 'text': msg.message} })
     return HttpResponse(message, mimetype="application/json")
+
+def get_last_scene_duration(request, s_id):
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    try:
+        scene = spectacle.scene_set.get(status=True)
+        message = simplejson.dumps({'error': 0,
+                                    'scene': {'pk':scene.pk,
+                                              'duration':scene.duration,
+                                              'show':scene.show_countdown}})
+    except Scene.DoesNotExist:
+        message = simplejson.dumps( { 'error': 1 } )
+
+    return HttpResponse(message, mimetype="application/json")
+
+@staff_member_required
+def set_last_scene_duration(request, s_id):
+
+    duration = request.POST['duration']
+    if duration:
+        spectacle = get_object_or_404(Spectacle, pk=s_id)
+        if spectacle.mobile_interaction:
+            try:
+                scene = Scene.objects.get(spectacle=spectacle,
+                                          status=True,
+                                          mode=spectacle.mode)
+                scene.duration = int(duration)
+                scene.show_countdown = True
+                scene.save()
+            except Scene.DoesNotExist:
+                message = simplejson.dumps( { 'error': 1 } )
+                return HttpResponse(message, mimetype="application/json")
+    else:
+        message = simplejson.dumps( { 'error': 1 } )
+        return HttpResponse(message, mimetype="application/json")
+
+    message = simplejson.dumps( { 'error': 0 })
+    return HttpResponse(message, mimetype="application/json")
+
+@staff_member_required
+def set_countdown_displayed(request, s_id):
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    if spectacle.mobile_interaction:
+        try:
+            scene = Scene.objects.get(spectacle=spectacle,
+                                      status=True,
+                                      mode=spectacle.mode)
+            scene.show_countdown = False
+            scene.save()
+        except Scene.DoesNotExist:
+            message = simplejson.dumps( { 'error': 1 } )
+            return HttpResponse(message, mimetype="application/json")
+
+    message = simplejson.dumps( { 'error': 0 })
+    return HttpResponse(message, mimetype="application/json")

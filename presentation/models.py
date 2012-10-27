@@ -154,6 +154,18 @@ class Spectacle(models.Model):
     def get_chosen_commands_total_url(self):
         return ('get-chosen-commands-total', [str(self.pk)])
 
+    @models.permalink
+    def get_last_scene_duration_url(self):
+        return ('get-last-scene-duration', [str(self.pk)])
+
+    @models.permalink
+    def set_last_scene_duration_url(self):
+        return ('set-last-scene-duration', [str(self.pk)])
+
+    @models.permalink
+    def set_countdown_displayed_url(self):
+        return ('set-countdown-displayed', [str(self.pk)])
+
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
@@ -169,6 +181,13 @@ class Actor(models.Model):
 class Scene(models.Model):
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
     status = models.BooleanField(verbose_name=_('Status'), default=True)
+    show_countdown = models.BooleanField(
+        verbose_name=_('Show Countdown'),
+        default=False)
+    duration = models.IntegerField(
+        verbose_name=_('Duration'),
+        blank=True,
+        null=True)
     mode = models.CharField(
         verbose_name=_('Mode'),
         max_length=1,

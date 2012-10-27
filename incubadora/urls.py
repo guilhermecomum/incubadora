@@ -52,6 +52,10 @@ urlpatterns += patterns('presentation.views',
 
     # Frontal Projection
 
+    url(r'^frontal-projection/(?P<s_id>(.*))/set/countdown-displayed/$',
+        'set_countdown_displayed',
+        name='set-countdown-displayed'),
+
     url(r'^frontal-projection/(?P<s_id>(.*))/get/lastmessage/$',
         'get_last_hard_message',
         name='get-last-hard-message'),
@@ -89,6 +93,15 @@ urlpatterns += patterns('presentation.views',
         name='decrease-happiness'),
 
      # Controller
+
+     url(r'^controller/(?P<s_id>(.*))/set/last-scene-duration/$',
+         'set_last_scene_duration',
+         name='set-last-scene-duration'),
+
+     url(r'^controller/(?P<s_id>(.*))/get/last-scene-duration/$',
+         'get_last_scene_duration',
+         name='get-last-scene-duration'),
+
      url(r'^controller/(?P<s_id>(.*))/set/mobile-interaction/$',
          'set_mobile_interaction',
          name='set-mobile-interaction'),

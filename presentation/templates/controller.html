@@ -63,7 +63,9 @@ $(document).ready(function() {
             });
             $('#hard_duration').val('').attr('selected', true);
 
-            set_mobile_interaction();
+            $.m_set_last_scene_duration_url = '{{ spectacle.set_last_scene_duration_url }}';
+
+            set_mobile_interaction(duration);
         }
     });
 
@@ -126,6 +128,10 @@ $(document).ready(function() {
             <option value="{{ d.duration|date:"H:i:s" }}">{{ d.duration|date:"H:i:s" }}</option>
         {% endfor %}
         </select>
+
+        <form id="form-scene-duration">{% csrf_token %}
+            <input type="hidden" id="duration" name="duration">
+        </form>
         <div id="hard-countdown"></div>
     </div>
     {% endif %}

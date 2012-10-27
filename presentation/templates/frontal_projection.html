@@ -24,9 +24,18 @@ var mobile_interaction_refresh = setInterval(function (){ get_mobile_interaction
 </script>
 
 {% if spectacle.mode == '2' %}
+<script src="{{ STATIC_URL }}js/jquery-countdown/jquery.countdown.min.js" type="text/javascript"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+
+    $.m_set_countdown_displayed_url = '{{ spectacle.set_countdown_displayed_url }}';
+    $.m_get_last_scene_duration_url = '{{ spectacle.get_last_scene_duration_url }}';
+
+});
 
 var last_hard_message_refresh = setInterval(function (){ get_last_hard_message(); }, s10);
+var get_last_scene_duration_refresh = setInterval(function (){ get_last_scene_duration(); }, s10);
+
 
 </script>
 {% endif %}
@@ -54,5 +63,8 @@ var last_hard_message_refresh = setInterval(function (){ get_last_hard_message()
 <div id="box-message">
     Mensagem: <p></p>
 </div>
+
+<div id="hard-countdown">00:00:00</div>
+
 {% endif %}
 {% endblock %}

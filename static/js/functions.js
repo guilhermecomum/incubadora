@@ -26,11 +26,12 @@ get_happiness_meter = function() {
     });
 }
 
-set_mobile_interaction = function() {
+set_mobile_interaction = function(duration) {
     $.get($.m_set_mobile_interaction_url, function(data) {
         // FIXME
         if (!data.error) {
             $('#mobile_interaction').find('span').text(data.mobile_interaction.toString());
+            set_last_scene_duration(duration);
         }
     });
 }
@@ -42,6 +43,32 @@ get_mobile_interaction = function() {
             $('#mobile_interaction').find('span').text(data.mobile_interaction.toString());
         }
     });
+}
+
+get_last_scene_duration = function () {
+    $.get($.m_get_last_scene_duration_url, function ( data ) {
+        if (!data.error) {
+            if (data.scene.duration && data.scene.show) {
+
+                $.get($.m_set_countdown_displayed_url, function ( d ) {
+                    if (!d.error) {
+                        $('#hard-countdown').countdown('destroy');
+                        $('#hard-countdown').countdown({
+                            until: data.scene.duration,
+                            format: 'MS',
+                            compact: true,
+                        });
+                    }
+                });
+
+            }
+        }
+    });
+}
+
+set_last_scene_duration = function (duration) {
+    $('#duration').val(duration);
+    $.post($.m_set_last_scene_duration_url, $("#form-scene-duration").serialize() );
 }
 
 get_commands = function() {
