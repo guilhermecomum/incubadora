@@ -221,8 +221,12 @@ def hard_message_add(request, s_id):
 def frontal_projection(request, s_id):
 
     spectacle = get_object_or_404(Spectacle, pk=s_id)
+    if spectacle.mode == SPECTACLE_MODE_EASY:
+        commands = spectacle.easy_commands.all()
+    else:
+        commands = spectacle.hard_commands.all()
 
-    c = { 'spectacle':spectacle }
+    c = { 'spectacle':spectacle, 'commands':commands }
 
     return render(request, "frontal_projection.html", c)
 
@@ -469,7 +473,14 @@ def get_last_scene_duration(request, s_id):
                                               'duration':scene.duration,
                                               'show':scene.show_countdown}})
     except Scene.DoesNotExist:
-        message = simplejson.dumps( { 'error': 1 } )
+        try:
+            scene = spectacle.scene_set.latest('date_created')
+            message = simplejson.dumps({'error': 0,
+                                        'scene': {'pk':scene.pk,
+                                                  'duration':scene.duration,
+                                                  'show':scene.show_countdown}})
+        except Scene.DoesNotExist:
+            message = simplejson.dumps( { 'error': 1 } )
 
     return HttpResponse(message, mimetype="application/json")
 

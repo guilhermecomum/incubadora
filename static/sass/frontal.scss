@@ -1,0 +1,153 @@
+/*
+  Copyright (C) 2012 Marcelo Jorge Vieira <metal@alucinados.com>
+  Copyright (C) 2012 Guilherme Guerra <guerrinha@comum.org>
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License along
+  with this program; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
+
+@import "compass/reset";
+@import "compass/css3";
+
+body {
+    background: #000;
+    margin-top: 30px;
+    color: #000;
+    font-family: sans;
+    text-transform: uppercase;
+}
+
+.container {
+   width: 1024px;
+   height: 768px;
+   margin: 0 auto;
+}
+
+.stage {
+    background: url(../images/frontal/bg.png) no-repeat;
+    width: 1024px;
+    height: 768px;
+    padding-top: 10px;
+}
+
+.header {
+    width: 800px;
+    height: 50px;
+    margin: 0 auto;
+    display: block;
+    padding-top: 20px;
+}
+
+#mobile_interaction {
+    float: left;
+    width: 400px;
+}
+
+.msg {
+    width: 400px;
+    float: right;
+}
+
+.widgets {
+    display: block;
+    height: 500px;
+    margin: 75px auto 0;
+    width: 1024px;
+}
+
+#hard-countdown {
+    visibility: hidden;
+}
+
+.commands, .hard-countdown {
+    float: left;
+    text-align: center;
+    width: 72px;
+    padding-left: 8px;
+}
+
+li {
+    list-style: none;
+}
+
+.happiness {
+    text-align: center;
+    float: right;
+    width: 70px;
+}
+
+.meter-border {
+    height: 103px;
+    border: 2px solid black;
+    width: 25px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.meter {
+    width: 25px;
+    height: 2px;
+    overflow: hidden;
+    bottom: 0;
+    position: absolute;
+    @include background-image(linear-gradient( #ff5416, #ffbc21));
+}
+
+.command div {
+    background: url(../images/frontal/icones.png) no-repeat;
+    overflow: hidden;
+
+}
+
+.command div.confraternizar {
+    background-position: 0 0;
+    width: 65px;
+    height: 65px
+}
+
+.command div.alimentar {
+    background-position: 0px -64px;
+    width: 65px;
+    height: 65px
+}
+
+.command div.arrepender {
+    background-position: 0px -126px;
+    width: 65px;
+    height: 65px
+}
+
+.command div.desculpar {
+    background-position: 0px -190px;
+    width: 65px;
+    height: 65px
+}
+
+.command div.envergonhar {
+    background-position: 0px -254px;
+    width: 67px;
+    height: 65px
+}
+
+.command div.relaxar {
+    background-position: 0px -317px;
+    width: 65px;
+    height: 65px
+}
+
+.command span {
+ width: 60px;
+ display: block;
+}

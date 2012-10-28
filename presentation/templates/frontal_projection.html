@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block head %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/frontal.css">
 <script src="{{ STATIC_URL }}js/functions.js" type="text/javascript"></script>
 <script type="text/javascript">
 
@@ -9,27 +10,27 @@ $(document).ready(function() {
 
     $.m_get_happiness_meter_url = '{{ spectacle.get_happiness_meter_url }}';
     $.m_get_mobile_interaction_url = '{{ spectacle.get_mobile_interaction_url }}';
-    $.m_get_commands_url = '{{ spectacle.get_commands_url }}';
     $.m_get_last_hard_message_url = '{{ spectacle.get_last_hard_message_url }}';
-
-    get_commands();
 
 });
 
 var s10 = 10000; // 10s
 var happiness_meter_refresh = setInterval(function(){ get_happiness_meter(); }, s10);
-var commands_refresh = setInterval(function (){ get_commands();}, s10);
 var mobile_interaction_refresh = setInterval(function (){ get_mobile_interaction(); }, s10);
 
 </script>
 
 {% if spectacle.mode == '2' %}
 <script src="{{ STATIC_URL }}js/jquery-countdown/jquery.countdown.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/jquery.knob.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 
     $.m_set_countdown_displayed_url = '{{ spectacle.set_countdown_displayed_url }}';
     $.m_get_last_scene_duration_url = '{{ spectacle.get_last_scene_duration_url }}';
+
+    $(".dial").knob();
+    $('.dial').val(0).trigger('change');
 
 });
 
@@ -43,48 +44,50 @@ var get_last_scene_duration_refresh = setInterval(function (){ get_last_scene_du
 {% endblock %}
 
 {% block content %}
-
-<div class="column grid_12">
-    <div id="mobile_interaction">
-        Interação por celular: <span>{{ spectacle.mobile_interaction }}</span>
-    </div>
-</div>
-
-<div class="column grid_6">
-    <table class="table" id="command-list">
-      <thead>
-        <th>Comando</th>
-        <th>#</th>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-</div>
-
-<div class="column grid_4">
-  <div class="happiness">
-    <h4>Happiness Meter</h4>
-    100
-    <div class="meter-border">
-      <div id="happiness-meter" class="meter" style="height:
-                                                     {% if spectacle.mode == '1' %}
-                                                     {{ spectacle.easy_happiness_meter }}%;
-                                                     {% else %}
-                                                     {{ spectacle.hard_happiness_meter }}%;
-                                                     {% endif %}">
+<div class="container">
+  <div class="stage">
+    <div class="header">
+      <div id="mobile_interaction">
+        <p>Interação por celular: <span>{{ spectacle.mobile_interaction }}</span></p>
+      </div>
+      <div id="box-message" class="msg">
+        <marquee><p></p></marquee>
       </div>
     </div>
-    0
-  </div>
+    <div class="widgets">
+     {% if spectacle.mode == '2' %}
+        <div class="hard-countdown">
+            <div id="hard-countdown">00:00:00</div>
+            <input type="text" value="0" data-width="50" data-displayInput="false" class="dial">
+        </div>
+     {% else %}
+      <div class="commands">
+        <div>
+          <ul id="command-list">
+            {% for c in commands %}
+            <li id="command-{{ c.id }}" class="command">
+                <div class="{{ c.slug }}"></div>
+                <!-- <span id="command-count-{{ c.id }}" class="score"> . . . . . . . . . . . . . . . . </span> -->
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+     {% endif %}
+      <div class="happiness">
+        100
+        <div class="meter-border">
+          <div id="happiness-meter" class="meter" style="height:
+                                                         {% if spectacle.mode == '1' %}
+                                                         {{ spectacle.easy_happiness_meter }}%;
+                                                         {% else %}
+                                                         {{ spectacle.hard_happiness_meter }}%;
+                                                         {% endif %}">
+          </div>
+        </div>
+        0
+      </div>
+    </div>
 </div>
 </div>
-
-{% if spectacle.mode == '2' %}
-<div id="box-message">
-    Mensagem: <p></p>
-</div>
-
-<div id="hard-countdown">00:00:00</div>
-
-{% endif %}
 {% endblock %}

@@ -58,9 +58,19 @@ get_last_scene_duration = function () {
                             format: 'MS',
                             compact: true,
                         });
+                        $('.dial').val(0).trigger('change');
                     }
                 });
 
+            }
+            var countdown = $('#hard-countdown span').html();
+            if (countdown) {
+                var d = $('#hard-countdown span').html().split(':');
+                if (d.length > 0) {
+                    var duration = parseInt(parseInt(d[0])*60 + parseInt(d[1]));
+                    var x = 100 - ((duration * 100) / data.scene.duration);
+                    $('.dial').val(x).trigger('change');
+                }
             }
         }
     });
