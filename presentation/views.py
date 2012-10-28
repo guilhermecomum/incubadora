@@ -506,3 +506,27 @@ def set_countdown_displayed(request, s_id):
 
     message = simplejson.dumps( { 'error': 0 })
     return HttpResponse(message, mimetype="application/json")
+
+@staff_member_required
+def change_spectacle_mode(request, s_id):
+
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+
+    if spectacle.mode == SPECTACLE_MODE_EASY:
+        spectacle.mode = SPECTACLE_MODE_HARD
+        spectacle.mobile_interaction = False
+        spectacle.save()
+        for scene in spectacle.scene_set.filter(status=True):
+            scene.status = False
+            scene.save()
+
+        message = simplejson.dumps( { 'error': 0 })
+    else:
+        message = simplejson.dumps( { 'error': 1 })
+
+    return HttpResponse(message, mimetype="application/json")
+
+def get_spectable_mode(request, s_id):
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    message = simplejson.dumps( { 'error': 0, 'mode':spectacle.mode })
+    return HttpResponse(message, mimetype="application/json")

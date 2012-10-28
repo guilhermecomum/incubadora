@@ -166,6 +166,14 @@ class Spectacle(models.Model):
     def set_countdown_displayed_url(self):
         return ('set-countdown-displayed', [str(self.pk)])
 
+    @models.permalink
+    def change_spectacle_mode_url(self):
+        return ('change-spectacle-mode', [str(self.pk)])
+
+    @models.permalink
+    def get_spectable_mode_url(self):
+        return ('get-spectable-mode', [str(self.pk)])
+
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))

@@ -206,3 +206,19 @@ easy_mobile_commands = function() {
         }
     });
 }
+
+change_spectacle_mode = function (){
+    $.get($.m_change_spectacle_mode_url, function ( data ) {
+        if (!data.error) {
+            window.location.replace($.m_get_controller_url);
+         }
+    });
+}
+
+get_spectable_mode = function(){
+    $.get($.m_get_spectable_mode_url, function ( data ) {
+        if (!data.error && data.mode == 2) {
+            window.location.replace($.m_get_hard_show_url);
+         }
+    });
+}

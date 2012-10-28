@@ -14,6 +14,9 @@ $(document).ready(function() {
     $.m_get_happiness_meter_url = '{{ spectacle.get_happiness_meter_url }}';
     $.m_set_hard_chosen_commands_url = '{{ spectacle.set_hard_chosen_commands_url }}';
     $.m_reset_spectacle_url = '{{ spectacle.reset_spectacle_url }}';
+    $.m_change_spectacle_mode_url = '{{ spectacle.change_spectacle_mode_url }}';
+    $.m_get_controller_url = '{{ spectacle.get_controller_url }}';
+
 
     $('.mobile-interaction').click(function() {
         set_mobile_interaction();
@@ -31,6 +34,13 @@ $(document).ready(function() {
     $('#reset-spectacle').click(function() {
         if (confirm("Do you really want to delete all spectacle data?")) {
             reset_spectacle();
+        }
+        return false;
+    });
+
+    $('#change-spectacle-mode').click(function() {
+        if (confirm("Do you really want to change spectacle mode from EASY to HARD?")) {
+            change_spectacle_mode();
         }
         return false;
     });
@@ -135,6 +145,13 @@ $(document).ready(function() {
         <div id="hard-countdown"></div>
     </div>
     {% endif %}
+
+    {% if spectacle.mode == '1' %}
+    <div>
+        <button id="change-spectacle-mode">Mudar do Easy para o Hard</button>
+    </div>
+    {% endif %}
+
 
     sequencia de slides ( fotos/videos )
 

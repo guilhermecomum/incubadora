@@ -36,6 +36,12 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('presentation.views',
 
+    # Spectacle
+
+    url(r'^spectacle/(?P<s_id>(.*))/mode/$',
+        'get_spectable_mode',
+        name='get-spectable-mode'),
+
     # Hard
     url(r'^hard/spectacle/(?P<s_id>(.*))/$', 'hard_show', name='hard-show'),
 
@@ -93,6 +99,10 @@ urlpatterns += patterns('presentation.views',
         name='decrease-happiness'),
 
      # Controller
+
+     url(r'^controller/(?P<s_id>(.*))/change-spectacle-mode/$',
+         'change_spectacle_mode',
+         name='change-spectacle-mode'),
 
      url(r'^controller/(?P<s_id>(.*))/set/last-scene-duration/$',
          'set_last_scene_duration',
