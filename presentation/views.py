@@ -25,12 +25,15 @@ from django.forms.formsets import formset_factory
 from django.db.models import Count
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.dispatch import receiver
 from presentation.models import Command, EasyMode, Spectacle, HardMode, \
                                 Actor, Scene, ChosenCommand, HardModeDuration,\
-                                HardModeMessage
+                                HardModeMessage, LoggedUser
 from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD
 from presentation.forms import EasyModeForm, HardModeForm, HardModeMessageForm
 from collections import defaultdict
+import math
 
 
 MAX_SAME_COMMAND = 3
@@ -88,7 +91,10 @@ def easy_add(request, s_id):
             has_cc = ChosenCommand.objects.filter(spectacle = spectacle,
                                                   scene = scene).count()
 
-            if total_scene_command == 1 and not has_cc:
+            total_logged_users = LoggedUser.objects.all().count()
+            minimum = int(math.ceil(total_logged_users * 0.1))
+
+            if total_scene_command >= minimum and not has_cc:
                 cc = ChosenCommand(spectacle = spectacle,
                                    scene = scene,
                                    command = command,
@@ -436,6 +442,7 @@ def reset_spectacle(request, s_id):
     spectacle.mobile_interaction = False
     spectacle.scene_set.all().delete()
     spectacle.save()
+    LoggedUser.objects.all().delete()
     message = simplejson.dumps( { 'error': 0 })
     return HttpResponse(message, mimetype="application/json")
 
@@ -530,3 +537,20 @@ def get_spectable_mode(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)
     message = simplejson.dumps( { 'error': 0, 'mode':spectacle.mode })
     return HttpResponse(message, mimetype="application/json")
+
+@receiver(user_logged_in)
+def login_user(sender, request, user, **kwargs):
+    try:
+        u = LoggedUser.objects.get(player=user)
+    except LoggedUser.DoesNotExist:
+        u = LoggedUser(player=user)
+        u.save()
+
+@receiver(user_logged_out)
+def logout_user(sender, request, user, **kwargs):
+    if user:
+        try:
+            u = LoggedUser.objects.get(player=user)
+            u.delete()
+        except LoggedUser.DoesNotExist:
+            pass

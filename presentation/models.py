@@ -296,3 +296,13 @@ class HardModeDuration(models.Model):
 
     def __unicode__(self):
         return "%s" % (self.duration)
+
+class LoggedUser(models.Model):
+    player = models.ForeignKey(User, verbose_name=_('Player'), unique=True)
+
+    class Meta:
+        verbose_name = _('Logged User')
+        verbose_name_plural = _('Logged Users')
+
+    def __unicode__(self):
+        return "%s" % self.player
