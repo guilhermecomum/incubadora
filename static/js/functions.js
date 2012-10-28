@@ -199,7 +199,7 @@ easy_mobile_commands = function() {
                     }
                     $('#command-'+this.pk).find('ul li').remove();
                     for (var x=1; x<= 3-this.total; x++) {
-                        $('#command-'+item.pk).find('ul').append('<li class="carga"></li>');
+                        $('#command-'+this.pk).find('ul').append('<li class="carga"></li>');
                     }
                 });
             }
