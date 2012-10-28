@@ -83,7 +83,7 @@ get_commands = function() {
                     }
                 });
             } else {
-                $('#command-list').html('');
+                $('#command-list tbody tr').remove();
             }
         }
     });
