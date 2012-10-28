@@ -78,32 +78,35 @@ $(document).ready(function() {
 
 {% block content %}
 <div class="container">
-    <div class="device">
-        <div class="header"><h1>INCUBADORA</h1></div>
-        <div class="panel">
-            <form id="hard-mode-form" method="post" action="{{ spectacle.hard_add_url }}">{% csrf_token %}
-                {{ formset }}
-                <div class="players">
-                    <ul>
-                        {% for a in actors %}<li id="actor-{{ a.id }}" class="actor {{ a.slug }}">{{ a.name }}</li>{% endfor %}
-                    </ul>
-                    <div class="spkr"></div>
-                </div>
-                <div class="actions">
-                    <ul>
-                        {% for c in commands %}<li><div id="command-{{ c.id }}" class="command {{ c.slug }}"></div></li>{% endfor %}
-                    </ul>
-                </div>
-                <input type="image" id="hard-submit" src="{{ STATIC_URL }}images/hard/ok.png" height="92px" width="178px" border="0">
-            </form>
-            <form id="hard-mode-message-form" method="post" action="{{ spectacle.hard_message_add_url }}">{% csrf_token %}
-                {% for hidden in hard_mode_message_form.hidden_fields %} {{ hidden }} {% endfor %}
-                <div class="footer">
-                    <div class="textarea">{{ hard_mode_message_form.message }}</div>
-                    <input type="image" id="hard-mode-message-submit" src="{{ STATIC_URL }}images/hard/ok.png" height="92px" width="178px" border="0">
-                </div>
-            </form>
+  <div class="device">
+    <div class="header"><h1>INCUBADORA</h1></div>
+    <div class="panel">
+      <form id="hard-mode-form" method="post" action="{{ spectacle.hard_add_url }}">{% csrf_token %}
+        {{ formset }}
+        <div class="players">
+          <ul>
+            {% for a in actors %}<li id="actor-{{ a.id }}" class="actor {{ a.slug }}">{{ a.name }}</li>{% endfor %}
+          </ul>
+          <div class="spkr"></div>
         </div>
+        <div class="actions">
+          <ul>
+            {% for c in commands %}<li><div id="command-{{ c.id }}" class="command {{ c.slug }}"></div></li>{% endfor %}
+          </ul>
+          <input type="image" id="hard-submit" src="{{ STATIC_URL }}images/hard/menor.png" height="78px" width="150px" border="0">
+        </div>
+
+      </form>
     </div>
+    <div class="footer">
+      <form id="hard-mode-message-form" method="post" action="{{ spectacle.hard_message_add_url }}">{% csrf_token %}
+        {% for hidden in hard_mode_message_form.hidden_fields %} {{ hidden }} {% endfor %}
+
+        <div class="textarea">{{ hard_mode_message_form.message }}</div>
+        <input type="image" id="hard-mode-message-submit" src="{{ STATIC_URL }}images/hard/ok.png" height="92px" width="178px" border="0">
+    </div>
+    </form>
+
+  </div>
 </div>
 {% endblock %}

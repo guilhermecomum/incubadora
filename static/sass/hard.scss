@@ -107,67 +107,73 @@ body {
 }
 
 .actions {
-    margin-left: 250px;
+    margin-left: 300px;
+}
+
+.actions input {
+    margin-left: 46px;
 }
 
 .actions .selected-p1 {
     background: url(../images/hard/j1.png) no-repeat;
-    width: 54px;
-    height: 54px;
-    margin-top: 20px;
+    width: 40px;
+    height: 40px;
+    margin-top: 13px;
     float: right;
 }
 
 .actions .selected-p2 {
     background: url(../images/hard/j2.png) no-repeat;
-    width: 55px;
-    height: 55px;
-    margin-top: 19px;
+    width: 40px;
+    height: 40px;
+    margin-top: 11px;
     float: right;
 }
 
 .actions .selected-p3 {
     background: url(../images/hard/j3.png) no-repeat;
-    width: 55px;
-    height: 55px;
+    width: 40px;
+    height: 40px;
     margin-top: 19px;
     float: right;
 }
 
 .actions .coordenacao {
-    background-image: url(../images/hard/coor.png);
-    width: 311px;
-    height: 99px;
+    background-image: url("../images/hard/coor.png");
+    height: 76px;
+    width: 240px;
 }
 
 .actions .equilibrio {
-    background-image: url(../images/hard/equi.png);
-    width: 311px;
-    height: 89px;
+    background-image: url("../images/hard/equi.png");
+    height: 69px;
+    width: 240px;
 }
 
 .actions .ataque-e-defesa {
-    background-image: url(../images/hard/atk.png);
-    width: 311px;
-    height: 90px;
+    background-image: url("../images/hard/atk.png");
+    height: 69px;
+    width: 240px;
 }
 
 .actions .resistencia {
-    background-image: url(../images/hard/resi.png);
-    width: 311px;
-    height: 92px;
+    background-image: url("../images/hard/resi.png");
+    height: 71px;
+    width: 240px;
 }
 
 .actions .concentracao {
-    background-image: url(../images/hard/conc.png);
-    width: 311px;
-    height: 92px;
+    background-image: url("../images/hard/conc.png");
+    height: 71px;
+    width: 240px;
 }
 
 .footer {
     width: 500px;
     margin: 0 auto;
     text-align: center;
+    overflow: auto;
+    margin-top: 60px;
 }
 
 .footer .textarea {
