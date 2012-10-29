@@ -306,6 +306,57 @@ def get_chosen_commands(request, s_id):
 
     return HttpResponse(message, mimetype="application/json")
 
+def frontal_projection_chosen_commands(request, s_id):
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+
+    try:
+        scene = Scene.objects.filter(spectacle=spectacle, mode=spectacle.mode)
+        scene = scene.latest('date_created')
+    except Scene.DoesNotExist:
+        alert =  'Oops try again'
+        message = simplejson.dumps( { 'error': 1, 'msg': alert } )
+        return HttpResponse(message, mimetype="application/json")
+
+    cc = ChosenCommand.objects.filter(spectacle = spectacle,
+                                      mode = spectacle.mode,
+                                      scene = scene)
+
+
+    actors = []
+    msg = ''
+
+    if spectacle.mode == SPECTACLE_MODE_EASY:
+        mode = EasyMode.objects.filter(spectacle=spectacle, command=cc)
+
+        # FIXME
+        total = mode.count()
+        if total > 0:
+            player1 = mode[0].player
+            command_name = mode[0].command.name
+            if total == 1:
+                msg = "%s escolheu %s" % (player1, command_name)
+            elif total == 2:
+                player2 = mode[1].player
+                msg = "%s e %s escolheram %s" % (player1, player2, command_name)
+            elif total > 2:
+                player2 = mode[1].player
+                num = total - 2
+                aux = "pessoa" if num == 1 else "pessoas"
+                msg = "%s, %s e mais %d %s escolheram %s" % (player1,
+                                                             player2,
+                                                             num,
+                                                             aux,
+                                                             command_name)
+    else:
+        for chosen in cc:
+           actors.append({'actor': {'pk': chosen.actor.pk,
+                                    'name': chosen.actor.name },
+                          'command': { 'name': chosen.command.name }})
+
+
+    message = simplejson.dumps( { 'error': 0, 'msg': msg, 'actors':actors })
+    return HttpResponse(message, mimetype="application/json")
+
 @staff_member_required
 def set_hard_chosen_commands(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)

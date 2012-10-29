@@ -234,3 +234,18 @@ get_spectable_mode = function(){
          }
     });
 }
+
+frontal_projection_chosen_commands = function(){
+    $.get($.m_frontal_projection_chosen_commands_url, function ( data ) {
+        if (!data.error) {
+            if (data.msg) {
+                $('#box-message').find('p').html(data.msg);
+            } else if (data.actors) {
+                $('#chosen-commands-list li').remove();
+                $.each(data.actors, function() {
+                    $('<li>'+this.actor.name+': '+this.command.name+'</li>').appendTo('#chosen-commands-list');
+                });
+            }
+        }
+    });
+}

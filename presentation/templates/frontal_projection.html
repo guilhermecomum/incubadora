@@ -11,12 +11,14 @@ $(document).ready(function() {
     $.m_get_happiness_meter_url = '{{ spectacle.get_happiness_meter_url }}';
     $.m_get_mobile_interaction_url = '{{ spectacle.get_mobile_interaction_url }}';
     $.m_get_last_hard_message_url = '{{ spectacle.get_last_hard_message_url }}';
+    $.m_frontal_projection_chosen_commands_url = '{{ spectacle.frontal_projection_chosen_commands_url }}';
 
 });
 
 var s10 = 10000; // 10s
 var happiness_meter_refresh = setInterval(function(){ get_happiness_meter(); }, s10);
 var mobile_interaction_refresh = setInterval(function (){ get_mobile_interaction(); }, s10);
+var frontal_projection_chosen_commands_refresh = setInterval(function (){ frontal_projection_chosen_commands(); }, s10);
 
 </script>
 
@@ -47,9 +49,15 @@ var get_last_scene_duration_refresh = setInterval(function (){ get_last_scene_du
 <div class="container">
   <div class="stage">
     <div class="header">
+      {% if spectacle.mode == '1' %}
       <div id="mobile_interaction">
         <p>Interação por celular: <span>{{ spectacle.mobile_interaction }}</span></p>
       </div>
+      {% else %}
+      <div id="chosen-commands">
+          <ul id="chosen-commands-list"></ul>
+      </div>
+      {% endif %}
       <div id="box-message" class="msg">
         <marquee><p></p></marquee>
       </div>

@@ -174,6 +174,10 @@ class Spectacle(models.Model):
     def get_spectable_mode_url(self):
         return ('get-spectable-mode', [str(self.pk)])
 
+    @models.permalink
+    def frontal_projection_chosen_commands_url(self):
+        return ('frontal-projection-chosen-commands', [str(self.pk)])
+
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
