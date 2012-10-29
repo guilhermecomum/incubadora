@@ -113,7 +113,7 @@ $(document).ready(function() {
       {% if spectacle.mode == '1' %}
         <a href="{{ spectacle.set_mobile_interaction_url }}" class="btn btn-danger mobile-interaction"><span>{{ spectacle.mobile_interaction }}</span></a>
       {% else %}
-        <span>{{ spectacle.mobile_interaction }}</span>
+        <span class="label label-important">{{ spectacle.mobile_interaction }}</span>
       {% endif %}
       </div>
     </div>
