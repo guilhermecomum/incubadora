@@ -44,7 +44,7 @@ body {
     border: 0;
     width: 420px;
     font-size: 15pt;
-    margin-top: 203px;
+    margin-top: 206px;
 }
 
 .mail {
@@ -56,13 +56,20 @@ body {
     text-align: center;
 }
 
-.mail input {
+.mail input[type='text'] {
+    width: 420px;
+    font-size: 15pt;
+    margin-top: 93px;
     background-color: #000;
     color: #FFF;
     border: 0;
-    width: 420px;
-    font-size: 15pt;
-    margin-top: 144px;
+}
+
+.check  {
+    margin-left: 22px;
+    margin-top: 25px;
+    flaot: left;
+    display: block;
 }
 
 .send {
