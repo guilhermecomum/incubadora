@@ -55,7 +55,7 @@ body {
 }
 
 .msg {
-    width: 400px;
+    width: 380px;
     float: right;
 }
 
@@ -148,10 +148,20 @@ li {
 }
 
 .command span {
- width: 60px;
- display: block;
+    width: 60px;
+    display: block;
 }
 
 #chosen-commands-list li {
-    display: inline;
+    display: block;
+    float: left;
+    font-size: 9pt;
+    width: 135px;
+}
+
+#chosen-commands-list .actor {
+    display: block;
+    margin-bottom: 3px;
+    clear: both;
+    font-weight: bold;
 }

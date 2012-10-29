@@ -243,7 +243,7 @@ frontal_projection_chosen_commands = function(){
             } else if (data.actors) {
                 $('#chosen-commands-list li').remove();
                 $.each(data.actors, function() {
-                    $('<li>'+this.actor.name+': '+this.command.name+'</li>').appendTo('#chosen-commands-list');
+                    $('<li><span class="actor">'+this.actor.name+':</span> '+'<span class="command">'+this.command.name+'</span></li>').appendTo('#chosen-commands-list');
                 });
             }
         }
