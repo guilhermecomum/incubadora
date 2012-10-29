@@ -33,6 +33,12 @@ MODE_CHOICES = (
 class Command(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100, unique=True)
+    sound = models.FileField(
+        verbose_name=_('Sound'),
+        upload_to="command-sound",
+        help_text=_('Warning: Only mp3 file!'),
+        blank=True,
+        null=True)
 
     class Meta:
         verbose_name = _('Command')

@@ -361,6 +361,11 @@ def show_chosen_commands(request, s_id):
 
         data = { 'easy': easy, 'monitor': monitor }
 
+        if cc.command.sound:
+            sound = "%s%s" % (settings.STATIC_URL, cc.command.sound.url)
+            data['sound'] = sound
+            data['pk'] = cc.pk
+
     else:
 
         cc = ChosenCommand.objects.filter(spectacle = spectacle,

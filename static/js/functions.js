@@ -235,7 +235,8 @@ get_spectable_mode = function(url){
     });
 }
 
-show_chosen_commands = function(monitor=false){
+show_chosen_commands = function(monitor){
+    var monitor = monitor;
     $.get($.m_show_chosen_commands_url, function ( data ) {
         if (!data.error) {
             $('#box-message').find('p').html('');
@@ -243,6 +244,15 @@ show_chosen_commands = function(monitor=false){
             if (monitor && data.commands.monitor) {
                 $('#chosen-commands-list').hide();
                 $('#box-message').find('p').html(data.commands.monitor);
+                // play sound
+                if ($.m_update_chosen_command != data.commands.pk) {
+                    if (data.commands.sound) {
+                        html = '<audio autoplay="autoplay"><source src="'+data.commands.sound+'" type="audio/mp3">Your browser does not support the audio element.</audio>';
+                        $('#box-message').find('p').append(html)
+                    }
+                    $.m_update_chosen_command = data.commands.pk;
+                }
+
             } else if (data.commands.easy) {
                 $('#chosen-commands-list').hide();
                 $('#box-message').find('p').html(data.commands.easy);
