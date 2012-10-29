@@ -104,11 +104,7 @@ $(document).ready(function() {
     <div class="span3">
       <div id="mode">
         <h2>Modo</h2>
-        {% if spectacle.mode == '1' %}
-        <button class="btn">HARD</button> <button class="btn btn-info">EASY</button>
-        {% elif spectacle.mode == '2' %}
-        <button class="btn btn-info">HARD</button>  <button class="btn">EASY</button>
-        {% endif %}
+         <span class="label label-info">{% if spectacle.mode == '1' %}EASY{% elif spectacle.mode == '2' %}HARD{% endif %}</span>
       </div>
     </div>
     <div class="span3">
