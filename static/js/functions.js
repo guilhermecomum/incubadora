@@ -67,8 +67,10 @@ get_last_scene_duration = function () {
 }
 
 set_last_scene_duration = function (duration) {
-    $('#duration').val(duration);
-    $.post($.m_set_last_scene_duration_url, $("#form-scene-duration").serialize() );
+    if (duration) {
+        $('#duration').val(duration);
+        $.post($.m_set_last_scene_duration_url, $("#form-scene-duration").serialize() );
+    }
 }
 
 get_commands = function() {
