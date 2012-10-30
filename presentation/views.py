@@ -492,6 +492,7 @@ def decrease_happiness(request, s_id):
 @staff_member_required
 def reset_spectacle(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle.mode = SPECTACLE_MODE_EASY
     spectacle.easy_happiness_meter = 50
     spectacle.hard_happiness_meter = 50
     spectacle.mobile_interaction = False

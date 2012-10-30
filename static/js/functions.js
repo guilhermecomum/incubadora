@@ -161,10 +161,7 @@ decrease_happiness = function() {
 reset_spectacle = function () {
     $.get($.m_reset_spectacle_url, function(data) {
         if (!data.error) {
-            get_commands();
-            get_chosen_commands();
-            get_happiness_meter();
-            get_mobile_interaction();
+            window.location.replace($.m_get_controller_url);
         }
     });
 }
