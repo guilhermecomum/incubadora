@@ -224,10 +224,13 @@ change_spectacle_mode = function (){
     });
 }
 
-get_spectable_mode = function(){
+get_spectable_mode = function(url){
     $.get($.m_get_spectable_mode_url, function ( data ) {
-        if (!data.error && data.mode == 2) {
-            window.location.replace($.m_get_hard_show_url);
+        if (!data.error && data.mode) {
+            if ($.m_spectable_mode && $.m_spectable_mode != data.mode) {
+                window.location.replace(url);
+            }
+            $.m_spectable_mode = data.mode;
          }
     });
 }
