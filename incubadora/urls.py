@@ -130,4 +130,18 @@ urlpatterns += patterns('presentation.views',
 
      url(r'^controller/(?P<s_id>(.*))/$', 'controller', name='controller'),
 
+    # Backside Projection
+
+     url(r'^backside-projection/(?P<s_id>(.*))/set/content/$',
+         'set_backside_projection_content',
+         name='set-backside-projection-content'),
+
+     url(r'^backside-projection/(?P<s_id>(.*))/get/content/$',
+         'get_backside_projection_content',
+         name='get-backside-projection-content'),
+
+     url(r'^backside-projection/(?P<s_id>(.*))/$',
+         'backside_projection_show',
+         name='backside-projection-show'),
+
 )

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head %}
+
+<script src="{{ STATIC_URL }}js/functions.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $.m_backside_projection_content_url = '{{ spectacle.get_backside_projection_content_url }}';
+    $.m_get_spectable_mode_url = '{{ spectacle.get_spectable_mode_url }}';
+    $.m_backside_projection_show_url = '{{ spectacle.get_backside_projection_show_url }}';
+
+});
+
+var s10 = 3000; // 3s
+var backside_projection_content_refresh = setInterval(function(){ get_backside_projection_content(); }, s10);
+var get_spectable_mode_refresh = setInterval(function (){ get_spectable_mode($.m_backside_projection_show_url); }, s10);
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="content"></div>
+</div>
+
+{% endblock %}

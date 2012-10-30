@@ -27,12 +27,14 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.dispatch import receiver
+from django.conf import settings
 from presentation.models import Command, EasyMode, Spectacle, HardMode, \
                                 Actor, Scene, ChosenCommand, HardModeDuration,\
-                                HardModeMessage, LoggedUser
+                                HardModeMessage, LoggedUser, SpectacleArchive
 from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD
 from presentation.forms import EasyModeForm, HardModeForm, HardModeMessageForm
 from collections import defaultdict
+from PIL import Image
 import math
 
 
@@ -431,9 +433,12 @@ def controller(request, s_id):
 
     spectacle = get_object_or_404(Spectacle, pk=s_id)
 
+    files = SpectacleArchive.objects.filter(spectacle=spectacle,
+                                            mode=spectacle.mode)
+
     duration = HardModeDuration.objects.filter(spectacle=spectacle)
 
-    c = { 'spectacle':spectacle, 'hard_duration':duration }
+    c = { 'spectacle':spectacle, 'hard_duration':duration, 'files': files }
 
     return render(request, "controller.html", c)
 
@@ -499,6 +504,9 @@ def reset_spectacle(request, s_id):
     spectacle.scene_set.all().delete()
     spectacle.save()
     LoggedUser.objects.all().delete()
+    for sa in SpectacleArchive.objects.filter(spectacle=spectacle):
+        sa.show = False
+        sa.save()
     message = simplejson.dumps( { 'error': 0 })
     return HttpResponse(message, mimetype="application/json")
 
@@ -618,3 +626,61 @@ def logout_user(sender, request, user, **kwargs):
             u.delete()
         except LoggedUser.DoesNotExist:
             pass
+
+def backside_projection_show(request, s_id):
+
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+
+    c = { 'spectacle':spectacle }
+
+    return render(request, 'backsite_projection.html', c)
+
+def get_backside_projection_content(request, s_id):
+
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+
+    try:
+        sa = SpectacleArchive.objects.get(spectacle=spectacle,
+                                               mode=spectacle.mode,
+                                               show=True)
+        url = "%s%s" % (settings.STATIC_URL, sa.archive.url)
+
+        try:
+            img = Image.open(sa.archive.path).verify()
+            archive_type = 'image'
+        except Exception:
+            archive_type = 'video'
+
+        message = simplejson.dumps( { 'error': 0,
+                                      'file': url,
+                                      'archive_type': archive_type })
+
+    except SpectacleArchive.DoesNotExist:
+        message = simplejson.dumps( { 'error': 1  })
+
+    return HttpResponse(message, mimetype="application/json")
+
+@staff_member_required
+def set_backside_projection_content(request, s_id):
+
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+
+    # FIXME
+    id_archive = request.POST['id_archive']
+    if id_archive:
+        for sa in SpectacleArchive.objects.all():
+            sa.show = False
+            sa.save()
+        try:
+            sa = SpectacleArchive.objects.get(pk = int(id_archive),
+                                              spectacle = spectacle,
+                                              mode = spectacle.mode)
+            sa.show = True
+            sa.save()
+            message = simplejson.dumps( { 'error': 0  })
+        except SpectacleArchive.DoesNotExist:
+            message = simplejson.dumps( { 'error': 1  })
+    else:
+        message = simplejson.dumps( { 'error': 1  })
+
+    return HttpResponse(message, mimetype="application/json")

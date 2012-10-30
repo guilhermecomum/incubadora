@@ -9,6 +9,7 @@
         <li>{{ s.name }} : <a href="{{ s.get_easy_show_url }}">Easy</a> |
                            <a href="{{ s.get_hard_show_url }}">Hard</a> |
                            <a href="{{ s.get_frontal_projection_show_url }}">Projeção Frontal</a> |
+                           <a href="{{ s.get_backside_projection_show_url }}">Projeção Traseira</a> |
                            <a href="{{ s.get_controller_url }}">Controle</a>
         </li>
     {% endfor %}

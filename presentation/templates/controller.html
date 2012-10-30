@@ -20,6 +20,7 @@ $(document).ready(function() {
     $.m_reset_spectacle_url = '{{ spectacle.reset_spectacle_url }}';
     $.m_change_spectacle_mode_url = '{{ spectacle.change_spectacle_mode_url }}';
     $.m_get_controller_url = '{{ spectacle.get_controller_url }}';
+    $.m_set_backside_projection_content_url = '{{ spectacle.set_backside_projection_content_url }}';
 
 
     $('.mobile-interaction').click(function() {
@@ -48,6 +49,15 @@ $(document).ready(function() {
         }
         return false;
     });
+
+    $('.thumbnail').click(function() {
+        var aid = $(this).attr('id').split('-')[1];
+        $('#id_archive').val(aid);
+        set_backside_projection_content();
+        return false;
+    });
+
+
 
 });
 
@@ -183,17 +193,24 @@ $(document).ready(function() {
     </div>
     {% endif %}
   </div>
+  {% if files %}
   <div class="row">
     <h2>Sequência de slides <small>( fotos/videos )</small></h2>
     <div class="stage">
-      <ul class="thumbnails">
-        <li class="span2">
-          <div class="thumbnail">
-            <img src="http://placehold.it/350x150">
-          </div>
-        </li>
-      </ul>
+      <form id="backside-projection-form" method="post" action="{{ spectacle.set_backside_projection_content_url }}">{% csrf_token %}
+        <input id="id_archive" name="id_archive" type="hidden" value="" />
+        <ul class="thumbnails">
+          {% for f in files  %}
+          <li class="span2">
+            <div class="thumbnail" id="thumb-{{ f.pk }}">
+              <img src="{{ STATIC_URL }}{{ f.archive.url }}" alt="{{ f.name }}" title="{{ f.name }}" />
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </form>
     </div>
   </div>
+  {% endif %}
 </div>
 {% endblock %}

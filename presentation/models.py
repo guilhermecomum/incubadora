@@ -178,6 +178,18 @@ class Spectacle(models.Model):
     def frontal_projection_chosen_commands_url(self):
         return ('frontal-projection-chosen-commands', [str(self.pk)])
 
+    @models.permalink
+    def get_backside_projection_show_url(self):
+        return ('backside-projection-show', [str(self.pk)])
+
+    @models.permalink
+    def get_backside_projection_content_url(self):
+        return ('get-backside-projection-content', [str(self.pk)])
+
+    @models.permalink
+    def set_backside_projection_content_url(self):
+        return ('set-backside-projection-content', [str(self.pk)])
+
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
@@ -310,3 +322,20 @@ class LoggedUser(models.Model):
 
     def __unicode__(self):
         return "%s" % self.player
+
+class SpectacleArchive(models.Model):
+    spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
+    name = models.CharField(verbose_name=_('Name'), max_length=100)
+    archive = models.FileField(verbose_name=_('File'), upload_to='files')
+    show = models.BooleanField(verbose_name=_('Show'), default=False)
+    mode = models.CharField(
+        verbose_name=_('Mode'),
+        max_length=1,
+        choices=MODE_CHOICES)
+
+    class Meta:
+        verbose_name = _('Spectacle File')
+        verbose_name_plural = _('Spectacle Files')
+
+    def __unicode__(self):
+        return "%s" % self.name

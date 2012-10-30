@@ -3,6 +3,7 @@
 ### Packaged software
 
  * python-django
+ * python-imaging
  * libjs-jquery
  * ruby-compass
 

@@ -19,7 +19,11 @@
 
 from django.contrib import admin
 from django.forms import CheckboxSelectMultiple
+from django.utils.translation import ugettext as _
+from django.utils.safestring import mark_safe
+from django.conf import settings
 from presentation.models import *
+from PIL import Image
 
 
 class SpectacleAdmin(admin.ModelAdmin):
@@ -41,6 +45,23 @@ class HardModeDurationAdmin(admin.ModelAdmin):
     list_filter = ['spectacle']
 
 
+class SpectacleArchiveAdmin(admin.ModelAdmin):
+    list_display = ['__str__',  'show_image']
+    list_filter = ['mode', 'spectacle']
+
+    def show_image(self, obj):
+        try:
+            img = Image.open(obj.archive.path).verify()
+            html = '<img src="%s/%s" width="100" />' % (settings.STATIC_URL,
+                                                        obj.archive.url)
+        except Exception:
+            html = ''
+
+        return mark_safe(html)
+    show_image.short_description = _('Thumbnail')
+    show_image.allow_tags = True
+
+
 admin.site.register(Spectacle, SpectacleAdmin)
 admin.site.register(Command, CommandAdmin)
 admin.site.register(Actor, ActorAdmin)
@@ -51,3 +72,4 @@ admin.site.register(ChosenCommand)
 admin.site.register(HardModeMessage)
 admin.site.register(HardModeDuration, HardModeDurationAdmin)
 admin.site.register(LoggedUser)
+admin.site.register(SpectacleArchive, SpectacleArchiveAdmin)

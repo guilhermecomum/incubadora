@@ -238,14 +238,38 @@ get_spectable_mode = function(url){
 frontal_projection_chosen_commands = function(){
     $.get($.m_frontal_projection_chosen_commands_url, function ( data ) {
         if (!data.error) {
+            $('#box-message').find('p').html();
+            $('#chosen-commands-list li').remove();
             if (data.msg) {
                 $('#box-message').find('p').html(data.msg);
             } else if (data.actors) {
-                $('#chosen-commands-list li').remove();
                 $.each(data.actors, function() {
                     $('<li><span class="actor">'+this.actor.name+':</span> '+'<span class="command">'+this.command.name+'</span></li>').appendTo('#chosen-commands-list');
                 });
             }
         }
     });
+}
+
+get_backside_projection_content = function() {
+    $.get($.m_backside_projection_content_url, function ( data ) {
+        if (!data.error && data.file) {
+            // FIXME
+            if ($.m_backside_projection_content_show && $.m_backside_projection_content_show != data.file) {
+                if (data.archive_type == 'image') {
+                    $(".content").html('<img src="'+data.file+'">');
+                } else {
+                    $(".content").html('<video autoplay="autoplay"><source src="'+data.file+'" type="video/ogg" />Your browser does not support the video tag.</video>');
+                }
+            }
+            $.m_backside_projection_content_show = data.file;
+        } else {
+            $(".content").html('');
+            $.m_backside_projection_content_show = '';
+        }
+    });
+}
+
+set_backside_projection_content = function () {
+    $.post($.m_set_backside_projection_content_url, $("#backside-projection-form").serialize() );
 }
