@@ -606,8 +606,9 @@ def login_user(sender, request, user, **kwargs):
     try:
         u = LoggedUser.objects.get(player=user)
     except LoggedUser.DoesNotExist:
-        u = LoggedUser(player=user)
-        u.save()
+        if not user.is_staff:
+            u = LoggedUser(player=user)
+            u.save()
 
 @receiver(user_logged_out)
 def logout_user(sender, request, user, **kwargs):
