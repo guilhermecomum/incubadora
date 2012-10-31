@@ -319,16 +319,21 @@ def frontal_projection_chosen_commands(request, s_id):
         message = simplejson.dumps( { 'error': 1, 'msg': alert } )
         return HttpResponse(message, mimetype="application/json")
 
-    cc = ChosenCommand.objects.filter(spectacle = spectacle,
-                                      mode = spectacle.mode,
-                                      scene = scene)
-
-
     actors = []
     msg = ''
 
     if spectacle.mode == SPECTACLE_MODE_EASY:
-        mode = EasyMode.objects.filter(spectacle=spectacle, command=cc)
+
+        try:
+            cc = ChosenCommand.objects.get(spectacle = spectacle,
+                                           mode = spectacle.mode,
+                                           scene = scene)
+        except ChosenCommand.DoesNotExist:
+            message = simplejson.dumps( { 'error': 1 })
+            return HttpResponse(message, mimetype="application/json")
+
+        mode = EasyMode.objects.filter(spectacle=spectacle,
+                                       command=cc.command)
 
         # FIXME
         total = mode.count()
@@ -350,6 +355,11 @@ def frontal_projection_chosen_commands(request, s_id):
                                                              aux,
                                                              command_name)
     else:
+
+        cc = ChosenCommand.objects.filter(spectacle = spectacle,
+                                          mode = spectacle.mode,
+                                          scene = scene)
+
         for chosen in cc:
            actors.append({'actor': {'pk': chosen.actor.pk,
                                     'name': chosen.actor.name },
