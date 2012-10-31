@@ -33,6 +33,7 @@ def user_login(request):
 
     if request.method == 'POST':
         form = UserForm(request.POST)
+        user_profile_form = UserProfileForm(request.POST)
 
         email = request.POST['username']
         first_name = request.POST['first_name']
