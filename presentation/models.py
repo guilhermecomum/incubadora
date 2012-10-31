@@ -190,6 +190,10 @@ class Spectacle(models.Model):
     def set_backside_projection_content_url(self):
         return ('set-backside-projection-content', [str(self.pk)])
 
+    @models.permalink
+    def get_monitor_show_url(self):
+        return ('monitor-show', [str(self.pk)])
+
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))

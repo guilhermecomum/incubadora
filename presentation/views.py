@@ -684,3 +684,8 @@ def set_backside_projection_content(request, s_id):
         message = simplejson.dumps( { 'error': 1  })
 
     return HttpResponse(message, mimetype="application/json")
+
+def monitor_show(request, s_id):
+    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    c = { 'spectacle': spectacle }
+    return render(request, 'monitor.html', c)

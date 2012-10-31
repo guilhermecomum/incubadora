@@ -144,4 +144,8 @@ urlpatterns += patterns('presentation.views',
          'backside_projection_show',
          name='backside-projection-show'),
 
+    # Monitor
+
+     url(r'^monitor/(?P<s_id>(.*))/$', 'monitor_show', name='monitor-show'),
+
 )
