@@ -23,7 +23,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.translation import ugettext as _
-from users.forms import UserForm
+from django.forms.widgets import HiddenInput
+from users.forms import UserForm, UserProfileForm
+from users.models import UserProfile
 from presentation.models import Spectacle
 
 
@@ -49,6 +51,21 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
+
+                    # FIXME
+                    post = request.POST.copy()
+                    post['user'] = user.id
+                    user_profile_form = UserProfileForm(post)
+                    if user_profile_form.is_valid():
+                        try:
+                            profile = user.get_profile()
+                        except:
+                            aux = UserProfile.objects
+                            profile, created = aux.get_or_create(user=user)
+                        newsletter = user_profile_form.clean()['newsletter']
+                        profile.newsletter = newsletter
+                        profile.save()
+
                     try:
                         spectacle = Spectacle.objects.get(status=True)
                         url = spectacle.get_easy_show_url()
@@ -58,8 +75,9 @@ def user_login(request):
                         return HttpResponseNotFound(msg)
     else:
         form = UserForm()
+        user_profile_form = UserProfileForm()
 
-    c = { 'form':form }
+    c = { 'form':form, 'user_profile_form':user_profile_form }
 
     return render(request, 'login.html', c)
 

@@ -20,6 +20,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
+from users.models import UserProfile
 
 
 class UserForm(forms.ModelForm):
@@ -38,3 +39,14 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ["first_name", "username"]
+
+class UserProfileForm(forms.ModelForm):
+
+    newsletter = forms.BooleanField(widget=forms.CheckboxInput(
+                                    attrs={'class':'check'}))
+
+    class Meta:
+        model = UserProfile
+        widgets = {
+            'user': forms.HiddenInput(),
+        }

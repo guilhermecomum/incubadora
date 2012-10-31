@@ -17,22 +17,13 @@
 # Boston, MA 02111-1307, USA.
 ##
 
-from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+from django.db import models
 from django.contrib.auth.models import User
-from users.forms import UserForm
-from users.models import UserProfile
+from django.utils.translation import ugettext as _
 
 
-class UserProfileInline(admin.StackedInline):
-    model = UserProfile
-
-class UserAdmin(UserAdmin):
-    list_display = ('username', 'first_name', 'last_name', 'is_staff')
-    search_fields = ('username',)
-    list_filter = ["groups", 'is_staff', 'is_superuser', 'is_active']
-    inlines = [UserProfileInline]
-
-
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    newsletter = models.BooleanField(
+        verbose_name=_('Newsletter'),
+        default=False)

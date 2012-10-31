@@ -11,6 +11,7 @@
 
 <form id="login-form" method="post" action="/login/">{% csrf_token %}
     {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
+    {% for hidden in user_profile_form.hidden_fields %} {{ hidden }} {% endfor %}
     <div class="container">
         <div class="device">
             <div class="header">
@@ -23,7 +24,7 @@
             <div class="mail">
                 {{ form.username.errors }}
                 {{ form.username }}
-                <input type="checkbox" name="a" class="check">
+                {{ user_profile_form.newsletter }}
             </div>
             <div class="send">
                 <input type="image" src="{{ STATIC_URL }}images/login/enviar.png" border="0" width="265px" height="128px">
