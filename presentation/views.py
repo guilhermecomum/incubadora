@@ -308,7 +308,7 @@ def get_chosen_commands(request, s_id):
 
     return HttpResponse(message, mimetype="application/json")
 
-def frontal_projection_chosen_commands(request, s_id):
+def show_chosen_commands(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)
 
     try:
@@ -318,9 +318,6 @@ def frontal_projection_chosen_commands(request, s_id):
         alert =  'Oops try again'
         message = simplejson.dumps( { 'error': 1, 'msg': alert } )
         return HttpResponse(message, mimetype="application/json")
-
-    actors = []
-    msg = ''
 
     if spectacle.mode == SPECTACLE_MODE_EASY:
 
@@ -333,40 +330,54 @@ def frontal_projection_chosen_commands(request, s_id):
             return HttpResponse(message, mimetype="application/json")
 
         mode = EasyMode.objects.filter(spectacle=spectacle,
-                                       command=cc.command)
+                                       command=cc.command,
+                                       scene=scene)
+        scene_total = mode.count()
 
-        # FIXME
-        total = mode.count()
-        if total > 0:
+        if scene_total > 0:
             player1 = mode[0].player.first_name
             command_name = mode[0].command.name
-            if total == 1:
-                msg = "%s escolheu %s" % (player1, command_name)
-            elif total == 2:
+            if scene_total == 1:
+                easy = "%s escolheu %s" % (player1, command_name)
+            elif scene_total == 2:
                 player2 = mode[1].player.first_name
-                msg = "%s e %s escolheram %s" % (player1, player2, command_name)
-            elif total > 2:
+                easy = "%s e %s escolheram %s" % (player1,
+                                                  player2,
+                                                  command_name)
+            elif scene_total > 2:
                 player2 = mode[1].player.first_name
-                num = total - 2
+                num = scene_total - 2
                 aux = "pessoa" if num == 1 else "pessoas"
-                msg = "%s, %s e mais %d %s escolheram %s" % (player1,
-                                                             player2,
-                                                             num,
-                                                             aux,
-                                                             command_name)
+                easy = "%s, %s e mais %d %s escolheram %s" % (player1,
+                                                              player2,
+                                                              num,
+                                                              aux,
+                                                              command_name)
+
+        command_total = EasyMode.objects.filter(spectacle=spectacle,
+                                                command=cc.command).count()
+
+        monitor = "%s %d" % (cc.command.name, command_total)
+
+        data = { 'easy': easy, 'monitor': monitor }
+
     else:
 
         cc = ChosenCommand.objects.filter(spectacle = spectacle,
                                           mode = spectacle.mode,
                                           scene = scene)
 
+        hard = []
         for chosen in cc:
-           actors.append({'actor': {'pk': chosen.actor.pk,
-                                    'name': chosen.actor.name },
-                          'command': { 'name': chosen.command.name }})
+           hard.append({'actor': {'pk': chosen.actor.pk,
+                                      'slug': chosen.actor.slug,
+                                      'name': chosen.actor.name },
+                        'command': { 'name': chosen.command.name } } )
+
+        data = { 'hard' : hard }
 
 
-    message = simplejson.dumps( { 'error': 0, 'msg': msg, 'actors':actors })
+    message = simplejson.dumps( { 'error': 0, 'commands': data })
     return HttpResponse(message, mimetype="application/json")
 
 @staff_member_required

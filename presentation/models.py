@@ -175,8 +175,8 @@ class Spectacle(models.Model):
         return ('get-spectable-mode', [str(self.pk)])
 
     @models.permalink
-    def frontal_projection_chosen_commands_url(self):
-        return ('frontal-projection-chosen-commands', [str(self.pk)])
+    def show_chosen_commands_url(self):
+        return ('show-chosen-commands', [str(self.pk)])
 
     @models.permalink
     def get_backside_projection_show_url(self):

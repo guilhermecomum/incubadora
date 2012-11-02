@@ -235,16 +235,21 @@ get_spectable_mode = function(url){
     });
 }
 
-frontal_projection_chosen_commands = function(){
-    $.get($.m_frontal_projection_chosen_commands_url, function ( data ) {
+show_chosen_commands = function(monitor=false){
+    $.get($.m_show_chosen_commands_url, function ( data ) {
         if (!data.error) {
-            $('#box-message').find('p').html();
+            $('#box-message').find('p').html('');
             $('#chosen-commands-list li').remove();
-            if (data.msg) {
-                $('#box-message').find('p').html(data.msg);
-            } else if (data.actors) {
-                $.each(data.actors, function() {
-                    $('<li><span class="actor">'+this.actor.name+':</span> '+'<span class="command">'+this.command.name+'</span></li>').appendTo('#chosen-commands-list');
+            if (monitor && data.commands.monitor) {
+                $('#chosen-commands-list').hide();
+                $('#box-message').find('p').html(data.commands.monitor);
+            } else if (data.commands.easy) {
+                $('#chosen-commands-list').hide();
+                $('#box-message').find('p').html(data.commands.easy);
+            } else if (data.commands.hard) {
+                $.each(data.commands.hard, function() {
+                    $('#box-message').hide();
+                    $('<li class="'+this.actor.slug+'"><div class="monitor"><span class="actor">'+this.actor.name+':</span> '+'<span class="command">'+this.command.name+'</span></div></li>').appendTo('#chosen-commands-list');
                 });
             }
         }

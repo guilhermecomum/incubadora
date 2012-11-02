@@ -58,10 +58,6 @@ urlpatterns += patterns('presentation.views',
 
     # Frontal Projection
 
-    url(r'^frontal-projection/(?P<s_id>(.*))/get/chosen-commands/$',
-        'frontal_projection_chosen_commands',
-        name='frontal-projection-chosen-commands'),
-
     url(r'^frontal-projection/(?P<s_id>(.*))/set/countdown-displayed/$',
         'set_countdown_displayed',
         name='set-countdown-displayed'),
@@ -79,6 +75,10 @@ urlpatterns += patterns('presentation.views',
     url(r'^commands/(?P<s_id>(.*))/$', 'get_commands', name='get-commands'),
 
     # Chosen commands
+
+    url(r'^chosen-commands/(?P<s_id>(.*))/get/$',
+        'show_chosen_commands',
+        name='show-chosen-commands'),
 
     url(r'^chosen-commands/(?P<s_id>(.*))/total/$',
         'get_chosen_commands_total',

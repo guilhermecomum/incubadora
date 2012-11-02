@@ -11,7 +11,7 @@ $(document).ready(function() {
     $.m_get_happiness_meter_url = '{{ spectacle.get_happiness_meter_url }}';
     $.m_get_mobile_interaction_url = '{{ spectacle.get_mobile_interaction_url }}';
     $.m_get_last_hard_message_url = '{{ spectacle.get_last_hard_message_url }}';
-    $.m_frontal_projection_chosen_commands_url = '{{ spectacle.frontal_projection_chosen_commands_url }}';
+    $.m_show_chosen_commands_url = '{{ spectacle.show_chosen_commands_url }}';
     $.m_get_spectable_mode_url = '{{ spectacle.get_spectable_mode_url }}';
 
     $.m_frontal_projection_show_url = '{{ spectacle.get_frontal_projection_show_url }}';
@@ -21,7 +21,7 @@ $(document).ready(function() {
 var s10 = 3000; // 3s
 var happiness_meter_refresh = setInterval(function(){ get_happiness_meter(); }, s10);
 var mobile_interaction_refresh = setInterval(function (){ get_mobile_interaction(); }, s10);
-var frontal_projection_chosen_commands_refresh = setInterval(function (){ frontal_projection_chosen_commands(); }, s10);
+var show_chosen_commands_refresh = setInterval(function (){ show_chosen_commands(false); }, s10);
 var get_spectable_mode_refresh = setInterval(function (){ get_spectable_mode($.m_frontal_projection_show_url); }, s10);
 
 </script>
