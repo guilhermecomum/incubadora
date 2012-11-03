@@ -534,7 +534,6 @@ def reset_spectacle(request, s_id):
     spectacle.mobile_interaction = False
     spectacle.scene_set.all().delete()
     spectacle.save()
-    LoggedUser.objects.all().delete()
     for sa in SpectacleArchive.objects.filter(spectacle=spectacle):
         sa.show = False
         sa.save()
