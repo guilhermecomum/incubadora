@@ -49,5 +49,6 @@ class HardModeMessageForm(forms.ModelForm):
         model = HardModeMessage
         widgets = {
             'spectacle': forms.HiddenInput(),
-            'message': forms.Textarea(),
+            'message': forms.Textarea(
+                attrs={'placeholder': u'Mande sua mensagem para a INCUBADORA'})
         }
