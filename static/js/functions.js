@@ -21,7 +21,7 @@
 get_happiness_meter = function() {
     $.get($.m_get_happiness_meter_url, function( data ) {
        if (!data.error) {
-           $('#happiness-meter').css('height', data.value);
+           $('#happiness-meter').css('height', data.value+'%');
        }
     });
 }
@@ -39,8 +39,11 @@ set_mobile_interaction = function(duration) {
 get_mobile_interaction = function() {
     $.get($.m_get_mobile_interaction_url, function(data) {
         if (!data.error) {
-            // FIXME
-            $('#mobile_interaction').find('span').text(data.mobile_interaction.toString());
+            if (data.mobile_interaction) {
+                $('#mobile_interaction').html('<div id="mobile_interaction_on"></div>');
+            } else {
+                $('#mobile_interaction').html('');
+            }
         }
     });
 }
@@ -153,7 +156,7 @@ set_hard_chosen_commands = function (){
 decrease_happiness = function() {
     $.get($.m_decrease_happiness_url, function(data) {
         if (data.happiness_value) {
-            $('#happiness-meter').css('height', data.happiness_value);
+            $('#happiness-meter').css('height', data.happiness_value+'%');
         }
     });
 }

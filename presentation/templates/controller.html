@@ -148,18 +148,15 @@ $(document).ready(function() {
     </div>
     <div class="span2">
       <div class="happiness">
-        <h4>Happiness Meter</h4>
-        100
-        <div class="meter-border">
-          <div id="happiness-meter" class="meter" style="height:
-                                                         {% if spectacle.mode == '1' %}
-                                                         {{ spectacle.easy_happiness_meter }}%;
-                                                         {% else %}
-                                                         {{ spectacle.hard_happiness_meter }}%;
-                                                         {% endif %}">
+        <div id="happiness-meter" class="meter" style="height:
+                                                       {% if spectacle.mode == '1' %}
+                                                       {{ spectacle.easy_happiness_meter }};
+                                                       {% else %}
+                                                       {{ spectacle.hard_happiness_meter }};
+                                                       {% endif %}">
+          <div class="meter-border">
           </div>
         </div>
-        0
       </div>
     </div>
   </div>

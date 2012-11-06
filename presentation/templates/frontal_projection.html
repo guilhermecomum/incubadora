@@ -54,14 +54,18 @@ var get_last_scene_duration_refresh = setInterval(function (){ get_last_scene_du
   <div class="stage">
     <div class="header">
       {% if spectacle.mode == '1' %}
+
       <div id="mobile_interaction">
-        <p>Interação por celular: <span>{{ spectacle.mobile_interaction }}</span></p>
+        <div id="mobile_interaction_on"></div>
       </div>
+
       {% else %}
+
       <div id="chosen-commands">
           <ul id="chosen-commands-list"></ul>
       </div>
       {% endif %}
+
       <div id="box-message" class="msg">
         <marquee><p></p></marquee>
       </div>
@@ -79,7 +83,6 @@ var get_last_scene_duration_refresh = setInterval(function (){ get_last_scene_du
             {% for c in commands %}
             <li id="command-{{ c.id }}" class="command">
                 <div class="{{ c.slug }}"></div>
-                <!-- <span id="command-count-{{ c.id }}" class="score"> . . . . . . . . . . . . . . . . </span> -->
             </li>
             {% endfor %}
           </ul>
@@ -87,19 +90,17 @@ var get_last_scene_duration_refresh = setInterval(function (){ get_last_scene_du
       </div>
      {% endif %}
       <div class="happiness">
-        100
-        <div class="meter-border">
-          <div id="happiness-meter" class="meter" style="height:
-                                                         {% if spectacle.mode == '1' %}
-                                                         {{ spectacle.easy_happiness_meter }}%;
-                                                         {% else %}
-                                                         {{ spectacle.hard_happiness_meter }}%;
-                                                         {% endif %}">
+        <div id="happiness-meter" class="meter" style="height:
+                                                       {% if spectacle.mode == '1' %}
+                                                       {{ spectacle.easy_happiness_meter }};
+                                                       {% else %}
+                                                       {{ spectacle.hard_happiness_meter }};
+                                                       {% endif %}">
+          <div class="meter-border">
           </div>
         </div>
-        0
       </div>
     </div>
-</div>
+  </div>
 </div>
 {% endblock %}

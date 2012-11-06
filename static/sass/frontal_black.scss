@@ -107,7 +107,7 @@ li {
     position:absolute;
     bottom:0;
     left:0;
-    background: url(../images/frontal/medidor.png) no-repeat;
+    background: url(../images/frontal/medidor_black.png) no-repeat;
 }
 
 .meter {
@@ -115,11 +115,11 @@ li {
     max-height: 238px;
     bottom: 0;
     position: absolute;
-    background: blue;
+    background: white;
 }
 
 .command div {
-    background: url(../images/frontal/icones.png) no-repeat;
+    background: url(../images/frontal/icones_black.png) no-repeat;
     overflow: hidden;
 
 }
@@ -133,7 +133,7 @@ li {
 .command div.alimentar {
     background-position: 0px -64px;
     width: 65px;
-    height: 65px
+    height: 62px
 }
 
 .command div.arrepender {

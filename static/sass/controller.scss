@@ -21,27 +21,32 @@
 @import "compass/css3";
 
 body {
-
+    color: #FFF;
+    background: #000;
 }
 
 .happiness {
     text-align: center;
-}
-
-.meter-border {
-    height: 103px;
-    border: 2px solid black;
-    width: 25px;
-    margin: 0 auto;
+    float: right;
+    width: 66px;
+    height: 272px;
     position: relative;
     overflow: hidden;
 }
 
+.meter-border {
+    width: 66px;
+    height: 272px;
+    position:absolute;
+    bottom:0;
+    left:0;
+    background: url(../images/frontal/medidor.png) no-repeat;
+}
+
 .meter {
-    width: 25px;
-    height: 2px;
-    overflow: hidden;
+    width: 66px;
+    max-height: 238px;
     bottom: 0;
     position: absolute;
-    @include background-image(linear-gradient( #ff5416, #ffbc21));
+    background: blue;
 }
