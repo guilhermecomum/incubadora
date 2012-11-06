@@ -85,6 +85,7 @@ def easy_add(request, s_id):
                                                 mode = spectacle.mode).count()
 
         if total_cc < MAX_SAME_COMMAND and spectacle.mobile_interaction:
+            instance.save()
             total_scene_command = EasyMode.objects.filter(spectacle = spectacle,
                                                           scene = scene,
                                                           command = command)
@@ -103,15 +104,14 @@ def easy_add(request, s_id):
                                    mode = spectacle.mode)
                 cc.save()
 
-            if total_cc == 0:
-                spectacle.easy_happiness_meter += 5
-            elif total_cc == 1:
-                spectacle.easy_happiness_meter += 5
-            elif total_cc == 2:
-                spectacle.easy_happiness_meter += 5
+                if total_cc == 0:
+                    spectacle.easy_happiness_meter += 5
+                elif total_cc == 1:
+                    spectacle.easy_happiness_meter += 5
+                elif total_cc == 2:
+                    spectacle.easy_happiness_meter += 5
+                spectacle.save()
 
-            instance.save()
-            spectacle.save()
             message = simplejson.dumps( { 'error': 0 } )
             return HttpResponse(message, mimetype="application/json")
 
