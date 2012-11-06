@@ -354,8 +354,11 @@ def show_chosen_commands(request, s_id):
                                                               aux,
                                                               command_name)
 
-        command_total = EasyMode.objects.filter(spectacle=spectacle,
-                                                command=cc.command).count()
+
+        command_total = ChosenCommand.objects.filter(spectacle = spectacle,
+                                                     mode = spectacle.mode,
+                                                     command=cc.command).count()
+
 
         monitor = "%s %d" % (cc.command.name, command_total)
 
