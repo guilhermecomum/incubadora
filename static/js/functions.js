@@ -247,11 +247,15 @@ show_chosen_commands = function(monitor){
                 // play sound
                 if ($.m_update_chosen_command != data.commands.pk) {
                     if (data.commands.sound) {
-                        html = '<audio autoplay="autoplay"><source src="'+data.commands.sound+'" type="audio/mp3">Your browser does not support the audio element.</audio>';
-                        $('#box-message').find('p').append(html)
+                        if ($('#sound-' + $.m_update_chosen_command).length >0) {
+                            $('#sound-' + $.m_update_chosen_command)[0].pause();
+                        }
+                        html = '<audio id="sound-'+data.commands.pk+'"><source src="'+data.commands.sound+'" type="audio/mp3">Your browser does not support the audio element.</audio>';
+                        $(html).appendTo('#box-message').find('p');
+                        $('#sound-'+data.commands.pk)[0].play();
                     }
-                    $.m_update_chosen_command = data.commands.pk;
                 }
+                $.m_update_chosen_command = data.commands.pk;
 
             } else if (data.commands.easy) {
                 $('#chosen-commands-list').hide();
