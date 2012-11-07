@@ -58,6 +58,10 @@ urlpatterns += patterns('presentation.views',
 
     # Frontal Projection
 
+    url(r'^frontal-projection/(?P<s_id>(.*))/get/draw-list-bullet/$',
+        'frontal_projection_draw_list_bullet',
+        name='frontal-projection-draw-list-bullet'),
+
     url(r'^frontal-projection/(?P<s_id>(.*))/set/countdown-displayed/$',
         'set_countdown_displayed',
         name='set-countdown-displayed'),

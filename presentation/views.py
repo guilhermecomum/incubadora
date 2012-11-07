@@ -39,6 +39,7 @@ import math
 
 
 MAX_SAME_COMMAND = 3
+BULLETS = 10
 
 
 @login_required
@@ -54,6 +55,10 @@ def easy_show(request, s_id):
     c = { 'form':form, 'commands':commands, 'spectacle':spectacle }
 
     return render(request, 'easymode.html', c)
+
+def get_minimum():
+    total_logged_users = LoggedUser.objects.all().count()
+    return int(math.ceil(total_logged_users * 0.1))
 
 @login_required
 def easy_add(request, s_id):
@@ -94,8 +99,7 @@ def easy_add(request, s_id):
             has_cc = ChosenCommand.objects.filter(spectacle = spectacle,
                                                   scene = scene).count()
 
-            total_logged_users = LoggedUser.objects.all().count()
-            minimum = int(math.ceil(total_logged_users * 0.1))
+            minimum = get_minimum()
 
             if total_scene_command >= minimum and not has_cc:
                 cc = ChosenCommand(spectacle = spectacle,
@@ -731,3 +735,35 @@ def monitor_show(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)
     c = { 'spectacle': spectacle }
     return render(request, 'monitor.html', c)
+
+
+def frontal_projection_draw_list_bullet(request, s_id):
+
+    spectacle = get_spectacle(s_id)
+
+    try:
+        scene = Scene.objects.filter(spectacle=spectacle, mode=spectacle.mode)
+        scene = scene.latest('date_created')
+    except Scene.DoesNotExist:
+        message = simplejson.dumps( { 'error': 1 } )
+        return HttpResponse(message, mimetype="application/json")
+
+    mode = EasyMode.objects.filter(spectacle=spectacle, scene=scene)
+    mode = mode.values('command__name', 'command__pk', 'command__slug')
+    mode = mode.annotate(Count('pk'))
+
+    minimum = get_minimum()
+    if minimum > 0:
+        values = []
+        for m in mode:
+            m['draw'] = (m['pk__count'] * BULLETS) / minimum
+
+        message = simplejson.dumps({'error': 0,
+                                    'commands': [{'name': c['command__name'],
+                                                  'pk': c['command__pk'],
+                                                  'draw': c['draw'] }
+                                                  for c in mode ] })
+    else:
+        message = simplejson.dumps( { 'error': 1 } )
+
+    return HttpResponse(message, mimetype="application/json")

@@ -47,6 +47,16 @@ var get_last_scene_duration_refresh = setInterval(function (){ get_last_scene_du
 </script>
 {% endif %}
 
+{% if spectacle.mode == '1' %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $.m_get_frontal_projection_draw_list_bullet_url = '{{ spectacle.get_frontal_projection_draw_list_bullet_url }}';
+});
+
+var bullets_refresh = setInterval(function (){ get_bullets(); }, s10);
+</script>
+{% endif %}
+
 {% endblock %}
 
 {% block content %}
@@ -83,6 +93,7 @@ var get_last_scene_duration_refresh = setInterval(function (){ get_last_scene_du
             {% for c in commands %}
             <li id="command-{{ c.id }}" class="command">
                 <div class="{{ c.slug }}"></div>
+                <span id="command-count-{{ c.id }}" class="score score-0"></span>
             </li>
             {% endfor %}
           </ul>

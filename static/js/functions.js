@@ -293,3 +293,18 @@ get_backside_projection_content = function() {
 set_backside_projection_content = function () {
     $.post($.m_set_backside_projection_content_url, $("#backside-projection-form").serialize() );
 }
+
+get_bullets = function() {
+    $.get($.m_get_frontal_projection_draw_list_bullet_url, function ( data ) {
+        if (!data.error) {
+            $('.command span').removeClass();
+            $('.command span').addClass('score score-0');
+            if (data.commands) {
+                $.each(data.commands, function() {
+                    $('.command span').removeClass('score-0');
+                    $('#command-count-'+this.pk).addClass('score-'+this.draw);
+                });
+            }
+        }
+    });
+}
