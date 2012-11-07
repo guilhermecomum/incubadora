@@ -4,7 +4,15 @@
 {% block head %}
 
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/login.css">
+<script type="text/javascript">
 
+$(document).ready(function() {
+    $('input').focus(function() {
+        $('.errorlist').hide();
+    });
+});
+
+</script>
 {% endblock %}
 
 {% block content %}
@@ -18,12 +26,12 @@
                 <h1>INCUBADORA</h1>
             </div>
             <div class="nome">
-                {{ form.first_name.errors }}
                 {{ form.first_name }}
+                {{ form.first_name.errors }}
             </div>
             <div class="mail">
-                {{ form.username.errors }}
                 {{ form.username }}
+                {{ form.username.errors }}
                 {{ user_profile_form.newsletter }}
             </div>
             <div class="send">
