@@ -307,4 +307,16 @@ get_bullets = function() {
             }
         }
     });
+
+    $.get($.m_get_chosen_commands_total_url, function ( data ) {
+        if (!data.error && data.commands) {
+            if (data.commands.length > 0) {
+                $.each(data.commands, function() {
+                    if (this.total >= 3 && $('#command-'+this.pk).length > 0) {
+                        $('#command-'+this.pk).remove();
+                    }
+                });
+            }
+        }
+    });
 }
