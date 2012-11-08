@@ -110,11 +110,16 @@ get_chosen_commands = function() {
             // Easy Mode
             if (data.commands) {
                 if (data.commands.length > 0) {
+                    var block = false;
                     $.each(data.commands, function(i, item) {
                         if ($('#chosen-command-'+item.pk).length == 0) {
                             $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+'</span>').appendTo('#chosen-commands-list');
+                            block = true;
                         }
                     });
+                    if (block) {
+                        set_mobile_interaction();
+                    }
                 } else {
                     $('#chosen-commands-list').html('');
                 }
