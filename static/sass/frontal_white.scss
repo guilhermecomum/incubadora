@@ -23,7 +23,7 @@
 body {
     background: #000;
     margin-top: 30px;
-    color: #FFF;
+    color: white;
     font-family: sans;
     text-transform: uppercase;
 }
@@ -63,7 +63,7 @@ body {
 .msg {
     width: 600px;
     float: right;
-    border: 1px solid #FFFFFF;
+    border: 1px solid white;
     @include border-radius(20px);
     font-size: 10pt;
     height: 22px;
@@ -107,7 +107,7 @@ li {
     position:absolute;
     bottom:0;
     left:0;
-    background: url(../images/frontal/medidor_black.png) no-repeat;
+    background: url(../images/frontal/medidor_white.png) no-repeat;
 }
 
 .meter {
@@ -119,7 +119,7 @@ li {
 }
 
 .command div {
-    background: url(../images/frontal/icones_black.png) no-repeat;
+    background: url(../images/frontal/icones_white.png) no-repeat;
     overflow: hidden;
 
 }
