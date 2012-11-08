@@ -285,26 +285,37 @@ def get_chosen_commands_total(request, s_id):
 def get_chosen_commands(request, s_id):
     spectacle = get_object_or_404(Spectacle, pk=s_id)
     if spectacle.mode == SPECTACLE_MODE_EASY:
-        commands = ChosenCommand.objects.filter(spectacle=spectacle,
-                                                mode = spectacle.mode)
-
-        message = simplejson.dumps( { 'error': 0,
-                                      'commands': [ { 'name': c.command.name,
-                                                      'command_pk':c.command.pk,
-                                                      'pk': c.pk }
-                                                      for c in commands ] })
+        try:
+            # FIXME ~ two queries ???
+            cc = ChosenCommand.objects.filter(spectacle=spectacle,
+                                              mode=spectacle.mode).latest('pk')
+            total = ChosenCommand.objects.filter(spectacle = spectacle,
+                                                 mode = spectacle.mode,
+                                                 command=cc.command).count()
+            name = "%s %d" % (cc.command.name, total)
+            message = simplejson.dumps({'error': 0,
+                                        'command': {'name': name,
+                                                    'command_pk':cc.command.pk,
+                                                    'pk': cc.pk } } )
+        except ChosenCommand.DoesNotExist:
+            message = simplejson.dumps( { 'error': 1 })
+            return HttpResponse(message, mimetype="application/json")
     else:
         actors = []
         for a in Actor.objects.all():
-           commands = a.chosencommand_set.all()
-           if commands:
-               actors.append ( { 'pk': a.pk,
-                                 'name': a.name,
-                                 'commands': [ { 'name': c.command.name,
-                                                  'pk': c.pk }
-                                                  for c in commands ] })
+            try:
+                command = a.chosencommand_set.latest('pk')
+                if command:
+                    actors.append ( { 'pk': a.pk,
+                                      'name': a.name,
+                                      'command': { 'name': command.command.name,
+                                                   'pk': command.pk } } )
 
-        message = simplejson.dumps( { 'error': 0, 'actors': actors })
+                    message = simplejson.dumps({'error':0, 'actors':actors})
+
+            except ChosenCommand.DoesNotExist:
+                message = simplejson.dumps( { 'error': 1 })
+                return HttpResponse(message, mimetype="application/json")
 
     return HttpResponse(message, mimetype="application/json")
 

@@ -108,38 +108,30 @@ get_chosen_commands = function() {
     $.get($.m_get_chosen_commands_url, function ( data ) {
         if (!data.error) {
             // Easy Mode
-            if (data.commands) {
-                if (data.commands.length > 0) {
-                    var block = false;
-                    $.each(data.commands, function(i, item) {
-                        if ($('#chosen-command-'+item.pk).length == 0) {
-                            $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+'</span>').appendTo('#chosen-commands-list');
-                            block = true;
-                        }
-                    });
-                    if (block) {
-                        set_mobile_interaction();
-                    }
-                } else {
-                    $('#chosen-commands-list').html('');
+            if (data.command) {
+                var block = false;
+                var command = data.command;
+                if ($('#chosen-command-'+command.pk).length == 0) {
+                    $('#chosen-commands-list').html('<li id="chosen-command-'+command.pk+'"><span>'+command.name+'</span>');
+                    block = true;
                 }
+                if (block) {
+                    set_mobile_interaction();
+                }
+            } else {
+                $('#chosen-commands-list').html('');
             }
+
             // Hard Mode
             if (data.actors) {
                 if (data.actors.length > 0) {
                     $.each(data.actors, function(i, item) {
                         if ($('#chosen-command-'+item.pk).length == 0) {
                             $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+': </span></li>').appendTo('#chosen-commands-list');
-                            $.each(item.commands, function(i, c) {
-                                $('<span id="command-'+ c.pk +'">'+c.name+', </span>').appendTo('#chosen-command-'+item.pk);
-                            });
+                            $('<span id="command-'+ item.command.pk +'">'+item.command.name+'</span>').appendTo('#chosen-command-'+item.pk);
                         }
                         else {
-                            $.each(item.commands, function(i, c) {
-                                if ( $('#command-'+ c.pk).length == 0 ) {
-                                    $('<span id="command-'+ c.pk +'">'+c.name+', </span>').appendTo('#chosen-command-'+item.pk);
-                                }
-                            });
+                            $('<span id="command-'+ item.command.pk +'">'+item.command.name+'</span>').appendTo('#chosen-command-'+item.pk);
                         }
                     });
                 } else {
