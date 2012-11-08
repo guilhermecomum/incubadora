@@ -108,106 +108,107 @@ $(document).ready(function() {
 {% block content %}
 <div class="container">
   <div class="page-header">
-    <h1>Painel de controle</h1>
+    <h1>Painel de controle <small>{% if spectacle.mode == '1' %}EASY{% elif spectacle.mode == '2' %}HARD{% endif %}</small></h1>
+
   </div>
   <div class="row">
-    <div class="span3">
-      <div id="mode">
-        <h2>Modo</h2>
-         <span class="label label-info">{% if spectacle.mode == '1' %}EASY{% elif spectacle.mode == '2' %}HARD{% endif %}</span>
+    <div class="span6 buttons">
+      <div class="row">
+        <div class="span6">
+        <h2>Ações</h2>
+        </div>
       </div>
-    </div>
-    <div class="span3">
-      <h2>Interação</h2>
-      <div id="mobile_interaction">
-      {% if spectacle.mode == '1' %}
-        <a href="{{ spectacle.set_mobile_interaction_url }}" class="btn btn-danger mobile-interaction"><span>{{ spectacle.mobile_interaction }}</span></a>
-      {% else %}
-        <span class="label label-important">{{ spectacle.mobile_interaction }}</span>
-      {% endif %}
+      <div class="row">
+          <div id="mobile_interaction">
+            {% if spectacle.mode == '1' %}
+            <button href="{{ spectacle.set_mobile_interaction_url }}" class="span6 btn btn-warning btn-large mobile-interaction">Interação mobile: <span>{{ spectacle.mobile_interaction }}</span></button>
+            {% else %}
+            <span class="label label-important">{{ spectacle.mobile_interaction }}</span>
+            {% endif %}
+        </div>
       </div>
-    </div>
-    <div class="span4">
-      <div>
-        <h2>Comandos</h2>
+      <div class="row">
+          <button id="decrease-happiness" class="span3 btn btn-large btn-info">degradar o medidor</button>
+        {% if spectacle.mode == '1' %}
+          <button id="change-spectacle-mode" class="span3 btn btn-large btn-info">Mudar de Easy para Hard</button>
+        {% endif %}
 
-        <table class="table" id="command-list">
-          <thead>
-            <th>Comando</th>
-            <th>#</th>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
       </div>
+      <div class="row">
+        {% if spectacle.mode == '2' %}
+        <div>
+          <div id="hard-countdown">00:00</div>
+          <select id="hard_duration">
+            <option value="">------</option>
+            {% for d in hard_duration %}
+            <option value="{{ d.duration|date:"H:i:s" }}">{{ d.duration|date:"H:i:s" }}</option>
+            {% endfor %}
+          </select>
 
-      <div>
-        <h3>Escolhidos</h3>
-        <ul id="chosen-commands-list"></ul>
+          <form id="form-scene-duration">{% csrf_token %}
+            <input type="hidden" id="duration" name="duration">
+          </form>
+        </div>
+        {% endif %}
+        <button id="reset-spectacle" class="span6 btn btn-large btn-danger">Reiniciar o Espetáculo</button>
+      </div>
+      <div class="row">
+        <div class="span6">
+
+        </div>
       </div>
     </div>
-    <div class="span2">
-      <div class="happiness">
-        <div id="happiness-meter" class="meter" style="height:
-                                                       {% if spectacle.mode == '1' %}
-                                                       {{ spectacle.easy_happiness_meter }};
-                                                       {% else %}
-                                                       {{ spectacle.hard_happiness_meter }};
-                                                       {% endif %}">
-          <div class="meter-border">
+    <div class="span6">
+      <div class="row">
+        <div class="span4">
+          <h3>Comando escolhido</h3>
+          <ul id="chosen-commands-list"></ul>
+          <h2>Comandos</h2>
+          <table class="table" id="command-list">
+            <thead>
+              <th>Comando</th>
+              <th>#</th>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+        <div class="span2">
+          <div class="happiness">
+            <div id="happiness-meter" class="meter" style="height:
+                                                           {% if spectacle.mode == '1' %}
+                                                           {{ spectacle.easy_happiness_meter }};
+                                                           {% else %}
+                                                           {{ spectacle.hard_happiness_meter }};
+                                                           {% endif %}">
+              <div class="meter-border">
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="span4">
-      <button id="decrease-happiness" class="btn btn-large btn-info">degradação do medidor de felicidade</button>
     </div>
-    <div class="span4">
-      <button id="reset-spectacle" class="btn btn-large btn-danger">Reiniciar o Espetáculo</button>
-    </div>
-
-    {% if spectacle.mode == '2' %}
-    <div>
-      <div id="hard-countdown">00:00</div>
-      <select id="hard_duration">
-        <option value="">------</option>
-        {% for d in hard_duration %}
-        <option value="{{ d.duration|date:"H:i:s" }}">{{ d.duration|date:"H:i:s" }}</option>
-        {% endfor %}
-      </select>
-
-      <form id="form-scene-duration">{% csrf_token %}
-        <input type="hidden" id="duration" name="duration">
-      </form>
-    </div>
-    {% endif %}
-
-    {% if spectacle.mode == '1' %}
-    <div>
-      <button id="change-spectacle-mode" class="btn btn-large btn-danger">Mudar do Easy para o Hard</button>
+    {% if files %}
+    <div class="row">
+      <div class="span12">
+        <h2>Sequência de slides <small>( fotos/videos )</small></h2>
+        <div class="stage">
+          <form id="backside-projection-form" method="post" action="{{ spectacle.set_backside_projection_content_url }}">{% csrf_token %}
+            <input id="id_archive" name="id_archive" type="hidden" value="" />
+            <ul class="thumbnails">
+              {% for f in files  %}
+              <li class="span2">
+                <div class="thumbnail" id="thumb-{{ f.pk }}">
+                  <img src="{{ STATIC_URL }}{{ f.archive.url }}" alt="{{ f.name }}" title="{{ f.name }}" />
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </form>
+        </div>
+      </div>
     </div>
     {% endif %}
   </div>
-  {% if files %}
-  <div class="row">
-    <h2>Sequência de slides <small>( fotos/videos )</small></h2>
-    <div class="stage">
-      <form id="backside-projection-form" method="post" action="{{ spectacle.set_backside_projection_content_url }}">{% csrf_token %}
-        <input id="id_archive" name="id_archive" type="hidden" value="" />
-        <ul class="thumbnails">
-          {% for f in files  %}
-          <li class="span2">
-            <div class="thumbnail" id="thumb-{{ f.pk }}">
-              <img src="{{ STATIC_URL }}{{ f.archive.url }}" alt="{{ f.name }}" title="{{ f.name }}" />
-            </div>
-          </li>
-          {% endfor %}
-        </ul>
-      </form>
-    </div>
-  </div>
-  {% endif %}
-</div>
-{% endblock %}
+  {% endblock %}

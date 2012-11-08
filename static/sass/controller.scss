@@ -40,7 +40,7 @@ body {
     position:absolute;
     bottom:0;
     left:0;
-    background: url(../images/frontal/medidor.png) no-repeat;
+    background: url(../images/frontal/medidor_blue.png) no-repeat;
 }
 
 .meter {
@@ -49,4 +49,8 @@ body {
     bottom: 0;
     position: absolute;
     background: blue;
+}
+
+.buttons button {
+    margin-top: 20px;
 }
