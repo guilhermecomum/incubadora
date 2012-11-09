@@ -52,6 +52,14 @@ def get_spectacle(s_id):
             raise Http404
     return spectacle
 
+def get_open_scene(spectacle):
+    try:
+        mode = spectacle.mode
+        scene = Scene.objects.get(spectacle=spectacle, status=True, mode=mode)
+        return scene
+    except Scene.DoesNotExist:
+        return None
+
 @login_required
 def easy_show(request, s_id):
     user = request.user
@@ -80,15 +88,9 @@ def easy_add(request, s_id):
     spectacle = get_spectacle(s_id)
     post['spectacle'] = spectacle.id
 
-    try:
-        scene = Scene.objects.get(spectacle=spectacle,
-                                  status=True,
-                                  mode=spectacle.mode)
+    scene = get_open_scene(spectacle)
+    if scene:
         post['scene'] = scene.id
-    except Scene.DoesNotExist:
-        alert =  'Oops try again'
-        message = simplejson.dumps( { 'error': 1, 'error-msg': alert } )
-        return HttpResponse(message, mimetype="application/json")
 
     form = EasyModeForm(post or None)
 
@@ -190,17 +192,11 @@ def hard_add(request, s_id):
     post['form-1-spectacle'] = spectacle.id
     post['form-2-spectacle'] = spectacle.id
 
-    try:
-        scene = Scene.objects.get(spectacle=spectacle,
-                                  status=True,
-                                  mode=spectacle.mode)
+    scene = get_open_scene(spectacle)
+    if scene:
         post['form-0-scene'] = scene.id
         post['form-1-scene'] = scene.id
         post['form-2-scene'] = scene.id
-    except Scene.DoesNotExist:
-        alert =  'Oops try again'
-        message = simplejson.dumps( { 'error': 1, 'msg': alert } )
-        return HttpResponse(message, mimetype="application/json")
 
     HardModeFormSet = formset_factory(HardModeForm)
     formset = HardModeFormSet(post or None)
@@ -419,14 +415,7 @@ def show_chosen_commands(request, s_id):
 def set_hard_chosen_commands(request, s_id):
     spectacle = get_spectacle(s_id)
 
-    try:
-        scene = Scene.objects.get(spectacle=spectacle,
-                                  status=True,
-                                  mode=spectacle.mode)
-    except Scene.DoesNotExist:
-        alert =  'Oops try again'
-        message = simplejson.dumps( { 'error': 1, 'msg': alert } )
-        return HttpResponse(message, mimetype="application/json")
+    scene = get_open_scene(spectacle)
 
     actors = []
     for a in Actor.objects.all():
@@ -504,17 +493,11 @@ def set_mobile_interaction(request, s_id):
     spectacle = get_spectacle(s_id)
     if spectacle.mobile_interaction:
         # Close
-        try:
+        scene = get_open_scene(spectacle)
+        if scene:
             mi = False
-            scene = Scene.objects.get(spectacle=spectacle,
-                                      status=True,
-                                      mode=spectacle.mode)
-
             scene.status = mi
             scene.save()
-        except Scene.DoesNotExist:
-            message = simplejson.dumps( { 'error': 1 } )
-            return HttpResponse(message, mimetype="application/json")
     else:
         # Open
         mi = True
@@ -607,16 +590,11 @@ def set_last_scene_duration(request, s_id):
     if duration:
         spectacle = get_spectacle(s_id)
         if spectacle.mobile_interaction:
-            try:
-                scene = Scene.objects.get(spectacle=spectacle,
-                                          status=True,
-                                          mode=spectacle.mode)
+            scene = get_open_scene(spectacle)
+            if scene:
                 scene.duration = int(duration)
                 scene.show_countdown = True
                 scene.save()
-            except Scene.DoesNotExist:
-                message = simplejson.dumps( { 'error': 1 } )
-                return HttpResponse(message, mimetype="application/json")
     else:
         message = simplejson.dumps( { 'error': 1 } )
         return HttpResponse(message, mimetype="application/json")
@@ -628,15 +606,10 @@ def set_last_scene_duration(request, s_id):
 def set_countdown_displayed(request, s_id):
     spectacle = get_spectacle(s_id)
     if spectacle.mobile_interaction:
-        try:
-            scene = Scene.objects.get(spectacle=spectacle,
-                                      status=True,
-                                      mode=spectacle.mode)
+        scene = get_open_scene(spectacle)
+        if scene:
             scene.show_countdown = False
             scene.save()
-        except Scene.DoesNotExist:
-            message = simplejson.dumps( { 'error': 1 } )
-            return HttpResponse(message, mimetype="application/json")
 
     message = simplejson.dumps( { 'error': 0 })
     return HttpResponse(message, mimetype="application/json")
