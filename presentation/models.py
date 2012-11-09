@@ -312,6 +312,7 @@ class HardMode(models.Model):
 
 class HardModeMessage(models.Model):
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
+    player = models.ForeignKey(User, verbose_name=_('Player'))
     message = models.CharField(verbose_name=_('Message'), max_length=128)
     date_created = models.DateTimeField(
         verbose_name=_('Date Created'),
