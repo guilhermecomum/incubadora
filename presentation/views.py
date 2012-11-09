@@ -767,3 +767,13 @@ def frontal_projection_draw_list_bullet(request, s_id):
         message = simplejson.dumps( { 'error': 1 } )
 
     return HttpResponse(message, mimetype="application/json")
+
+
+@staff_member_required
+def delete_logged_users(request, s_id):
+
+    LoggedUser.objects.all().delete()
+
+    message = simplejson.dumps( { 'error': 0 } )
+
+    return HttpResponse(message, mimetype="application/json")

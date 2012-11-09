@@ -21,6 +21,7 @@ $(document).ready(function() {
     $.m_change_spectacle_mode_url = '{{ spectacle.change_spectacle_mode_url }}';
     $.m_get_controller_url = '{{ spectacle.get_controller_url }}';
     $.m_set_backside_projection_content_url = '{{ spectacle.set_backside_projection_content_url }}';
+    $.m_delete_logged_users_url = '{{ spectacle.delete_logged_users_url }}';
 
 
     $('.mobile-interaction').click(function() {
@@ -57,6 +58,12 @@ $(document).ready(function() {
         return false;
     });
 
+    $('#delete-logged-users').click(function() {
+        if (confirm("Do you really want to delete all logged users?")) {
+            delete_logged_users();
+        }
+        return false;
+    });
 
 
 });
@@ -151,6 +158,9 @@ $(document).ready(function() {
         </div>
         {% endif %}
         <button id="reset-spectacle" class="span6 btn btn-large btn-danger">Reiniciar o Espetáculo</button>
+      </div>
+      <div class="row">
+        <button id="delete-logged-users" class="span6 btn btn-large btn-danger">Remover usuários logados</button>
       </div>
       <div class="row">
         <div class="span6">

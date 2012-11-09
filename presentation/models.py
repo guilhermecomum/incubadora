@@ -216,6 +216,10 @@ class Spectacle(models.Model):
     def get_frontal_projection_draw_list_bullet_url(self):
         return ('frontal-projection-draw-list-bullet', [str(self.pk)])
 
+    @models.permalink
+    def delete_logged_users_url(self):
+        return ('delete-logged-users', [str(self.pk)])
+
 class Actor(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))

@@ -320,3 +320,10 @@ get_bullets = function() {
         }
     });
 }
+
+delete_logged_users = function() {
+    $.get($.m_delete_logged_users_url, function(data) {
+        if (!data.error) {
+        }
+    });
+}

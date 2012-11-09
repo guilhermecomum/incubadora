@@ -108,6 +108,10 @@ urlpatterns += patterns('presentation.views',
 
      # Controller
 
+     url(r'^controller/(?P<s_id>(.*))/delete-logged-users/$',
+         'delete_logged_users',
+         name='delete-logged-users'),
+
      url(r'^controller/(?P<s_id>(.*))/change-spectacle-mode/$',
          'change_spectacle_mode',
          name='change-spectacle-mode'),
