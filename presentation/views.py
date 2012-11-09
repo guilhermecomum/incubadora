@@ -52,6 +52,7 @@ def get_spectacle(s_id):
             raise Http404
     return spectacle
 
+
 def get_open_scene(spectacle):
     try:
         mode = spectacle.mode
@@ -59,6 +60,7 @@ def get_open_scene(spectacle):
         return scene
     except Scene.DoesNotExist:
         return None
+
 
 @login_required
 def easy_show(request, s_id):
@@ -74,9 +76,11 @@ def easy_show(request, s_id):
 
     return render(request, 'easymode.html', c)
 
+
 def get_minimum():
     total_logged_users = LoggedUser.objects.all().count()
     return int(math.ceil(total_logged_users * 0.1))
+
 
 @login_required
 def easy_add(request, s_id):
@@ -141,6 +145,7 @@ def easy_add(request, s_id):
         message = simplejson.dumps( { 'error': 1 } )
         return HttpResponse(message, mimetype="application/json")
 
+
 def happiness_meter(request, s_id):
     spectacle = get_spectacle(s_id)
     if spectacle.mode == SPECTACLE_MODE_EASY:
@@ -149,6 +154,7 @@ def happiness_meter(request, s_id):
         value = spectacle.hard_happiness_meter
     message = simplejson.dumps( { 'error': 0, 'value':value } )
     return HttpResponse(message, mimetype="application/json")
+
 
 @login_required
 def hard_show(request, s_id):
@@ -174,6 +180,7 @@ def hard_show(request, s_id):
            'formset': formset }
 
     return render(request, 'hardmode.html', c)
+
 
 @login_required
 def hard_add(request, s_id):
@@ -211,6 +218,7 @@ def hard_add(request, s_id):
         message = simplejson.dumps( { 'error': 1 } )
         return HttpResponse(message, mimetype="application/json")
 
+
 @login_required
 def hard_message_add(request, s_id):
     user = request.user
@@ -230,6 +238,7 @@ def hard_message_add(request, s_id):
         message = simplejson.dumps( { 'error': 1 } )
         return HttpResponse(message, mimetype="application/json")
 
+
 def frontal_projection(request, s_id):
 
     spectacle = get_spectacle(s_id)
@@ -241,6 +250,7 @@ def frontal_projection(request, s_id):
     c = { 'spectacle':spectacle, 'commands':commands }
 
     return render(request, "frontal_projection.html", c)
+
 
 def get_commands(request, s_id):
     spectacle = get_spectacle(s_id)
@@ -258,6 +268,7 @@ def get_commands(request, s_id):
                                                   for m in spectacle_mode ] })
 
     return HttpResponse(message, mimetype="application/json")
+
 
 def get_chosen_commands_total(request, s_id):
     spectacle = get_spectacle(s_id)
@@ -291,6 +302,7 @@ def get_chosen_commands_total(request, s_id):
         message = simplejson.dumps( { 'error': 0, 'actors': actors })
 
     return HttpResponse(message, mimetype="application/json")
+
 
 def get_chosen_commands(request, s_id):
     spectacle = get_spectacle(s_id)
@@ -328,6 +340,7 @@ def get_chosen_commands(request, s_id):
                 return HttpResponse(message, mimetype="application/json")
 
     return HttpResponse(message, mimetype="application/json")
+
 
 def show_chosen_commands(request, s_id):
     spectacle = get_spectacle(s_id)
@@ -411,6 +424,7 @@ def show_chosen_commands(request, s_id):
     message = simplejson.dumps( { 'error': 0, 'commands': data })
     return HttpResponse(message, mimetype="application/json")
 
+
 @staff_member_required
 def set_hard_chosen_commands(request, s_id):
     spectacle = get_spectacle(s_id)
@@ -473,6 +487,7 @@ def set_hard_chosen_commands(request, s_id):
     message = simplejson.dumps( { 'error': 0, 'actors':actors })
     return HttpResponse(message, mimetype="application/json")
 
+
 @staff_member_required
 def controller(request, s_id):
 
@@ -486,6 +501,7 @@ def controller(request, s_id):
     c = { 'spectacle':spectacle, 'hard_duration':duration, 'files': files }
 
     return render(request, "controller.html", c)
+
 
 @staff_member_required
 def set_mobile_interaction(request, s_id):
@@ -511,12 +527,14 @@ def set_mobile_interaction(request, s_id):
 
     return HttpResponse(message, mimetype="application/json")
 
+
 def get_mobile_interaction(request, s_id):
     spectacle = get_spectacle(s_id)
     mi = spectacle.mobile_interaction
     message = simplejson.dumps( { 'error': 0,
                                   'mobile_interaction': mi })
     return HttpResponse(message, mimetype="application/json")
+
 
 @staff_member_required
 def decrease_happiness(request, s_id):
@@ -532,6 +550,7 @@ def decrease_happiness(request, s_id):
     message = simplejson.dumps( { 'error': 0,
                                   'happiness_value': value })
     return HttpResponse(message, mimetype="application/json")
+
 
 @staff_member_required
 def reset_spectacle(request, s_id):
@@ -549,6 +568,7 @@ def reset_spectacle(request, s_id):
     message = simplejson.dumps( { 'error': 0 })
     return HttpResponse(message, mimetype="application/json")
 
+
 def get_last_hard_message(request, s_id):
     spectacle = get_spectacle(s_id)
 
@@ -562,6 +582,7 @@ def get_last_hard_message(request, s_id):
     except HardModeMessage.DoesNotExist:
         message = simplejson.dumps( { 'error': 1 } )
         return HttpResponse(message, mimetype="application/json")
+
 
 def get_last_scene_duration(request, s_id):
     spectacle = get_spectacle(s_id)
@@ -583,6 +604,7 @@ def get_last_scene_duration(request, s_id):
 
     return HttpResponse(message, mimetype="application/json")
 
+
 @staff_member_required
 def set_last_scene_duration(request, s_id):
 
@@ -602,6 +624,7 @@ def set_last_scene_duration(request, s_id):
     message = simplejson.dumps( { 'error': 0 })
     return HttpResponse(message, mimetype="application/json")
 
+
 @staff_member_required
 def set_countdown_displayed(request, s_id):
     spectacle = get_spectacle(s_id)
@@ -613,6 +636,7 @@ def set_countdown_displayed(request, s_id):
 
     message = simplejson.dumps( { 'error': 0 })
     return HttpResponse(message, mimetype="application/json")
+
 
 @staff_member_required
 def change_spectacle_mode(request, s_id):
@@ -633,10 +657,12 @@ def change_spectacle_mode(request, s_id):
 
     return HttpResponse(message, mimetype="application/json")
 
+
 def get_spectable_mode(request, s_id):
     spectacle = get_spectacle(s_id)
     message = simplejson.dumps( { 'error': 0, 'mode':spectacle.mode })
     return HttpResponse(message, mimetype="application/json")
+
 
 @receiver(user_logged_in)
 def login_user(sender, request, user, **kwargs):
@@ -647,6 +673,7 @@ def login_user(sender, request, user, **kwargs):
             u = LoggedUser(player=user)
             u.save()
 
+
 @receiver(user_logged_out)
 def logout_user(sender, request, user, **kwargs):
     if user:
@@ -656,6 +683,7 @@ def logout_user(sender, request, user, **kwargs):
         except LoggedUser.DoesNotExist:
             pass
 
+
 def backside_projection_show(request, s_id):
 
     spectacle = get_spectacle(s_id)
@@ -663,6 +691,7 @@ def backside_projection_show(request, s_id):
     c = { 'spectacle':spectacle }
 
     return render(request, 'backsite_projection.html', c)
+
 
 def get_backside_projection_content(request, s_id):
 
@@ -689,6 +718,7 @@ def get_backside_projection_content(request, s_id):
 
     return HttpResponse(message, mimetype="application/json")
 
+
 @staff_member_required
 def set_backside_projection_content(request, s_id):
 
@@ -713,6 +743,7 @@ def set_backside_projection_content(request, s_id):
         message = simplejson.dumps( { 'error': 1  })
 
     return HttpResponse(message, mimetype="application/json")
+
 
 def monitor_show(request, s_id):
     spectacle = get_spectacle(s_id)
