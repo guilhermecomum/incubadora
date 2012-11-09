@@ -168,8 +168,9 @@ reset_spectacle = function () {
 
 get_last_hard_message = function () {
     $.get($.m_get_last_hard_message_url, function(data) {
-        if (!data.error) {
+        if (!data.error && $.m_last_hard_message && $.m_last_hard_message != data.msg.pk) {
             $('#box-message').find('p').html(data.msg.text);
+            $.m_last_hard_message = data.msg.pk;
         }
     });
 }
