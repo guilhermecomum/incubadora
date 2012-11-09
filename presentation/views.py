@@ -544,6 +544,7 @@ def reset_spectacle(request, s_id):
     spectacle.hard_happiness_meter = 50
     spectacle.mobile_interaction = False
     spectacle.scene_set.all().delete()
+    spectacle.hardmodemessage_set.all().delete()
     spectacle.save()
     for sa in SpectacleArchive.objects.filter(spectacle=spectacle):
         sa.show = False
