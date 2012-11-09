@@ -18,7 +18,7 @@
 ##
 
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.utils import simplejson
 from django.forms.widgets import HiddenInput
 from django.forms.formsets import formset_factory
@@ -42,10 +42,20 @@ MAX_SAME_COMMAND = 3
 BULLETS = 10
 
 
+def get_spectacle(s_id):
+    if s_id:
+        spectacle = get_object_or_404(Spectacle, pk=s_id)
+    else:
+        try:
+            spectacle = Spectacle.objects.get(status=True)
+        except Spectacle.MultipleObjectsReturned:
+            raise Http404
+    return spectacle
+
 @login_required
 def easy_show(request, s_id):
     user = request.user
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     commands = spectacle.easy_commands.all()
 
     form = EasyModeForm()
@@ -67,7 +77,7 @@ def easy_add(request, s_id):
     post = request.POST.copy()
     post['player'] = user.id
 
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     post['spectacle'] = spectacle.id
 
     try:
@@ -130,7 +140,7 @@ def easy_add(request, s_id):
         return HttpResponse(message, mimetype="application/json")
 
 def happiness_meter(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     if spectacle.mode == SPECTACLE_MODE_EASY:
         value = spectacle.easy_happiness_meter
     else:
@@ -141,7 +151,7 @@ def happiness_meter(request, s_id):
 @login_required
 def hard_show(request, s_id):
     user = request.user
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     commands = spectacle.hard_commands.all()
     actors = Actor.objects.filter(spectacle=spectacle).all()
 
@@ -174,7 +184,7 @@ def hard_add(request, s_id):
     post['form-2-player'] = user.id
 
     # FIXME
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
 
     post['form-0-spectacle'] = spectacle.id
     post['form-1-spectacle'] = spectacle.id
@@ -208,7 +218,7 @@ def hard_add(request, s_id):
 @login_required
 def hard_message_add(request, s_id):
     user = request.user
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     post = request.POST.copy()
     post['player'] = user.id
 
@@ -226,7 +236,7 @@ def hard_message_add(request, s_id):
 
 def frontal_projection(request, s_id):
 
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     if spectacle.mode == SPECTACLE_MODE_EASY:
         commands = spectacle.easy_commands.all()
     else:
@@ -237,7 +247,7 @@ def frontal_projection(request, s_id):
     return render(request, "frontal_projection.html", c)
 
 def get_commands(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     if spectacle.mode == SPECTACLE_MODE_EASY:
         spectacle_mode = EasyMode.objects.filter(spectacle=spectacle)
     else:
@@ -254,7 +264,7 @@ def get_commands(request, s_id):
     return HttpResponse(message, mimetype="application/json")
 
 def get_chosen_commands_total(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     commands = ChosenCommand.objects.filter(spectacle=spectacle,
                                             mode = spectacle.mode)
     commands = commands.values('command__name', 'command__pk')
@@ -287,7 +297,7 @@ def get_chosen_commands_total(request, s_id):
     return HttpResponse(message, mimetype="application/json")
 
 def get_chosen_commands(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     if spectacle.mode == SPECTACLE_MODE_EASY:
         try:
             # FIXME ~ two queries ???
@@ -324,7 +334,7 @@ def get_chosen_commands(request, s_id):
     return HttpResponse(message, mimetype="application/json")
 
 def show_chosen_commands(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
 
     try:
         scene = Scene.objects.filter(spectacle=spectacle, mode=spectacle.mode)
@@ -407,7 +417,7 @@ def show_chosen_commands(request, s_id):
 
 @staff_member_required
 def set_hard_chosen_commands(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
 
     try:
         scene = Scene.objects.get(spectacle=spectacle,
@@ -477,7 +487,7 @@ def set_hard_chosen_commands(request, s_id):
 @staff_member_required
 def controller(request, s_id):
 
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
 
     files = SpectacleArchive.objects.filter(spectacle=spectacle,
                                             mode=spectacle.mode)
@@ -491,7 +501,7 @@ def controller(request, s_id):
 @staff_member_required
 def set_mobile_interaction(request, s_id):
 
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     if spectacle.mobile_interaction:
         # Close
         try:
@@ -519,7 +529,7 @@ def set_mobile_interaction(request, s_id):
     return HttpResponse(message, mimetype="application/json")
 
 def get_mobile_interaction(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     mi = spectacle.mobile_interaction
     message = simplejson.dumps( { 'error': 0,
                                   'mobile_interaction': mi })
@@ -527,7 +537,7 @@ def get_mobile_interaction(request, s_id):
 
 @staff_member_required
 def decrease_happiness(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     if spectacle.mode == SPECTACLE_MODE_EASY:
         spectacle.easy_happiness_meter -= 10
         value = spectacle.easy_happiness_meter
@@ -542,7 +552,7 @@ def decrease_happiness(request, s_id):
 
 @staff_member_required
 def reset_spectacle(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     spectacle.mode = SPECTACLE_MODE_EASY
     spectacle.easy_happiness_meter = 50
     spectacle.hard_happiness_meter = 50
@@ -557,7 +567,7 @@ def reset_spectacle(request, s_id):
     return HttpResponse(message, mimetype="application/json")
 
 def get_last_hard_message(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
 
     try:
         msg = HardModeMessage.objects.filter(spectacle=spectacle)
@@ -571,7 +581,7 @@ def get_last_hard_message(request, s_id):
         return HttpResponse(message, mimetype="application/json")
 
 def get_last_scene_duration(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     try:
         scene = spectacle.scene_set.get(status=True)
         message = simplejson.dumps({'error': 0,
@@ -595,7 +605,7 @@ def set_last_scene_duration(request, s_id):
 
     duration = request.POST['duration']
     if duration:
-        spectacle = get_object_or_404(Spectacle, pk=s_id)
+        spectacle = get_spectacle(s_id)
         if spectacle.mobile_interaction:
             try:
                 scene = Scene.objects.get(spectacle=spectacle,
@@ -616,7 +626,7 @@ def set_last_scene_duration(request, s_id):
 
 @staff_member_required
 def set_countdown_displayed(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     if spectacle.mobile_interaction:
         try:
             scene = Scene.objects.get(spectacle=spectacle,
@@ -634,7 +644,7 @@ def set_countdown_displayed(request, s_id):
 @staff_member_required
 def change_spectacle_mode(request, s_id):
 
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
 
     if spectacle.mode == SPECTACLE_MODE_EASY:
         spectacle.mode = SPECTACLE_MODE_HARD
@@ -651,7 +661,7 @@ def change_spectacle_mode(request, s_id):
     return HttpResponse(message, mimetype="application/json")
 
 def get_spectable_mode(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     message = simplejson.dumps( { 'error': 0, 'mode':spectacle.mode })
     return HttpResponse(message, mimetype="application/json")
 
@@ -675,7 +685,7 @@ def logout_user(sender, request, user, **kwargs):
 
 def backside_projection_show(request, s_id):
 
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
 
     c = { 'spectacle':spectacle }
 
@@ -683,7 +693,7 @@ def backside_projection_show(request, s_id):
 
 def get_backside_projection_content(request, s_id):
 
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
 
     try:
         sa = SpectacleArchive.objects.get(spectacle=spectacle,
@@ -709,7 +719,7 @@ def get_backside_projection_content(request, s_id):
 @staff_member_required
 def set_backside_projection_content(request, s_id):
 
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
 
     # FIXME
     id_archive = request.POST['id_archive']
@@ -732,7 +742,7 @@ def set_backside_projection_content(request, s_id):
     return HttpResponse(message, mimetype="application/json")
 
 def monitor_show(request, s_id):
-    spectacle = get_object_or_404(Spectacle, pk=s_id)
+    spectacle = get_spectacle(s_id)
     c = { 'spectacle': spectacle }
     return render(request, 'monitor.html', c)
 
