@@ -62,6 +62,15 @@ def get_open_scene(spectacle):
         return None
 
 
+def get_latest_scene(spectacle):
+    try:
+        scene = Scene.objects.filter(spectacle=spectacle, mode=spectacle.mode)
+        scene = scene.latest('date_created')
+        return scene
+    except Scene.DoesNotExist:
+        return None
+
+
 @login_required
 def easy_show(request, s_id):
     user = request.user
@@ -345,13 +354,7 @@ def get_chosen_commands(request, s_id):
 def show_chosen_commands(request, s_id):
     spectacle = get_spectacle(s_id)
 
-    try:
-        scene = Scene.objects.filter(spectacle=spectacle, mode=spectacle.mode)
-        scene = scene.latest('date_created')
-    except Scene.DoesNotExist:
-        alert =  'Oops try again'
-        message = simplejson.dumps( { 'error': 1, 'msg': alert } )
-        return HttpResponse(message, mimetype="application/json")
+    scene = get_latest_scene(spectacle)
 
     if spectacle.mode == SPECTACLE_MODE_EASY:
 
@@ -586,21 +589,23 @@ def get_last_hard_message(request, s_id):
 
 def get_last_scene_duration(request, s_id):
     spectacle = get_spectacle(s_id)
-    try:
-        scene = spectacle.scene_set.get(status=True)
+
+    scene = get_open_scene(spectacle)
+    if scene:
         message = simplejson.dumps({'error': 0,
                                     'scene': {'pk':scene.pk,
                                               'duration':scene.duration,
                                               'show':scene.show_countdown}})
-    except Scene.DoesNotExist:
-        try:
-            scene = spectacle.scene_set.latest('date_created')
+    else:
+        scene = get_latest_scene(spectacle)
+        if scene:
             message = simplejson.dumps({'error': 0,
                                         'scene': {'pk':scene.pk,
                                                   'duration':scene.duration,
                                                   'show':scene.show_countdown}})
-        except Scene.DoesNotExist:
-            message = simplejson.dumps( { 'error': 1 } )
+
+        else:
+            message = simplejson.dumps({'error': 1 })
 
     return HttpResponse(message, mimetype="application/json")
 
@@ -755,12 +760,7 @@ def frontal_projection_draw_list_bullet(request, s_id):
 
     spectacle = get_spectacle(s_id)
 
-    try:
-        scene = Scene.objects.filter(spectacle=spectacle, mode=spectacle.mode)
-        scene = scene.latest('date_created')
-    except Scene.DoesNotExist:
-        message = simplejson.dumps( { 'error': 1 } )
-        return HttpResponse(message, mimetype="application/json")
+    scene = get_latest_scene(spectacle)
 
     mode = EasyMode.objects.filter(spectacle=spectacle, scene=scene)
     mode = mode.values('command__name', 'command__pk', 'command__slug')
