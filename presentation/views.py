@@ -31,7 +31,8 @@ from django.conf import settings
 from presentation.models import Command, EasyMode, Spectacle, HardMode, \
                                 Actor, Scene, ChosenCommand, HardModeDuration,\
                                 HardModeMessage, LoggedUser, SpectacleArchive
-from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD
+from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD,\
+                                SPECTACLE_MODE_RESET
 from presentation.forms import EasyModeForm, HardModeForm, HardModeMessageForm
 from collections import defaultdict
 from PIL import Image
@@ -557,7 +558,7 @@ def decrease_happiness(request, s_id):
 @staff_member_required
 def reset_spectacle(request, s_id):
     spectacle = get_spectacle(s_id)
-    spectacle.mode = SPECTACLE_MODE_EASY
+    spectacle.mode = SPECTACLE_MODE_RESET
     spectacle.easy_happiness_meter = 50
     spectacle.hard_happiness_meter = 50
     spectacle.mobile_interaction = False
@@ -654,7 +655,14 @@ def change_spectacle_mode(request, s_id):
         for scene in spectacle.scene_set.filter(status=True):
             scene.status = False
             scene.save()
-
+        message = simplejson.dumps( { 'error': 0 })
+    elif spectacle.mode == SPECTACLE_MODE_RESET:
+        spectacle.mode = SPECTACLE_MODE_EASY
+        spectacle.mobile_interaction = False
+        spectacle.save()
+        for scene in spectacle.scene_set.filter(status=True):
+            scene.status = False
+            scene.save()
         message = simplejson.dumps( { 'error': 0 })
     else:
         message = simplejson.dumps( { 'error': 1 })

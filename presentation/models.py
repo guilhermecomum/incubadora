@@ -24,12 +24,14 @@ from django.contrib.auth.models import User
 
 SPECTACLE_MODE_EASY = '1'
 SPECTACLE_MODE_HARD = '2'
+SPECTACLE_MODE_RESET = '3'
 FILE_IMG = '1'
 FILE_VIDEO = '2'
 
 MODE_CHOICES = (
     (SPECTACLE_MODE_EASY, u'Easy',),
     (SPECTACLE_MODE_HARD, u'Hard',),
+    (SPECTACLE_MODE_RESET, u'Reset',),
 )
 
 FILES_CHOICES = (

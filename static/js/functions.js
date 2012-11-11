@@ -161,7 +161,12 @@ decrease_happiness = function() {
 reset_spectacle = function () {
     $.get($.m_reset_spectacle_url, function(data) {
         if (!data.error) {
-            window.location.replace($.m_get_controller_url);
+            setTimeout(function(){
+                change_spectacle_mode();
+                setTimeout(function(){
+                    window.location.replace($.m_get_controller_url);
+                }, 5000 ); // 5s
+            }, 5000 ); // 5s
         }
     });
 }
@@ -225,11 +230,16 @@ change_spectacle_mode = function (){
     });
 }
 
-get_spectable_mode = function(url){
+get_spectable_mode = function(url, url2){
     $.get($.m_get_spectable_mode_url, function ( data ) {
         if (!data.error && data.mode) {
-            if ($.m_spectable_mode && $.m_spectable_mode != data.mode) {
-                window.location.replace(url);
+            if ($.m_spectable_mode && $.m_spectable_mode != data.mode && data.mode != 3) {
+                // FIXME
+                if ($.m_spectable_mode == 3 && url2) {
+                    window.location.replace(url2);
+                } else {
+                    window.location.replace(url);
+                }
             }
             $.m_spectable_mode = data.mode;
          }

@@ -27,13 +27,14 @@
     $.m_get_mobile_interaction_url = '{{ spectacle.get_mobile_interaction_url }}';
     $.m_get_chosen_commands_total_url = '{{ spectacle.get_chosen_commands_total_url }}';
     $.m_get_hard_show_url = '{{ spectacle.get_hard_show_url }}';
+    $.m_get_easy_show_url = '{{ spectacle.get_easy_show_url }}';
     $.m_get_spectable_mode_url = '{{ spectacle.get_spectable_mode_url }}';
 
   });
 
 var s10 = 3000; // 3s
 var easy_mobile_commands_refresh = setInterval(function (){ easy_mobile_commands(); }, s10);
-var get_spectable_mode_refresh = setInterval(function (){ get_spectable_mode($.m_get_hard_show_url); }, s10);
+var get_spectable_mode_refresh = setInterval(function (){ get_spectable_mode($.m_get_hard_show_url, $.m_get_easy_show_url); }, s10);
 
 </script>
 
