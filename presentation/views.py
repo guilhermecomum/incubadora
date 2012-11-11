@@ -399,14 +399,13 @@ def show_chosen_commands(request, s_id):
 
         monitor = "%s %d" % (cc.command.name, command_total)
 
-        data = { 'easy': easy, 'monitor': monitor }
+        data = { 'easy': easy, 'monitor': monitor, 'pk':cc.pk }
 
         command_sound = getattr( cc.command, "sound_%s" % command_total)
 
         if command_sound:
             sound_url = "%s%s" % (settings.STATIC_URL, command_sound.url)
             data['sound'] = sound_url
-            data['pk'] = cc.pk
 
     else:
 

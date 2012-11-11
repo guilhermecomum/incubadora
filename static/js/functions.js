@@ -240,13 +240,11 @@ show_chosen_commands = function(monitor){
     var monitor = monitor;
     $.get($.m_show_chosen_commands_url, function ( data ) {
         if (!data.error) {
-            $('#box-message').find('p').html('');
-            $('#chosen-commands-list li').remove();
-            if (monitor && data.commands.monitor) {
-                $('#chosen-commands-list').hide();
-                $('#box-message').find('p').html(data.commands.monitor);
-                // play sound
-                if ($.m_update_chosen_command != data.commands.pk) {
+            if ($.m_update_chosen_command != data.commands.pk) {
+                if (monitor && data.commands.monitor) {
+                    $('#chosen-commands-list').hide();
+                    $('#box-message').find('p').html(data.commands.monitor);
+                    // play sound
                     if (data.commands.sound) {
                         if ($('#sound-' + $.m_update_chosen_command).length >0) {
                             $('#sound-' + $.m_update_chosen_command)[0].pause();
@@ -255,16 +253,22 @@ show_chosen_commands = function(monitor){
                         $(html).appendTo('#box-message').find('p');
                         $('#sound-'+data.commands.pk)[0].play();
                     }
+                } else if (data.commands.easy) {
+                    $('#chosen-commands-list').hide();
+                    $('#box-message').find('p').text(data.commands.easy);
                 }
                 $.m_update_chosen_command = data.commands.pk;
-
-            } else if (data.commands.easy) {
-                $('#chosen-commands-list').hide();
-                $('#box-message').find('p').html(data.commands.easy);
             } else if (data.commands.hard) {
+                // FIXME
+                $('#box-message').show();
+                $('#chosen-commands-list').show();
                 $.each(data.commands.hard, function() {
-                    $('#box-message').hide();
-                    $('<li class="'+this.actor.slug+'"><div class="monitor"><span class="actor">'+this.actor.name+':</span> '+'<span class="command">'+this.command.name+'</span></div></li>').appendTo('#chosen-commands-list');
+                    var actor = '.'+this.actor.slug;
+                    if ($(actor).length > 0) {
+                        $(actor + ' .command').html(this.command.name);
+                    } else {
+                        $('<li class="'+this.actor.slug+'"><div class="monitor"><span class="actor">'+this.actor.name+':</span> '+'<span class="command">'+this.command.name+'</span></div></li>').appendTo('#chosen-commands-list');
+                    }
                 });
             }
         }
