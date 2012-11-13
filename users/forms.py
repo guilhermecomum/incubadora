@@ -42,8 +42,7 @@ class UserForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
 
-    newsletter = forms.BooleanField(widget=forms.CheckboxInput(
-                                    attrs={'class':'check'}))
+    newsletter = forms.BooleanField(widget=forms.HiddenInput())
 
     class Meta:
         model = UserProfile

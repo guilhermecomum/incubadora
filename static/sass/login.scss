@@ -65,11 +65,23 @@ body {
     border: 0;
 }
 
-.check  {
-    margin-left: 22px;
-    margin-top: 25px;
+.checkbox  {
     flaot: left;
     display: block;
+    width: 30px;
+    height: 30px;
+    border: 2px solid red;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.full {
+    display: none;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    margin-left: 5px;
+    margin-top: 5px;
 }
 
 .send {

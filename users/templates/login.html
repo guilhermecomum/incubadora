@@ -10,6 +10,17 @@ $(document).ready(function() {
     $('input').focus(function() {
         $('.errorlist').hide();
     });
+
+    $('.checkbox').click(function() {
+        $('.full').toggle();
+        if( $('.full:visible').length > 0 ) {
+            $('#id_newsletter').val(true);
+        }
+        else {
+            $('#id_newsletter').val(false);
+        }
+    });
+
 });
 
 </script>
@@ -32,7 +43,9 @@ $(document).ready(function() {
             <div class="mail">
                 {{ form.username }}
                 {{ form.username.errors }}
-                {{ user_profile_form.newsletter }}
+                <div class="checkbox">
+                  <div class="full"></div>
+                </div>
             </div>
             <div class="send">
                 <input type="image" src="{{ STATIC_URL }}images/login/enviar.png" border="0" width="265px" height="128px">
