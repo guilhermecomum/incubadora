@@ -171,7 +171,7 @@ def hard_show(request, s_id):
     user = request.user
     spectacle = get_spectacle(s_id)
     commands = spectacle.hard_commands.all()
-    actors = Actor.objects.filter(spectacle=spectacle).all()
+    actors = spectacle.actors.all()
 
     HardModeFormSet = formset_factory(HardModeForm, extra=1, max_num=3)
     formset = HardModeFormSet(initial=[ {'user': user.id,
@@ -296,7 +296,7 @@ def get_chosen_commands_total(request, s_id):
                                                     for m in commands ] })
     else:
         actors = []
-        for a in Actor.objects.all():
+        for a in spectacle.actors.all():
            commands = a.chosencommand_set.all()
            commands = commands.values('command__name', 'command__pk')
            commands = commands.annotate(Count('pk'))
@@ -334,7 +334,7 @@ def get_chosen_commands(request, s_id):
             return HttpResponse(message, mimetype="application/json")
     else:
         actors = []
-        for a in Actor.objects.all():
+        for a in spectacle.actors.all():
             try:
                 command = a.chosencommand_set.latest('pk')
                 if command:
@@ -435,7 +435,7 @@ def set_hard_chosen_commands(request, s_id):
     scene = get_open_scene(spectacle)
 
     actors = []
-    for a in Actor.objects.all():
+    for a in spectacle.actors.all():
         commands = a.hardmode_set.filter(spectacle=spectacle, scene=scene)
         if commands:
             commands = commands.values('command__pk', 'command__name')
@@ -496,10 +496,12 @@ def controller(request, s_id):
 
     spectacle = get_spectacle(s_id)
 
-    files = SpectacleArchive.objects.filter(spectacle=spectacle,
-                                            mode=spectacle.mode)
+    if spectacle.mode == SPECTACLE_MODE_EASY:
+        files = spectacle.easy_archives.all()
+    else:
+        files = spectacle.hard_archives.all()
 
-    duration = HardModeDuration.objects.filter(spectacle=spectacle)
+    duration = spectacle.hard_duration.all()
 
     c = { 'spectacle':spectacle, 'hard_duration':duration, 'files': files }
 
@@ -565,7 +567,10 @@ def reset_spectacle(request, s_id):
     spectacle.scene_set.all().delete()
     spectacle.hardmodemessage_set.all().delete()
     spectacle.save()
-    for sa in SpectacleArchive.objects.filter(spectacle=spectacle):
+    for sa in spectacle.easy_archives.all():
+        sa.show = False
+        sa.save()
+    for sa in spectacle.hard_archives.all():
         sa.show = False
         sa.save()
     message = simplejson.dumps( { 'error': 0 })
@@ -710,9 +715,10 @@ def get_backside_projection_content(request, s_id):
     spectacle = get_spectacle(s_id)
 
     try:
-        sa = SpectacleArchive.objects.get(spectacle=spectacle,
-                                               mode=spectacle.mode,
-                                               show=True)
+        if spectacle.mode == SPECTACLE_MODE_EASY:
+            sa = spectacle.easy_archives.get(show=True)
+        else:
+            sa = spectacle.hard_archives.get(show=True)
         url = "%s%s" % (settings.STATIC_URL, sa.archive.url)
 
         try:
@@ -739,13 +745,17 @@ def set_backside_projection_content(request, s_id):
     # FIXME
     id_archive = request.POST['id_archive']
     if id_archive:
-        for sa in SpectacleArchive.objects.all():
-            sa.show = False
-            sa.save()
         try:
-            sa = SpectacleArchive.objects.get(pk = int(id_archive),
-                                              spectacle = spectacle,
-                                              mode = spectacle.mode)
+            if spectacle.mode == SPECTACLE_MODE_EASY:
+                for sa in spectacle.easy_archives.all():
+                    sa.show = False
+                    sa.save()
+                sa = spectacle.easy_archives.get(pk = int(id_archive))
+            else:
+                for sa in spectacle.hard_archives.all():
+                    sa.show = False
+                    sa.save()
+                sa = spectacle.hard_archives.get(pk = int(id_archive))
             sa.show = True
             sa.save()
             message = simplejson.dumps( { 'error': 0  })

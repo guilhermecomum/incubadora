@@ -69,6 +69,43 @@ class Command(models.Model):
     def __unicode__(self):
         return "%s" % (self.name)
 
+class Actor(models.Model):
+    name = models.CharField(verbose_name=_('Name'), max_length=100)
+    slug = models.SlugField(verbose_name=_('Slug'), max_length=100, unique=True)
+
+    class Meta:
+        verbose_name = _('Actor')
+        verbose_name_plural = _('Actors')
+
+    def __unicode__(self):
+        return "%s" % (self.name)
+
+class HardModeDuration(models.Model):
+    duration = models.TimeField(verbose_name=_('Duration'))
+
+    class Meta:
+        verbose_name = _('Hard Mode Duration')
+        verbose_name_plural = _('Hard Mode Duration')
+
+    def __unicode__(self):
+        return "%s" % (self.duration)
+
+class SpectacleArchive(models.Model):
+    name = models.CharField(verbose_name=_('Name'), max_length=100)
+    archive = models.FileField(verbose_name=_('File'), upload_to='files')
+    show = models.BooleanField(verbose_name=_('Show'), default=False)
+    archive_type = models.CharField(
+        verbose_name=_('Type'),
+        max_length=1,
+        choices=FILES_CHOICES)
+
+    class Meta:
+        verbose_name = _('Spectacle File')
+        verbose_name_plural = _('Spectacle Files')
+
+    def __unicode__(self):
+        return "%s" % self.name
+
 class Spectacle(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     slug = models.SlugField(verbose_name=_('Slug'), max_length=100, unique=True)
@@ -104,6 +141,28 @@ class Spectacle(models.Model):
         Command,
         verbose_name=_('Hard Commands'),
         related_name='hard_commands',
+        blank=True,
+        null=True)
+    actors = models.ManyToManyField(
+        Actor,
+        verbose_name=_('Actors'),
+        blank=True,
+        null=True)
+    hard_duration = models.ManyToManyField(
+        HardModeDuration,
+        verbose_name=_('Hard Mode Duration'),
+        blank=True,
+        null=True)
+    easy_archives = models.ManyToManyField(
+        SpectacleArchive,
+        verbose_name=_('Easy Archive'),
+        related_name='easy_archive',
+        blank=True,
+        null=True)
+    hard_archives = models.ManyToManyField(
+        SpectacleArchive,
+        verbose_name=_('Hard Archive'),
+        related_name='hard_archive',
         blank=True,
         null=True)
 
@@ -230,18 +289,6 @@ class Spectacle(models.Model):
     def delete_logged_users_url(self):
         return ('delete-logged-users', [str(self.pk)])
 
-class Actor(models.Model):
-    name = models.CharField(verbose_name=_('Name'), max_length=100)
-    spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
-    slug = models.SlugField(verbose_name=_('Slug'), max_length=100, unique=True)
-
-    class Meta:
-        verbose_name = _('Actor')
-        verbose_name_plural = _('Actors')
-
-    def __unicode__(self):
-        return "%s" % (self.name)
-
 class Scene(models.Model):
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
     status = models.BooleanField(verbose_name=_('Status'), default=True)
@@ -343,17 +390,6 @@ class HardModeMessage(models.Model):
     def __unicode__(self):
         return "%s | %s" % (self.spectacle, self.message)
 
-class HardModeDuration(models.Model):
-    spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
-    duration = models.TimeField(verbose_name=_('Duration'))
-
-    class Meta:
-        verbose_name = _('Hard Mode Duration')
-        verbose_name_plural = _('Hard Mode Duration')
-
-    def __unicode__(self):
-        return "%s" % (self.duration)
-
 class LoggedUser(models.Model):
     player = models.ForeignKey(User, verbose_name=_('Player'), unique=True)
 
@@ -363,24 +399,3 @@ class LoggedUser(models.Model):
 
     def __unicode__(self):
         return "%s" % self.player
-
-class SpectacleArchive(models.Model):
-    spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
-    name = models.CharField(verbose_name=_('Name'), max_length=100)
-    archive = models.FileField(verbose_name=_('File'), upload_to='files')
-    archive_type = models.CharField(
-        verbose_name=_('Type'),
-        max_length=1,
-        choices=FILES_CHOICES)
-    show = models.BooleanField(verbose_name=_('Show'), default=False)
-    mode = models.CharField(
-        verbose_name=_('Mode'),
-        max_length=1,
-        choices=MODE_CHOICES)
-
-    class Meta:
-        verbose_name = _('Spectacle File')
-        verbose_name_plural = _('Spectacle Files')
-
-    def __unicode__(self):
-        return "%s" % self.name

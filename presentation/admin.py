@@ -28,7 +28,8 @@ from PIL import Image
 
 class SpectacleAdmin(admin.ModelAdmin):
     formfield_overrides = {
-        models.ManyToManyField: {'widget': CheckboxSelectMultiple},
+        models.ManyToManyField: {'widget': CheckboxSelectMultiple,
+                                 'help_text':''},
     }
     prepopulated_fields = {"slug": ("name",)}
     list_display = ['__str__', 'slug', 'status']
@@ -41,13 +42,9 @@ class ActorAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ['__str__', 'slug']
 
-class HardModeDurationAdmin(admin.ModelAdmin):
-    list_filter = ['spectacle']
-
-
 class SpectacleArchiveAdmin(admin.ModelAdmin):
     list_display = ['__str__',  'show_image', 'archive_type']
-    list_filter = ['mode', 'spectacle', 'archive_type']
+    list_filter = ['archive_type']
 
     def show_image(self, obj):
         try:
@@ -70,6 +67,6 @@ admin.site.register(EasyMode)
 admin.site.register(HardMode)
 admin.site.register(ChosenCommand)
 admin.site.register(HardModeMessage)
-admin.site.register(HardModeDuration, HardModeDurationAdmin)
+admin.site.register(HardModeDuration)
 admin.site.register(LoggedUser)
 admin.site.register(SpectacleArchive, SpectacleArchiveAdmin)
