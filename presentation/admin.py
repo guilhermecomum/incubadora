@@ -33,6 +33,27 @@ class SpectacleAdmin(admin.ModelAdmin):
     }
     prepopulated_fields = {"slug": ("name",)}
     list_display = ['__str__', 'slug', 'status']
+    save_on_top = True
+
+    def save_model(self, request, obj, form, change):
+
+        if not obj.pk:
+
+            try:
+                spec = Spectacle.objects.get(slug='default')
+            except Spectacle.DoesNotExist:
+                spec = None
+
+            if spec:
+                form.cleaned_data['easy_commands'] = spec.easy_commands.all()
+                form.cleaned_data['hard_commands'] = spec.hard_commands.all()
+                form.cleaned_data['actors'] = spec.actors.all()
+                form.cleaned_data['easy_archives'] = spec.easy_archives.all()
+                form.cleaned_data['hard_archives'] = spec.hard_archives.all()
+                form.cleaned_data['hard_duration'] = spec.hard_duration.all()
+
+        obj.save()
+
 
 class CommandAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
