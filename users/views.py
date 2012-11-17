@@ -27,6 +27,7 @@ from django.forms.widgets import HiddenInput
 from users.forms import UserForm, UserProfileForm
 from users.models import UserProfile
 from presentation.models import Spectacle
+from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_RESET
 
 
 def user_login(request):
@@ -69,7 +70,11 @@ def user_login(request):
 
                     try:
                         spectacle = Spectacle.objects.get(status=True)
-                        url = spectacle.get_easy_show_url()
+                        if spectacle.mode == SPECTACLE_MODE_EASY or \
+                           spectacle.mode == SPECTACLE_MODE_RESET:
+                            url = spectacle.get_easy_show_url()
+                        else:
+                            url = spectacle.get_hard_show_url()
                         return HttpResponseRedirect(url)
                     except Spectacle.MultipleObjectsReturned:
                         msg = '<h1>%s</h1>' % _('Spectacle not found')
