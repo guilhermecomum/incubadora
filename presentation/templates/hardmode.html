@@ -56,10 +56,12 @@ $(document).ready(function() {
                        $('.command').find('div').remove();
                        $.selected = [];
                   });
+            $(".alerta").html("").fadeIn();
             return false;
         }
         else {
-            alert ("You must choose a command for each actor!");
+            // alert ("You must choose a command for each actor!");
+            $(".alerta").html("<p>You must choose a command for each actor!</p>");
             return false;
         }
     });
@@ -105,6 +107,9 @@ var get_spectable_mode_refresh = setInterval(function (){ get_spectable_mode($.m
         </div>
 
       </form>
+    </div>
+    <div class="alerta">
+
     </div>
     <div class="footer">
       <form id="hard-mode-message-form" method="post" action="{{ spectacle.hard_message_add_url }}">{% csrf_token %}

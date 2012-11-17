@@ -168,12 +168,21 @@ body {
     width: 240px;
 }
 
+.alerta {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 14px;
+    font-weight: bold;
+    height: 14px;
+    display: block;
+}
+
 .footer {
     width: 500px;
     margin: 0 auto;
     text-align: center;
     overflow: auto;
-    margin-top: 60px;
+    margin-top: 20px;
 }
 
 .footer .textarea {
