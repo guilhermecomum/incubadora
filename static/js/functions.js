@@ -104,7 +104,8 @@ get_commands = function() {
     });
 }
 
-get_chosen_commands = function() {
+get_chosen_commands = function(reload) {
+    var reload = reload;
     $.get($.m_get_chosen_commands_url, function ( data ) {
         if (!data.error) {
             // Easy Mode
@@ -115,7 +116,7 @@ get_chosen_commands = function() {
                     $('#chosen-commands-list').html('<li id="chosen-command-'+command.pk+'"><span>'+command.name+'</span>');
                     block = true;
                 }
-                if (block) {
+                if (block && !reload) {
                     set_mobile_interaction();
                 }
             } else {
