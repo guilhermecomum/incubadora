@@ -290,7 +290,7 @@ get_backside_projection_content = function() {
     $.get($.m_backside_projection_content_url, function ( data ) {
         if (!data.error && data.file) {
             // FIXME
-            if ($.m_backside_projection_content_show && $.m_backside_projection_content_show != data.file) {
+            if ($.m_backside_projection_content_show != data.file) {
                 if (data.archive_type == 'image') {
                     $(".content").html('<img src="'+data.file+'">');
                 } else {
