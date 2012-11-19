@@ -252,9 +252,9 @@ show_chosen_commands = function(monitor){
     $.get($.m_show_chosen_commands_url, function ( data ) {
         if (!data.error) {
             if ($.m_update_chosen_command != data.commands.pk) {
-                if (monitor && data.commands.monitor) {
+                if (monitor && data.commands.easy_monitor) {
                     $('#chosen-commands-list').hide();
-                    $('#box-message').find('p').html(data.commands.monitor);
+                    $('#box-message').find('p').html(data.commands.easy_monitor);
                     // play sound
                     if (data.commands.sound) {
                         if ($('#sound-' + $.m_update_chosen_command).length >0) {
@@ -270,7 +270,6 @@ show_chosen_commands = function(monitor){
                 }
                 $.m_update_chosen_command = data.commands.pk;
             } else if (data.commands.hard) {
-                // FIXME
                 $('#box-message').show();
                 $('#chosen-commands-list').show();
                 $.each(data.commands.hard, function() {
@@ -281,6 +280,20 @@ show_chosen_commands = function(monitor){
                         $('<li class="'+this.actor.slug+'"><div class="monitor"><span class="actor">'+this.actor.name+':</span> '+'<span class="command">'+this.command.name+'</span></div></li>').appendTo('#chosen-commands-list');
                     }
                 });
+                if (monitor && $.m_scene_chosen_command != data.commands.scene.pk) {
+                    $.each($('#chosen-commands audio[id^="sound-"]'), function() {
+                        $('#'+this.id)[0].pause();
+                        $('#'+this.id).remove();
+                    });
+                    $.each(data.commands.hard, function() {
+                        if (this.command.sound) {
+                            html = '<audio id="sound-'+this.command.pk+'"><source src="'+this.command.sound+'" type="audio/mp3">Your browser does not support the audio element.</audio>';
+                            $(html).appendTo('#chosen-commands');
+                            $('#sound-'+this.command.pk)[0].play();
+                            $.m_scene_chosen_command = data.commands.scene.pk;
+                        }
+                    });
+                }
             }
         }
     });

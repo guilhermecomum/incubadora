@@ -398,9 +398,9 @@ def show_chosen_commands(request, s_id):
                                                      command=cc.command).count()
 
 
-        monitor = "%s %d" % (cc.command.name, command_total)
+        easy_monitor = "%s %d" % (cc.command.name, command_total)
 
-        data = { 'easy': easy, 'monitor': monitor, 'pk':cc.pk }
+        data = { 'easy': easy, 'easy_monitor': easy_monitor, 'pk':cc.pk }
 
         command_sound = getattr( cc.command, "sound_%s" % command_total)
 
@@ -416,13 +416,19 @@ def show_chosen_commands(request, s_id):
 
         hard = []
         for chosen in cc:
+           command_sound = getattr(chosen.command, "sound_%d" % 1)
+           if command_sound:
+               sound_url = "%s%s" % (settings.STATIC_URL, command_sound)
+           else:
+               sound_url = ""
            hard.append({'actor': {'pk': chosen.actor.pk,
                                       'slug': chosen.actor.slug,
                                       'name': chosen.actor.name },
-                        'command': { 'name': chosen.command.name } } )
+                        'command': { 'name': chosen.command.name,
+                                     'sound': sound_url,
+                                     'pk': chosen.command.pk } } )
 
-        data = { 'hard' : hard }
-
+        data = { 'hard' : hard, 'scene': { 'pk': scene.pk } }
 
     message = simplejson.dumps( { 'error': 0, 'commands': data })
     return HttpResponse(message, mimetype="application/json")
