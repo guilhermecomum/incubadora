@@ -375,3 +375,15 @@ delete_logged_users = function() {
         }
     });
 }
+
+get_frontal_projection_3d_data = function() {
+    $.get($.m_frontal_projection_3d_data_url_url, function(data) {
+        if (!data.error) {
+            $("#frontal_projection_3d").css({ skewX: data.settings.skew_x });
+            $("#frontal_projection_3d").css({ skewY: data.settings.skew_y });
+            $('#frontal_projection_3d').transition({ x: data.settings.translate_x });
+            $('#frontal_projection_3d').transition({ y: data.settings.translate_y });
+            $('#frontal_projection_3d').transition({ rotate: data.settings.rotate });
+        }
+    });
+}

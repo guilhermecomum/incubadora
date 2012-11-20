@@ -67,6 +67,12 @@ $(document).ready(function() {
         return false;
     });
 
+    $('#frontal-projection-settings-submit').click(function() {
+        var url = $('#frontal-projection-settings-form').attr('action');
+        $.post( url, $("#frontal-projection-settings-form").serialize() );
+        $('#frontal-projection-settings-modal').modal('hide');
+        return false;
+    });
 
 });
 
@@ -165,9 +171,7 @@ $(document).ready(function() {
         <button id="delete-logged-users" class="span6 btn btn-large btn-danger">Remover usuários logados</button>
       </div>
       <div class="row">
-        <div class="span6">
-
-        </div>
+        <button id="frontal-projection-settings" class="span6 btn btn-large btn-primary" data-toggle="modal" data-target="#frontal-projection-settings-modal">Projeção Frontal Configurações</button>
       </div>
     </div>
     <div class="span6">
@@ -232,4 +236,55 @@ $(document).ready(function() {
     </div>
     {% endif %}
   </div>
+
+<div id="frontal-projection-settings-modal" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Projeção Frontal: Configurações</h3>
+    </div>
+    <div class="modal-body">
+        <form id="frontal-projection-settings-form" method="post" action="{{ spectacle.set_frontal_projection_3d_data_url }}" class="form-horizontal">{% csrf_token %}
+            {% for hidden in fps_form.hidden_fields %} {{ hidden }} {% endfor %}
+            <div class="control-group">
+                <label class="control-label" for="{{ fps_form.translate_x.html_name }}">{{ fps_form.translate_x.label }}</label>
+                <div class="controls">
+                    {{ fps_form.translate_x }}
+                    <span class="help-inline">{{ fps_form.translate_x.help_text }}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="{{ fps_form.translate_y.html_name }}">{{ fps_form.translate_y.label }}</label>
+                <div class="controls">
+                    {{ fps_form.translate_y }}
+                    <span class="help-inline">{{ fps_form.translate_y.help_text }}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="{{ fps_form.skew_x.html_name }}">{{ fps_form.skew_x.label }}</label>
+                <div class="controls">
+                    {{ fps_form.skew_x }}
+                    <span class="help-inline">{{ fps_form.skew_x.help_text }}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="{{ fps_form.skew_x.html_name }}">{{ fps_form.skew_y.label }}</label>
+                <div class="controls">
+                    {{ fps_form.skew_y }}
+                    <span class="help-inline">{{ fps_form.skew_y.help_text }}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="{{ fps_form.rotate.html_name }}">{{ fps_form.rotate.label }}</label>
+                <div class="controls">
+                    {{ fps_form.rotate }}
+                     <span class="help-inline">{{ fps_form.rotate.help_text }}</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button id="frontal-projection-settings-submit" type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+</div>
   {% endblock %}

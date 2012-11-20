@@ -186,6 +186,18 @@ class Spectacle(models.Model):
         return ('frontal-projection-show', [str(self.pk)])
 
     @models.permalink
+    def get_frontal_projection_3d_show_url(self):
+        return ('frontal-projection-3d-show', [str(self.pk)])
+
+    @models.permalink
+    def get_frontal_projection_3d_data_url(self):
+        return ('get-frontal-projection-3d-data', [str(self.pk)])
+
+    @models.permalink
+    def set_frontal_projection_3d_data_url(self):
+        return ('set-frontal-projection-3d-data', [str(self.pk)])
+
+    @models.permalink
     def get_happiness_meter_url(self):
         return ('happiness-meter', [str(self.pk)])
 
@@ -399,3 +411,61 @@ class LoggedUser(models.Model):
 
     def __unicode__(self):
         return "%s" % self.player
+
+class FrontalProjectionSettings(models.Model):
+    spectacle = models.OneToOneField(Spectacle, verbose_name=_('Spectacle'))
+    translate_x = models.CharField(
+        verbose_name=_('Translate X'),
+        max_length=10,
+        default=0,
+        help_text='For example: 10px',
+        blank=True,
+        null=True)
+    translate_y = models.CharField(
+        verbose_name=_('Translate Y'),
+        max_length=10,
+        default=0,
+        help_text=_('For example: 10px'),
+        blank=True,
+        null=True)
+    skew_x = models.CharField(
+        verbose_name=_('Skew X'),
+        max_length=10,
+        default=0,
+        help_text=_('For example: 10deg'),
+        blank=True,
+        null=True)
+    skew_y = models.CharField(
+        verbose_name=_('Skew Y'),
+        max_length=10,
+        default=0,
+        help_text=_('For example: 10deg'),
+        blank=True,
+        null=True)
+    rotate = models.CharField(
+        verbose_name=_('Rotate'),
+        max_length=10,
+        default=0,
+        help_text=_('For example: 10deg'),
+        blank=True,
+        null=True)
+
+    class Meta:
+        verbose_name = _('Frontal Projection Settings')
+        verbose_name_plural = _('Frontal Projection Settings')
+
+    def __unicode__(self):
+        return "%s" % self.spectacle
+
+    def save(self, *args, **kwargs):
+        if not self.translate_x:
+            self.translate_x = 0
+        if not self.translate_y:
+            self.translate_y = 0
+        if not self.skew_x:
+            self.skew_x = 0
+        if not self.skew_y:
+            self.skew_y = 0
+        if not self.rotate:
+            self.rotate = 0
+        super(FrontalProjectionSettings, self).save(*args, **kwargs)

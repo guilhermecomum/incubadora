@@ -52,3 +52,11 @@ class HardModeMessageForm(forms.ModelForm):
             'message': forms.Textarea(
                 attrs={'placeholder': u'Mande sua mensagem para a INCUBADORA'})
         }
+
+class FrontalProjectionSettingsForm(forms.ModelForm):
+
+    class Meta:
+        widgets = {
+            'spectacle': forms.HiddenInput(),
+        }
+        model = FrontalProjectionSettings

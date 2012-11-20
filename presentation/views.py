@@ -30,10 +30,12 @@ from django.dispatch import receiver
 from django.conf import settings
 from presentation.models import Command, EasyMode, Spectacle, HardMode, \
                                 Actor, Scene, ChosenCommand, HardModeDuration,\
-                                HardModeMessage, LoggedUser, SpectacleArchive
+                                HardModeMessage, LoggedUser, SpectacleArchive,\
+                                FrontalProjectionSettings
 from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD,\
                                 SPECTACLE_MODE_RESET
-from presentation.forms import EasyModeForm, HardModeForm, HardModeMessageForm
+from presentation.forms import EasyModeForm, HardModeForm, HardModeMessageForm,\
+                               FrontalProjectionSettingsForm
 from collections import defaultdict
 from PIL import Image
 import math
@@ -509,7 +511,15 @@ def controller(request, s_id):
 
     duration = spectacle.hard_duration.all()
 
-    c = { 'spectacle':spectacle, 'hard_duration':duration, 'files': files }
+    try:
+        fps = FrontalProjectionSettings.objects.get(spectacle=spectacle)
+    except FrontalProjectionSettings.DoesNotExist:
+        fps = None
+
+    fps_form = FrontalProjectionSettingsForm(instance=fps)
+
+    c = { 'spectacle':spectacle, 'hard_duration':duration, 'files': files,
+          'fps_form':fps_form }
 
     return render(request, "controller.html", c)
 
@@ -812,5 +822,56 @@ def delete_logged_users(request, s_id):
     LoggedUser.objects.all().delete()
 
     message = simplejson.dumps( { 'error': 0 } )
+
+    return HttpResponse(message, mimetype="application/json")
+
+
+def frontal_projection_3d(request, s_id):
+    spectacle = get_spectacle(s_id)
+
+    c = { 'spectacle':spectacle }
+
+    return render(request, 'frontal_projection_3d.html', c)
+
+
+def get_frontal_projection_3d_data(request, s_id):
+    spectacle = get_spectacle(s_id)
+
+    try:
+        fps = FrontalProjectionSettings.objects.get(spectacle=spectacle)
+        settings = {'translate_x': fps.translate_x,
+                    'translate_y': fps.translate_y,
+                    'skew_x': fps.skew_x ,
+                    'skew_y': fps.skew_y,
+                    'rotate': fps.rotate}
+        message = simplejson.dumps( { 'error': 0, 'settings': settings} )
+    except FrontalProjectionSettings.DoesNotExist:
+        message = simplejson.dumps( { 'error': 1 })
+    except FrontalProjectionSettings.MultipleObjectsReturned:
+        message = simplejson.dumps( { 'error': 1 })
+
+    return HttpResponse(message, mimetype="application/json")
+
+@staff_member_required
+def set_frontal_projection_3d_data(request, s_id):
+    spectacle = get_spectacle(s_id)
+
+    try:
+        fps = FrontalProjectionSettings.objects.get(spectacle=spectacle)
+    except FrontalProjectionSettings.DoesNotExist:
+        fps = None
+
+    if fps:
+        form = FrontalProjectionSettingsForm(request.POST, instance=fps)
+    else:
+        post = request.POST.copy()
+        post['spectacle'] = spectacle.id
+        form = FrontalProjectionSettingsForm(post)
+
+    if request.POST and form.is_valid():
+        form.save()
+        message = simplejson.dumps( { 'error': 0 } )
+    else:
+        message = simplejson.dumps( { 'error': 1 } )
 
     return HttpResponse(message, mimetype="application/json")
