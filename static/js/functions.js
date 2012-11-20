@@ -17,6 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+$.ajaxSetup({ cache: false });
 
 get_happiness_meter = function() {
     $.get($.m_get_happiness_meter_url, function( data ) {
