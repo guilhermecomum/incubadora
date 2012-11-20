@@ -52,6 +52,8 @@ $(document).ready(function() {
     });
 
     $('.thumbnail').click(function() {
+        $('.thumbnail').css("border","1px solid white");
+        $(this).css("border","1px solid red");
         var aid = $(this).attr('id').split('-')[1];
         $('#id_archive').val(aid);
         set_backside_projection_content();
@@ -210,7 +212,16 @@ $(document).ready(function() {
               {% for f in files  %}
               <li class="span2">
                 <div class="thumbnail" id="thumb-{{ f.pk }}">
-                  <img src="{{ STATIC_URL }}{{ f.archive.url }}" alt="{{ f.name }}" title="{{ f.name }}" />
+                  {% if f.archive_type == '1' %}
+                  <div class="image">
+                    <img src="{{ STATIC_URL }}{{ f.archive.url }}" alt="{{ f.name }}" title="{{ f.name }}" />
+                    <p>{{ f.name }}</p>
+                  </div>
+                  {% else %}
+                  <div class="video">
+                    <p>{{ f.name }}</p>
+                  </div>
+                  {% endif %}
                 </div>
               </li>
               {% endfor %}

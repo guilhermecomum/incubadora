@@ -46,8 +46,8 @@ class HardModeDurationAdmin(admin.ModelAdmin):
 
 
 class SpectacleArchiveAdmin(admin.ModelAdmin):
-    list_display = ['__str__',  'show_image']
-    list_filter = ['mode', 'spectacle']
+    list_display = ['__str__',  'show_image', 'archive_type']
+    list_filter = ['mode', 'spectacle', 'archive_type']
 
     def show_image(self, obj):
         try:

@@ -24,11 +24,19 @@ from django.contrib.auth.models import User
 
 SPECTACLE_MODE_EASY = '1'
 SPECTACLE_MODE_HARD = '2'
+FILE_IMG = '1'
+FILE_VIDEO = '2'
 
 MODE_CHOICES = (
     (SPECTACLE_MODE_EASY, u'Easy',),
     (SPECTACLE_MODE_HARD, u'Hard',),
 )
+
+FILES_CHOICES = (
+    (FILE_VIDEO, u'Movie',),
+    (FILE_IMG, u'Image',),
+)
+
 
 class Command(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
@@ -358,6 +366,10 @@ class SpectacleArchive(models.Model):
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     archive = models.FileField(verbose_name=_('File'), upload_to='files')
+    archive_type = models.CharField(
+        verbose_name=_('Type'),
+        max_length=1,
+        choices=FILES_CHOICES)
     show = models.BooleanField(verbose_name=_('Show'), default=False)
     mode = models.CharField(
         verbose_name=_('Mode'),
