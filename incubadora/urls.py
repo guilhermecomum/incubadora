@@ -120,6 +120,10 @@ urlpatterns += patterns('presentation.views',
 
      # Controller
 
+     url(r'^controller/(?P<s_id>(.*))/set/logged-users-percentage/$',
+         'set_logged_users_percentage',
+         name='set-logged-users-percentage'),
+
      url(r'^controller/(?P<s_id>(.*))/delete-logged-users/$',
          'delete_logged_users',
          name='delete-logged-users'),

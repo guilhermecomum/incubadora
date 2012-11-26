@@ -87,10 +87,14 @@ body {
     margin: 0;
 }
 
-#frontal-projection-settings-form input {
+.controller-modal input {
     width: 50px;
 }
 
-#frontal-projection-settings-modal {
+.controller-modal {
     color: black;
+}
+
+.controller-modal #error-msg {
+    color: red;
 }

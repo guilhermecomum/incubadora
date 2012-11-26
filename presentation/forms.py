@@ -18,6 +18,7 @@
 ##
 
 from django import forms
+from django.utils.translation import ugettext as _
 from presentation.models import *
 
 class EasyModeForm(forms.ModelForm):
@@ -60,3 +61,8 @@ class FrontalProjectionSettingsForm(forms.ModelForm):
             'spectacle': forms.HiddenInput(),
         }
         model = FrontalProjectionSettings
+
+class LoggedUsersPercentageForm(forms.Form):
+
+    percentage = forms.IntegerField(
+        label=_('Percentage of logged users for choose a command'))

@@ -118,6 +118,9 @@ class Spectacle(models.Model):
     mobile_interaction = models.BooleanField(
         verbose_name=_('Mobile Interaction'),
         default=False)
+    logged_users_percentage = models.IntegerField(
+        verbose_name=_('Percentage of logged users for choose a command'),
+        default=10)
     easy_happiness_meter = models.IntegerField(
         verbose_name=_('Easy Happiness Meter'),
         default=50,
@@ -300,6 +303,10 @@ class Spectacle(models.Model):
     @models.permalink
     def delete_logged_users_url(self):
         return ('delete-logged-users', [str(self.pk)])
+
+    @models.permalink
+    def set_logged_users_percentage_url(self):
+        return ('set-logged-users-percentage', [str(self.pk)])
 
 class Scene(models.Model):
     spectacle = models.ForeignKey(Spectacle, verbose_name=_('Spectacle'))

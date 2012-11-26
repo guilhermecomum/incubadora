@@ -20,7 +20,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, Http404
 from django.utils import simplejson
-from django.forms.widgets import HiddenInput
+from django.forms.widgets import HiddenInput, TextInput
 from django.forms.formsets import formset_factory
 from django.db.models import Count
 from django.contrib.admin.views.decorators import staff_member_required
@@ -35,7 +35,8 @@ from presentation.models import Command, EasyMode, Spectacle, HardMode, \
 from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD,\
                                 SPECTACLE_MODE_RESET
 from presentation.forms import EasyModeForm, HardModeForm, HardModeMessageForm,\
-                               FrontalProjectionSettingsForm
+                               FrontalProjectionSettingsForm, \
+                               LoggedUsersPercentageForm
 from collections import defaultdict
 from PIL import Image
 import math
@@ -89,10 +90,13 @@ def easy_show(request, s_id):
     return render(request, 'easymode.html', c)
 
 
-def get_minimum():
-    total_logged_users = LoggedUser.objects.all().count()
-    return int(math.ceil(total_logged_users * 0.1))
-
+def get_minimum(spectacle):
+    minimum = spectacle.logged_users_percentage
+    if minimum > 0:
+        total_logged_users = LoggedUser.objects.all().count()
+        return int(math.ceil(total_logged_users * (float(minimum)/100)))
+    else:
+        return 0
 
 @login_required
 def easy_add(request, s_id):
@@ -518,8 +522,12 @@ def controller(request, s_id):
 
     fps_form = FrontalProjectionSettingsForm(instance=fps)
 
+    lup_form = LoggedUsersPercentageForm()
+    lup_form.fields['percentage'].widget = TextInput(
+        attrs={'value':spectacle.logged_users_percentage})
+
     c = { 'spectacle':spectacle, 'hard_duration':duration, 'files': files,
-          'fps_form':fps_form }
+          'fps_form':fps_form, 'lup_form': lup_form }
 
     return render(request, "controller.html", c)
 
@@ -873,5 +881,22 @@ def set_frontal_projection_3d_data(request, s_id):
         message = simplejson.dumps( { 'error': 0 } )
     else:
         message = simplejson.dumps( { 'error': 1 } )
+
+    return HttpResponse(message, mimetype="application/json")
+
+@staff_member_required
+def set_logged_users_percentage(request, s_id):
+    spectacle = get_spectacle(s_id)
+
+    form = LoggedUsersPercentageForm(request.POST)
+
+    if request.POST and form.is_valid():
+        percentage = form.cleaned_data['percentage']
+        spectacle.logged_users_percentage = percentage
+        spectacle.save()
+        message = simplejson.dumps( { 'error': 0 } )
+    else:
+        msg = ' '.join(form.errors['percentage'])
+        message = simplejson.dumps( { 'error': 1, 'error_msg': msg } )
 
     return HttpResponse(message, mimetype="application/json")
