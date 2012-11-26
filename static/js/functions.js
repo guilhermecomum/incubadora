@@ -270,7 +270,9 @@ show_chosen_commands = function(monitor){
                     }
                 } else if (data.commands.easy) {
                     $('#chosen-commands-list').hide();
-                    $('#box-message').find('p').text(data.commands.easy);
+                    // Show and hide after 1 min
+                    $('#box-message').find('p').show();
+                    $('#box-message').find('p').text(data.commands.easy).delay(time).hide(0);
                 }
                 $.m_update_chosen_command = data.commands.pk;
             } else if (data.commands.hard.length > 0) {
