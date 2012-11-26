@@ -275,7 +275,7 @@ show_chosen_commands = function(monitor){
                     $('#box-message').find('p').text(data.commands.easy).delay(time).hide(0);
                 }
                 $.m_update_chosen_command = data.commands.pk;
-            } else if (data.commands.hard.length > 0) {
+            } else if (data.commands.hard && data.commands.hard.length > 0) {
                 if (!monitor) {
                     $('#box-message').show();
                     $('#chosen-commands-list').show();
