@@ -3,3 +3,6 @@
 settings.py
 static/.sass-cache/
 static/css/
+django.wsgi
+static/command-sound/
+static/files/

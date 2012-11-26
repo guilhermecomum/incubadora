@@ -169,3 +169,5 @@ urlpatterns += patterns('presentation.views',
      url(r'^monitor/(?P<s_id>(.*))/$', 'monitor_show', name='monitor-show'),
 
 )
+
+handler404 = 'index.views.my_custom_404_view'

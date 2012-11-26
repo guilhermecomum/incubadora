@@ -31,3 +31,7 @@ def index(request):
         return render(request, 'index.html', c)
     else:
         return HttpResponseRedirect('/login/')
+
+
+def my_custom_404_view(request):
+    return HttpResponseRedirect('/login/')
