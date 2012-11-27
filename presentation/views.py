@@ -131,7 +131,7 @@ def easy_add(request, s_id):
             has_cc = ChosenCommand.objects.filter(spectacle = spectacle,
                                                   scene = scene).count()
 
-            minimum = get_minimum()
+            minimum = get_minimum(spectacle)
 
             if total_scene_command >= minimum and not has_cc:
                 cc = ChosenCommand(spectacle = spectacle,
@@ -807,7 +807,7 @@ def frontal_projection_draw_list_bullet(request, s_id):
     mode = mode.values('command__name', 'command__pk', 'command__slug')
     mode = mode.annotate(Count('pk'))
 
-    minimum = get_minimum()
+    minimum = get_minimum(spectacle)
     if minimum > 0:
         values = []
         for m in mode:
