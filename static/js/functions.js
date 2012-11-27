@@ -386,6 +386,23 @@ get_frontal_projection_3d_data = function() {
             $('#frontal_projection_3d').transition({ x: data.settings.translate_x });
             $('#frontal_projection_3d').transition({ y: data.settings.translate_y });
             $('#frontal_projection_3d').transition({ rotate: data.settings.rotate });
+
+            $("#box-message").css({'left': data.settings.message_x,
+                                   'top': data.settings.message_y});
+
+            $("#mobile_interaction").css({'left': data.settings.mobile_interaction_x,
+                                          'top': data.settings.mobile_interaction_y});
+
+            $(".commands").css({'left': data.settings.commands_x,
+                                'top': data.settings.commands_y});
+
+            $(".happiness").css({'left': data.settings.happiness_meter_x,
+                                 'top': data.settings.happiness_meter_y});
         }
     });
+}
+
+set_frontal_projection_boxes_positions = function() {
+    $.post($.m_frontal_projection_boxes_positions_url,
+           $("#form-frontal-projection-boxes-positions").serialize());
 }

@@ -189,16 +189,16 @@ class Spectacle(models.Model):
         return ('frontal-projection-show', [str(self.pk)])
 
     @models.permalink
-    def get_frontal_projection_3d_show_url(self):
-        return ('frontal-projection-3d-show', [str(self.pk)])
-
-    @models.permalink
     def get_frontal_projection_3d_data_url(self):
         return ('get-frontal-projection-3d-data', [str(self.pk)])
 
     @models.permalink
     def set_frontal_projection_3d_data_url(self):
         return ('set-frontal-projection-3d-data', [str(self.pk)])
+
+    @models.permalink
+    def set_frontal_projection_boxes_positions_url(self):
+        return ('set-frontal-projection-boxes-positions', [str(self.pk)])
 
     @models.permalink
     def get_happiness_meter_url(self):
@@ -454,6 +454,46 @@ class FrontalProjectionSettings(models.Model):
         max_length=10,
         default=0,
         help_text=_('For example: 10deg'),
+        blank=True,
+        null=True)
+    message_x = models.IntegerField(
+        verbose_name=_('Message X'),
+        default=0,
+        blank=True,
+        null=True)
+    message_y = models.IntegerField(
+        verbose_name=_('Message Y'),
+        default=0,
+        blank=True,
+        null=True)
+    mobile_interaction_x = models.IntegerField(
+        verbose_name=_('Mobile Interaction X'),
+        default=0,
+        blank=True,
+        null=True)
+    mobile_interaction_y = models.IntegerField(
+        verbose_name=_('Mobile Interaction Y'),
+        default=0,
+        blank=True,
+        null=True)
+    commands_x = models.IntegerField(
+        verbose_name=_('Commands X'),
+        default=0,
+        blank=True,
+        null=True)
+    commands_y = models.IntegerField(
+        verbose_name=_('Commands Y'),
+        default=0,
+        blank=True,
+        null=True)
+    happiness_meter_x = models.IntegerField(
+        verbose_name=_('Happiness Meter X'),
+        default=0,
+        blank=True,
+        null=True)
+    happiness_meter_y = models.IntegerField(
+        verbose_name=_('Happiness Meter Y'),
+        default=0,
         blank=True,
         null=True)
 

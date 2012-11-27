@@ -58,6 +58,10 @@ urlpatterns += patterns('presentation.views',
 
     # Frontal Projection
 
+    url(r'^frontal-projection/(?P<s_id>(.*))/set/boxes-positions/$',
+        'set_frontal_projection_boxes_positions',
+        name='set-frontal-projection-boxes-positions'),
+
     url(r'^frontal-projection-3d/(?P<s_id>(.*))/set/data/$',
         'set_frontal_projection_3d_data',
         name='set-frontal-projection-3d-data'),
@@ -65,10 +69,6 @@ urlpatterns += patterns('presentation.views',
     url(r'^frontal-projection-3d/(?P<s_id>(.*))/get/data/$',
         'get_frontal_projection_3d_data',
         name='get-frontal-projection-3d-data'),
-
-    url(r'^frontal-projection-3d/(?P<s_id>(.*))/$',
-        'frontal_projection_3d',
-        name='frontal-projection-3d-show'),
 
     url(r'^frontal-projection/(?P<s_id>(.*))/get/draw-list-bullet/$',
         'frontal_projection_draw_list_bullet',

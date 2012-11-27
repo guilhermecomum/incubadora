@@ -66,3 +66,9 @@ class LoggedUsersPercentageForm(forms.Form):
 
     percentage = forms.IntegerField(
         label=_('Percentage of logged users for choose a command'))
+
+class FrontalProjectionBoxForm(forms.Form):
+
+    fpbf_x = forms.IntegerField()
+    fpbf_y = forms.IntegerField()
+    fpbf_name = forms.CharField()

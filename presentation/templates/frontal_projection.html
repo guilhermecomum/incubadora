@@ -4,6 +4,23 @@
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/frontal_projection.css">
 <script src="{{ STATIC_URL }}js/functions.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/jquery.transit.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/jquery.ui.core.min.js"></script>
+<script src="{{ STATIC_URL }}js/jquery.ui.widget.min.js"></script>
+<script src="{{ STATIC_URL }}js/jquery.ui.mouse.min.js"></script>
+<script src="{{ STATIC_URL }}js/jquery.ui.draggable.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+    $.m_frontal_projection_3d_data_url_url = '{{ spectacle.get_frontal_projection_3d_data_url }}';
+
+});
+
+var s10 = 3000; // 3s
+var frontal_projection_3d_data_refresh = setInterval(function(){ get_frontal_projection_3d_data(); }, s10);
+
+</script>
 <script type="text/javascript">
 
 $(document).ready(function() {
@@ -15,6 +32,40 @@ $(document).ready(function() {
     $.m_get_spectable_mode_url = '{{ spectacle.get_spectable_mode_url }}';
     $.m_get_chosen_commands_total_url = '{{ spectacle.get_chosen_commands_total_url }}';
     $.m_frontal_projection_show_url = '{{ spectacle.get_frontal_projection_show_url }}';
+    $.m_frontal_projection_boxes_positions_url = '{{ spectacle.set_frontal_projection_boxes_positions_url }}';
+
+    $("#box-message").draggable({
+        stop: function(event, ui) {
+            $('#fpbf_x').val(ui.position.left);
+            $('#fpbf_y').val(ui.position.top);
+            $('#fpbf_name').val('message');
+            set_frontal_projection_boxes_positions();
+        }
+    });
+    $( "#mobile_interaction" ).draggable({
+        stop: function(event, ui) {
+            $('#fpbf_x').val(ui.position.left);
+            $('#fpbf_y').val(ui.position.top);
+            $('#fpbf_name').val('mobile_interaction');
+            set_frontal_projection_boxes_positions();
+        }
+    });
+    $( ".commands" ).draggable({
+        stop: function(event, ui) {
+            $('#fpbf_x').val(ui.position.left);
+            $('#fpbf_y').val(ui.position.top);
+            $('#fpbf_name').val('commands');
+            set_frontal_projection_boxes_positions();
+        }
+    });
+    $( ".happiness" ).draggable({
+        stop: function(event, ui) {
+            $('#fpbf_x').val(ui.position.left);
+            $('#fpbf_y').val(ui.position.top);
+            $('#fpbf_name').val('happiness_meter');
+            set_frontal_projection_boxes_positions();
+        }
+    });
 
 });
 
@@ -60,7 +111,14 @@ var bullets_refresh = setInterval(function (){ get_bullets(); }, s10);
 {% endblock %}
 
 {% block content %}
-<div class="container">
+
+<form id="form-frontal-projection-boxes-positions">{% csrf_token %}
+    <input type="hidden" id="fpbf_x" name="fpbf_x">
+    <input type="hidden" id="fpbf_y" name="fpbf_y">
+    <input type="hidden" id="fpbf_name" name="fpbf_name">
+</form>
+
+<div class="container" id="frontal_projection_3d">
   <div class="stage">
     <div class="header">
       {% if spectacle.mode == '1' %}

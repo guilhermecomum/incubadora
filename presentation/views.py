@@ -36,7 +36,8 @@ from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_HARD,\
                                 SPECTACLE_MODE_RESET
 from presentation.forms import EasyModeForm, HardModeForm, HardModeMessageForm,\
                                FrontalProjectionSettingsForm, \
-                               LoggedUsersPercentageForm
+                               LoggedUsersPercentageForm, \
+                               FrontalProjectionBoxForm
 from collections import defaultdict
 from PIL import Image
 import math
@@ -263,7 +264,9 @@ def frontal_projection(request, s_id):
     else:
         commands = spectacle.hard_commands.all()
 
-    c = { 'spectacle':spectacle, 'commands':commands }
+    fpsb_form = FrontalProjectionBoxForm()
+
+    c = { 'spectacle':spectacle, 'commands':commands, 'fpsb_form':fpsb_form }
 
     return render(request, "frontal_projection.html", c)
 
@@ -834,14 +837,6 @@ def delete_logged_users(request, s_id):
     return HttpResponse(message, mimetype="application/json")
 
 
-def frontal_projection_3d(request, s_id):
-    spectacle = get_spectacle(s_id)
-
-    c = { 'spectacle':spectacle }
-
-    return render(request, 'frontal_projection_3d.html', c)
-
-
 def get_frontal_projection_3d_data(request, s_id):
     spectacle = get_spectacle(s_id)
 
@@ -851,7 +846,15 @@ def get_frontal_projection_3d_data(request, s_id):
                     'translate_y': fps.translate_y,
                     'skew_x': fps.skew_x ,
                     'skew_y': fps.skew_y,
-                    'rotate': fps.rotate}
+                    'rotate': fps.rotate,
+                    'message_x': fps.message_x,
+                    'message_y': fps.message_y,
+                    'mobile_interaction_x': fps.mobile_interaction_x,
+                    'mobile_interaction_y': fps.mobile_interaction_y,
+                    'commands_x': fps.commands_x,
+                    'commands_y': fps.commands_y,
+                    'happiness_meter_x': fps.happiness_meter_x,
+                    'happiness_meter_y': fps.happiness_meter_y}
         message = simplejson.dumps( { 'error': 0, 'settings': settings} )
     except FrontalProjectionSettings.DoesNotExist:
         message = simplejson.dumps( { 'error': 1 })
@@ -878,6 +881,40 @@ def set_frontal_projection_3d_data(request, s_id):
 
     if request.POST and form.is_valid():
         form.save()
+        message = simplejson.dumps( { 'error': 0 } )
+    else:
+        message = simplejson.dumps( { 'error': 1 } )
+
+    return HttpResponse(message, mimetype="application/json")
+
+@staff_member_required
+def set_frontal_projection_boxes_positions(request, s_id):
+    spectacle = get_spectacle(s_id)
+
+    fps, created = FrontalProjectionSettings.objects.get_or_create(
+        spectacle=spectacle)
+
+    form = FrontalProjectionBoxForm(request.POST)
+
+    if request.POST and form.is_valid():
+        name = form.cleaned_data['fpbf_name']
+        x = form.cleaned_data['fpbf_x']
+        y = form.cleaned_data['fpbf_y']
+
+        if name == 'message':
+            fps.message_x = x
+            fps.message_y = y
+        elif name == 'mobile_interaction':
+            fps.mobile_interaction_x = x
+            fps.mobile_interaction_y = y
+        elif name == 'commands':
+            fps.commands_x = x
+            fps.commands_y = y
+        elif name == 'happiness_meter':
+            fps.happiness_meter_x = x
+            fps.happiness_meter_y = y
+
+        fps.save()
         message = simplejson.dumps( { 'error': 0 } )
     else:
         message = simplejson.dumps( { 'error': 1 } )

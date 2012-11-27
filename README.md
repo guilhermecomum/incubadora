@@ -5,6 +5,7 @@
  * python-django
  * python-imaging
  * libjs-jquery
+ * libjs-jquery-ui
  * ruby-compass
 
 ## Setting configuration params
