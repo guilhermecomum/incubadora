@@ -2,19 +2,20 @@
 
 ### Packaged software
 
- * python-django
- * python-imaging
- * libjs-jquery
- * libjs-jquery-ui
- * ruby-compass
+ * python-django ( >= 1.4 )
+ * python-imaging ( >= 1.1.7 )
+ * libjs-jquery ( >= 1.7.2 )
+ * libjs-jquery-ui (>= 1.8.23 )
+ * ruby-compass ( >= 0.12.2 )
 
 ## Setting configuration params
 
 ### incubadora/settings.py.sample
 
 After checking out the source code, you have to copy the
-`incubadora/settings.py.sample` to `incubadora/settings.py`. In this file, you'll be able to choose
-the database name that messages and static file.
+`incubadora/settings.py.sample` to `incubadora/settings.py`. In this file,
+you'll be able to choose the database name that messages and static files
+(STATICFILES_DIRS and MEDIA_ROOT).
 
 ### Sass Vs. Css: Generating css files
 
