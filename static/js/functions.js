@@ -176,7 +176,7 @@ reset_spectacle = function () {
 get_last_hard_message = function () {
     $.get($.m_get_last_hard_message_url, function(data) {
         if (!data.error && $.m_last_hard_message != data.msg.pk) {
-            $('#box-message').find('p').html(data.msg.text);
+            $('#box-message').find('marquee').html(data.msg.text);
             $.m_last_hard_message = data.msg.pk;
         }
     });
@@ -257,8 +257,8 @@ show_chosen_commands = function(monitor){
                 if (monitor && data.commands.easy_monitor) {
                     $('#chosen-commands-list').hide();
                      // Show and hide after 1 min
-                     $('#box-message').find('p').show();
-                     $('#box-message').find('p').html(data.commands.easy_monitor).delay(time).hide(0);
+                     $('#box-message').find('marquee').show();
+                     $('#box-message').find('marquee').html(data.commands.easy_monitor).delay(time).hide(0);
                     // play sound
                     if (data.commands.sound) {
                         if ($('#sound-' + $.m_update_chosen_command).length >0) {
@@ -271,8 +271,8 @@ show_chosen_commands = function(monitor){
                 } else if (data.commands.easy) {
                     $('#chosen-commands-list').hide();
                     // Show and hide after 1 min
-                    $('#box-message').find('p').show();
-                    $('#box-message').find('p').text(data.commands.easy).delay(time).hide(0);
+                    $('#box-message').find('marquee').show();
+                    $('#box-message').find('marquee').text(data.commands.easy).delay(time).hide(0);
                 }
                 $.m_update_chosen_command = data.commands.pk;
             } else if (data.commands.hard && data.commands.hard.length > 0) {
