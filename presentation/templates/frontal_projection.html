@@ -95,6 +95,8 @@ var get_last_scene_duration_refresh = setInterval(function (){ get_last_scene_du
 <script type="text/javascript">
 $(document).ready(function() {
     $.m_get_frontal_projection_draw_list_bullet_url = '{{ spectacle.get_frontal_projection_draw_list_bullet_url }}';
+
+    get_bullets();
 });
 
 var bullets_refresh = setInterval(function (){ get_bullets(); }, s10);
