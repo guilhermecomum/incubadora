@@ -13,18 +13,6 @@
 
 $(document).ready(function() {
 
-    $.m_frontal_projection_3d_data_url_url = '{{ spectacle.get_frontal_projection_3d_data_url }}';
-
-});
-
-var s10 = 3000; // 3s
-var frontal_projection_3d_data_refresh = setInterval(function(){ get_frontal_projection_3d_data(); }, s10);
-
-</script>
-<script type="text/javascript">
-
-$(document).ready(function() {
-
     $.m_get_happiness_meter_url = '{{ spectacle.get_happiness_meter_url }}';
     $.m_get_mobile_interaction_url = '{{ spectacle.get_mobile_interaction_url }}';
     $.m_get_last_hard_message_url = '{{ spectacle.get_last_hard_message_url }}';
@@ -33,6 +21,7 @@ $(document).ready(function() {
     $.m_get_chosen_commands_total_url = '{{ spectacle.get_chosen_commands_total_url }}';
     $.m_frontal_projection_show_url = '{{ spectacle.get_frontal_projection_show_url }}';
     $.m_frontal_projection_boxes_positions_url = '{{ spectacle.set_frontal_projection_boxes_positions_url }}';
+    $.m_frontal_projection_3d_data_url_url = '{{ spectacle.get_frontal_projection_3d_data_url }}';
 
     $("#box-message").draggable({
         stop: function(event, ui) {
@@ -74,6 +63,7 @@ var happiness_meter_refresh = setInterval(function(){ get_happiness_meter(); }, 
 var mobile_interaction_refresh = setInterval(function (){ get_mobile_interaction(); }, s10);
 var show_chosen_commands_refresh = setInterval(function (){ show_chosen_commands(false); }, s10);
 var get_spectable_mode_refresh = setInterval(function (){ get_spectable_mode($.m_frontal_projection_show_url); }, s10);
+var frontal_projection_3d_data_refresh = setInterval(function(){ get_frontal_projection_3d_data(); }, s10);
 
 </script>
 
