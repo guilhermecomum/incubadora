@@ -32,12 +32,16 @@ from presentation.models import SPECTACLE_MODE_EASY, SPECTACLE_MODE_RESET
 
 def user_login(request):
 
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        user_profile_form = UserProfileForm(request.POST)
+    post = request.POST.copy()
 
-        email = request.POST['username']
-        first_name = request.POST['first_name']
+    if request.method == 'POST':
+
+        post['username'] = post['username'].lower()
+        email = post['username']
+        first_name = post['first_name']
+
+        form = UserForm(post)
+        user_profile_form = UserProfileForm(post)
 
         if email and first_name:
             try:
@@ -55,7 +59,6 @@ def user_login(request):
                     login(request, user)
 
                     # FIXME
-                    post = request.POST.copy()
                     post['user'] = user.id
                     user_profile_form = UserProfileForm(post)
                     if user_profile_form.is_valid():
