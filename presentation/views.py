@@ -381,26 +381,14 @@ def show_chosen_commands(request, s_id):
                                        scene=scene)
         scene_total = mode.count()
 
-        if scene_total > 0:
-            player1 = mode[0].player.first_name
-            command_name = mode[0].command.name
-            if scene_total == 1:
-                easy = "%s escolheu %s" % (player1, command_name)
-            elif scene_total == 2:
-                player2 = mode[1].player.first_name
-                easy = "%s e %s escolheram %s" % (player1,
-                                                  player2,
-                                                  command_name)
-            elif scene_total > 2:
-                player2 = mode[1].player.first_name
-                num = scene_total - 2
-                aux = "pessoa" if num == 1 else "pessoas"
-                easy = "%s, %s e mais %d %s escolheram %s" % (player1,
-                                                              player2,
-                                                              num,
-                                                              aux,
-                                                              command_name)
+        easy = ', '.join([m.player.first_name for m in mode])
+        easy = easy.rstrip(', ')
+        easy = ' e'.join(easy.rsplit(',', 1))
 
+        if scene_total > 1:
+            easy += " escolheram %s" % (m.command.name)
+        else:
+            easy += " escolheu %s" % (m.command.name)
 
         command_total = ChosenCommand.objects.filter(spectacle = spectacle,
                                                      mode = spectacle.mode,
