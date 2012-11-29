@@ -97,7 +97,7 @@ def get_minimum(spectacle):
         total_logged_users = LoggedUser.objects.all().count()
         return int(math.ceil(total_logged_users * (float(minimum)/100)))
     else:
-        return 0
+        return 1
 
 @login_required
 def easy_add(request, s_id):
