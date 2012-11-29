@@ -257,8 +257,8 @@ show_chosen_commands = function(monitor){
                 if (monitor && data.commands.easy_monitor) {
                     $('#chosen-commands-list').hide();
                      // Show and hide after 1 min
-                     $('#box-message').find('marquee').show();
-                     $('#box-message').find('marquee').html(data.commands.easy_monitor).delay(time).hide(0);
+                     $('#box-message').find('p').show();
+                     $('#box-message').find('p').html(data.commands.easy_monitor).delay(time).hide(0);
                     // play sound
                     if (data.commands.sound) {
                         if ($('#sound-' + $.m_update_chosen_command).length >0) {
