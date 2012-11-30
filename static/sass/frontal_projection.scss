@@ -19,12 +19,13 @@
 
 @import "compass/reset";
 @import "compass/css3";
+@import "fonts";
 
 body {
     background: #000;
     margin-top: 30px;
     color: white;
-    font-family: sans-serif;
+    font-family: 'Open Sans', sans-serif;
     text-transform: uppercase;
 }
 
