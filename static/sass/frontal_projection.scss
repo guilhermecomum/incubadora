@@ -184,9 +184,17 @@ li {
     background: url(../images/frontal/medidor_white.png) no-repeat;
 }
 
+.barra {
+    width: 26px;
+    height: 166px;
+    padding-left: 5px;
+    position: absolute;
+    margin-top: 25px;
+}
+
 .meter {
-    width: 46px;
-    max-height: 238px;
+    width: 26px;
+    max-height: 166px;
     bottom: 0;
     position: absolute;
     background: white;
