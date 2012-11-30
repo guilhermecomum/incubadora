@@ -7,14 +7,36 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-    $('input').focus(function() {
-        $('.errorlist').hide();
+
+    // name
+    $('.nome .errorlist').click(function() {
+        $('.nome .errorlist').hide();
+        $('#id_first_name').focus();
     });
 
-    $('.errorlist').click(function() {
-        $('.errorlist').hide();
+    if ($('.nome .errorlist').length > 0) {
+        $('#id_first_name').val('');
+    }
+
+    $('#id_first_name').focus(function() {
+        $('.nome .errorlist').hide();
     });
 
+    // email
+    $('.mail .errorlist').click(function() {
+        $('.mail .errorlist').hide();
+        $('#id_username').focus();
+    });
+
+    if ($('.mail .errorlist').length > 0) {
+        $('#id_username').val('');
+    }
+
+    $('#id_username').focus(function() {
+        $('.mail .errorlist').hide();
+    });
+
+    // newsletter
     $('.checkbox').click(function() {
         $('.full').toggle();
         if( $('.full:visible').length > 0 ) {
