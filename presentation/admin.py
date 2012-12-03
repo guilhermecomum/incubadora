@@ -57,7 +57,7 @@ class SpectacleAdmin(admin.ModelAdmin):
 
 class CommandAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
-    list_display = ['__str__', 'slug']
+    list_display = ['__str__', 'slug', 'value_1', 'value_2', 'value_3']
 
 class ActorAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}

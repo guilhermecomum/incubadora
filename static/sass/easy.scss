@@ -1,5 +1,6 @@
 @import "compass/reset";
 @import "compass/css3";
+@import "fonts";
 
 .container {
     background: url(../images/easy/bg.png) no-repeat #FFF;
@@ -7,6 +8,7 @@
     margin: 0 auto;
     height: 960px;
     displa: block;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .header {
@@ -60,6 +62,11 @@
     display: block;
     float: right;
     clear: both;
+}
+
+.pts {
+    color: #999999;
+    padding: 10px 5px;
 }
 
 .confraternizar.ativo {

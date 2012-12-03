@@ -60,6 +60,10 @@ var get_spectable_mode_refresh = setInterval(function (){ get_spectable_mode($.m
                     <li class="carga"></li>
                 {% endfor %}
               </ul>
+              <div class="pts">
+                <span id="command-value-{{ c.id }}">{{ c.value_1 }}</span>
+                <span>pts</span>
+              </div>
           </div>
         </li>
         {% endfor %}
