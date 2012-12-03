@@ -207,15 +207,17 @@ $(document).ready(function() {
         </div>
         <div class="span2">
           <div class="happiness">
-            <div id="happiness-meter" class="meter" style="height:
-                                                           {% if spectacle.mode == '1' %}
-                                                           {{ spectacle.easy_happiness_meter }};
-                                                           {% else %}
-                                                           {{ spectacle.hard_happiness_meter }};
-                                                           {% endif %}">
-              <div class="meter-border">
+            <div class="barra">
+              <div id="happiness-meter" class="meter" style="height:
+                                                             {% if spectacle.mode == '1' %}
+                                                             {{ spectacle.easy_happiness_meter }};
+                                                             {% else %}
+                                                             {{ spectacle.hard_happiness_meter }};
+                                                             {% endif %}">
+
               </div>
             </div>
+            <div class="meter-border"></div>
           </div>
         </div>
       </div>

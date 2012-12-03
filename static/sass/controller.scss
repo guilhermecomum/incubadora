@@ -27,28 +27,37 @@ body {
 .happiness {
     text-align: center;
     float: right;
-    width: 66px;
-    height: 272px;
+    width: 60px;
+    height: 218px;
     position: relative;
     overflow: hidden;
 }
 
 .meter-border {
-    width: 66px;
-    height: 272px;
+    width: 60px;
+    height: 218px;
     position:absolute;
     bottom:0;
     left:0;
-    background: url(../images/frontal/medidor_blue.png) no-repeat;
+    background: url(../images/frontal/medidor_white.png) no-repeat;
+}
+
+.barra {
+    width: 26px;
+    height: 166px;
+    padding-left: 5px;
+    position: absolute;
+    margin-top: 25px;
 }
 
 .meter {
-    width: 66px;
-    max-height: 238px;
+    width: 26px;
+    max-height: 166px;
     bottom: 0;
     position: absolute;
-    background: blue;
+    background: white;
 }
+
 
 .buttons button {
     margin-top: 20px;
