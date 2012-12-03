@@ -61,6 +61,21 @@ class Command(models.Model):
         help_text=_('Warning: Only mp3 file!'),
         blank=True,
         null=True)
+    value_1 = models.IntegerField(
+        verbose_name=_('value 1'),
+        default=0,
+        blank=True,
+        null=True)
+    value_2 = models.IntegerField(
+        verbose_name=_('value 2'),
+        default=0,
+        blank=True,
+        null=True)
+    value_3 = models.IntegerField(
+        verbose_name=_('value 3'),
+        default=0,
+        blank=True,
+        null=True)
 
     class Meta:
         verbose_name = _('Command')

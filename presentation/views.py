@@ -142,11 +142,11 @@ def easy_add(request, s_id):
                 cc.save()
 
                 if total_cc == 0:
-                    spectacle.easy_happiness_meter += 5
+                    spectacle.easy_happiness_meter += cc.command.value_1
                 elif total_cc == 1:
-                    spectacle.easy_happiness_meter += 5
+                    spectacle.easy_happiness_meter += cc.command.value_2
                 elif total_cc == 2:
-                    spectacle.easy_happiness_meter += 5
+                    spectacle.easy_happiness_meter += cc.command.value_3
                 spectacle.save()
 
             message = simplejson.dumps( { 'error': 0 } )
@@ -293,7 +293,11 @@ def get_chosen_commands_total(request, s_id):
     spectacle = get_spectacle(s_id)
     commands = ChosenCommand.objects.filter(spectacle=spectacle,
                                             mode = spectacle.mode)
-    commands = commands.values('command__name', 'command__pk')
+    commands = commands.values('command__name',
+                               'command__pk',
+                               'command__value_1',
+                               'command__value_2',
+                               'command__value_3')
     commands = commands.annotate(Count('pk'))
 
     if spectacle.mode == SPECTACLE_MODE_EASY:
@@ -301,8 +305,11 @@ def get_chosen_commands_total(request, s_id):
         message = simplejson.dumps( {'error': 0,
                                      'commands': [ {'name': m['command__name'],
                                                     'pk': m['command__pk'],
-                                                    'total': m['pk__count'] }
-                                                    for m in commands ] })
+                                                    'total': m['pk__count'],
+                                                    'value': m['%s_%d' % (
+                                                        'command__value',
+                                                        m['pk__count']) ]  }
+                                                        for m in commands ] })
     else:
         actors = []
         for a in spectacle.actors.all():

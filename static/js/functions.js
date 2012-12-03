@@ -218,6 +218,7 @@ easy_mobile_commands = function() {
                     for (var x=1; x<= 3-this.total; x++) {
                         $('#command-'+this.pk).find('ul').append('<li class="carga"></li>');
                     }
+                    $('#command-value-'+this.pk).html(this.value);
                 });
             }
         }
