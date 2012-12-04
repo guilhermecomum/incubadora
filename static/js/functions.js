@@ -122,7 +122,7 @@ get_chosen_commands = function(reload) {
                 var block = false;
                 var command = data.command;
                 if ($('#chosen-command-'+command.pk).length == 0) {
-                    $('#chosen-commands-list').html('<li id="chosen-command-'+command.pk+'"><span>'+command.name+'</span>');
+                    $('#chosen-commands-list').html('<span id="chosen-command-'+command.pk+'">'+command.name+'</span>');
                     block = true;
                 }
                 if (block && !reload) {

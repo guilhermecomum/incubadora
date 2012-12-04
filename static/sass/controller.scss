@@ -108,7 +108,14 @@ body {
     color: red;
 }
 
-#chosen-commands-list li span {
+#chosen-commands-list {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#chosen-commands-list span {
     font-size: 24pt;
     color: #73D925;
+    font-weight: bold;
+
 }
