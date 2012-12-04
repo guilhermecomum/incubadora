@@ -149,9 +149,25 @@ $(document).ready(function() {
       <div class="row">
           <div id="mobile_interaction">
             {% if spectacle.mode == '1' %}
-            <button href="{{ spectacle.set_mobile_interaction_url }}" class="span6 btn btn-warning btn-large mobile-interaction">Interação mobile: <span>{{ spectacle.mobile_interaction }}</span></button>
+            <button href="{{ spectacle.set_mobile_interaction_url }}" class="span6 btn btn-danger btn-large mobile-interaction">
+              Interação mobile: <span>{{ spectacle.mobile_interaction }}</span>
+            </button>
             {% else %}
-            <span class="label label-important">{{ spectacle.mobile_interaction }}</span>
+
+            <div class="span6">
+              <form id="form-scene-duration">{% csrf_token %}
+                <input type="hidden" id="duration" name="duration">
+              </form>
+              <div id="hard-countdown">00:00</div>
+              <select id="hard_duration">
+                <option value="">------</option>
+                {% for d in hard_duration %}
+                <option value="{{ d.duration|date:"H:i:s" }}">{{ d.duration|date:"H:i:s" }}</option>
+                {% endfor %}
+              </select>
+            <span class="help-inline label label-important">{{ spectacle.mobile_interaction }}</span>
+
+            </div>
             {% endif %}
         </div>
       </div>
@@ -160,41 +176,32 @@ $(document).ready(function() {
         {% if spectacle.mode == '1' %}
           <button id="change-spectacle-mode" class="span3 btn btn-large btn-info">Mudar de Easy para Hard</button>
         {% endif %}
-
       </div>
       <div class="row">
-        {% if spectacle.mode == '2' %}
-        <div>
-          <div id="hard-countdown">00:00</div>
-          <select id="hard_duration">
-            <option value="">------</option>
-            {% for d in hard_duration %}
-            <option value="{{ d.duration|date:"H:i:s" }}">{{ d.duration|date:"H:i:s" }}</option>
-            {% endfor %}
-          </select>
-
-          <form id="form-scene-duration">{% csrf_token %}
-            <input type="hidden" id="duration" name="duration">
-          </form>
+        <div class="span6">
+        <h2>Configurações</h2>
         </div>
-        {% endif %}
+      </div>
+
+      <div class="row">
+
         <button id="reset-spectacle" class="span6 btn btn-large btn-danger">Reiniciar o Espetáculo</button>
       </div>
       <div class="row">
         <button id="delete-logged-users" class="span6 btn btn-large btn-danger">Remover usuários logados</button>
       </div>
       <div class="row">
-        <button id="frontal-projection-settings" class="span6 btn btn-large btn-primary" data-toggle="modal" data-target="#frontal-projection-settings-modal">Projeção Frontal Configurações</button>
+        <button id="frontal-projection-settings" class="span6 btn btn-large btn-inverse" data-toggle="modal" data-target="#frontal-projection-settings-modal">Projeção Frontal Configurações</button>
       </div>
       <div class="row">
-        <button id="spectacle-settings" class="span6 btn btn-large btn-primary" data-toggle="modal" data-target="#spectacle-settings-modal">Espetáculo Configurações</button>
+        <button id="spectacle-settings" class="span6 btn btn-large btn-inverse" data-toggle="modal" data-target="#spectacle-settings-modal">Espetáculo Configurações</button>
       </div>
     </div>
     <div class="span6">
       <div class="row">
         <div class="span4">
-          <h3>Comando escolhido</h3>
-          <ul id="chosen-commands-list"></ul>
+          <h4>Comando escolhido</h4>
+          <div id="chosen-commands-list" class="{% if spectacle.mode == '1' %} easy {% else %} hard {% endif %}"></div>
           <h2>Comandos</h2>
           <table class="table" id="command-list">
             <thead>
