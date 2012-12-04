@@ -33,6 +33,14 @@ set_mobile_interaction = function(duration) {
         if (!data.error) {
             $('#mobile_interaction').find('span').text(data.mobile_interaction.toString());
             set_last_scene_duration(duration);
+            if(data.mobile_interaction) {
+                $('#mobile_interaction button').removeClass('btn-danger');
+                $('#mobile_interaction button').addClass('btn-success');
+            }
+            else {
+                $('#mobile_interaction button').removeClass('btn-success');
+                $('#mobile_interaction button').addClass('btn-danger');
+            }
         }
     });
 }
