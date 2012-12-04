@@ -38,6 +38,26 @@ set_mobile_interaction = function(duration) {
         if (!data.error) {
             $('#mobile_interaction').find('span').text(data.mobile_interaction.toString());
             set_last_scene_duration(duration);
+            if(data.mobile_interaction) {
+                if ($('#mobile_interaction button').hasClass('btn-danger')){
+                    $('#mobile_interaction button').removeClass('btn-danger');
+                    $('#mobile_interaction button').addClass('btn-success');
+                }
+                if ($('#mobile_interaction .help-inline').hasClass('label-important')){
+                    $('#mobile_interaction .help-inline').removeClass('labe-important');
+                    $('#mobile_interaction .help-inline').addClass('label-success');
+                }
+            }
+            else {
+                if ($('#mobile_interaction button').hasClass('btn-success')){
+                    $('#mobile_interaction button').removeClass('btn-success');
+                    $('#mobile_interaction button').addClass('btn-danger');
+                }
+                if ($('#mobile_interaction .help-inline').hasClass('label-success')){
+                    $('#mobile_interaction .help-inline').removeClass('label-success');
+                    $('#mobile_interaction .help-inline').addClass('label-important');
+                }
+            }
         }
     });
 }
@@ -119,7 +139,7 @@ get_chosen_commands = function(reload) {
                 var block = false;
                 var command = data.command;
                 if ($('#chosen-command-'+command.pk).length == 0) {
-                    $('#chosen-commands-list').html('<li id="chosen-command-'+command.pk+'"><span>'+command.name+'</span>');
+                    $('#chosen-commands-list').html('<span id="chosen-command-'+command.pk+'">'+command.name+'</span>');
                     block = true;
                 }
                 if (block && !reload) {
@@ -134,7 +154,7 @@ get_chosen_commands = function(reload) {
                 if (data.actors.length > 0) {
                     $.each(data.actors, function(i, item) {
                         if ($('#chosen-command-'+item.pk).length == 0) {
-                            $('<li id="chosen-command-'+item.pk+'"><span>'+item.name+': </span></li>').appendTo('#chosen-commands-list');
+                            $('<span id="chosen-command-'+item.pk+'">'+item.name+': </span>').appendTo('#chosen-commands-list');
                             $('<span id="command-'+ item.command.pk +'">'+item.command.name+'</span>').appendTo('#chosen-command-'+item.pk);
                         }
                         else {

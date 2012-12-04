@@ -107,3 +107,38 @@ body {
 .controller-modal #error-msg {
     color: red;
 }
+
+#chosen-commands-list {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#chosen-commands-list span {
+    font-weight: bold;
+}
+
+.easy span {
+    color: #1cce28;
+    font-size: 24pt;
+}
+
+.hard span {
+    font-size: 20pt;
+    padding-top: 20px;
+    text-align: left !important;
+}
+
+span#chosen-command-1 {
+    color: #1cce28;
+    display: block;
+}
+
+span#chosen-command-2 {
+    color: #0089af;
+    display: block;
+}
+
+span#chosen-command-3 {
+    color: #f93a2b;
+    display: block;
+}
