@@ -1,5 +1,6 @@
 @import "compass/reset";
 @import "compass/css3";
+@import "fonts";
 
 body {
     color: white;
@@ -7,6 +8,7 @@ body {
     font-weight: bold;
     text-transform: capitalize;
     font-family: sans;
+    font-family: 'Open Sans', sans-serif;
 }
 
 
