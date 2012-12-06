@@ -11,12 +11,14 @@ $(document).ready(function() {
     $.m_show_chosen_commands_url = '{{ spectacle.show_chosen_commands_url }}';
     $.m_get_spectable_mode_url = '{{ spectacle.get_spectable_mode_url }}';
     $.m_monitor_show_url = '{{ spectacle.get_monitor_show_url }}';
+    $.m_get_happiness_meter_url = '{{ spectacle.get_happiness_meter_url }}';
 
 });
 
 var s10 = 3000; // 3s
 var show_chosen_commands_refresh = setInterval(function (){ show_chosen_commands(true); }, s10);
 var get_spectable_mode_refresh = setInterval(function (){ get_spectable_mode($.m_monitor_show_url); }, s10);
+var happiness_meter_refresh = setInterval(function(){ get_happiness_meter(true); }, s10);
 
 </script>
 
@@ -29,6 +31,7 @@ var get_spectable_mode_refresh = setInterval(function (){ get_spectable_mode($.m
     <div id="chosen-commands">
       <ul id="chosen-commands-list"></ul>
     </div>
+    <div id="happiness-meter"></div>
 </div>
 
 {% endblock %}

@@ -19,11 +19,16 @@
 
 $.ajaxSetup({ cache: false });
 
-get_happiness_meter = function() {
+get_happiness_meter = function(monitor) {
+    var monitor = monitor;
     $.get($.m_get_happiness_meter_url, function( data ) {
-       if (!data.error) {
-           $('#happiness-meter').css('height', data.value+'%');
-       }
+        if (!data.error) {
+            if (!monitor) {
+                $('#happiness-meter').css('height', data.value+'%');
+            } else {
+                $('#happiness-meter').html('('+data.value+')');
+            }
+        }
     });
 }
 
