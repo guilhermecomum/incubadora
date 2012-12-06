@@ -43,9 +43,9 @@ set_mobile_interaction = function(duration) {
                     $('#mobile_interaction button').removeClass('btn-danger');
                     $('#mobile_interaction button').addClass('btn-success');
                 }
-                if ($('span.help-inline').hasClass('label-important')){
-                    $('span.help-inline').removeClass('labe-important');
-                    $('span.help-inline').addClass('label-success');
+                if ($('#mobile_interaction .help-inline').hasClass('label-important')){
+                    $('#mobile_interaction .help-inline').removeClass('labe-important');
+                    $('#mobile_interaction .help-inline').addClass('label-success');
                 }
             }
             else {
@@ -53,9 +53,9 @@ set_mobile_interaction = function(duration) {
                     $('#mobile_interaction button').removeClass('btn-success');
                     $('#mobile_interaction button').addClass('btn-danger');
                 }
-                if ($('span.help-inline').hasClass('label-success')){
-                    $('span.help-inline').removeClass('label-success');
-                    $('span.help-inline').addClass('label-important');
+                if ($('#mobile_interaction .help-inline').hasClass('label-success')){
+                    $('#mobile_interaction .help-inline').removeClass('label-success');
+                    $('#mobile_interaction .help-inline').addClass('label-important');
                 }
             }
         }
