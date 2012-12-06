@@ -147,29 +147,29 @@ $(document).ready(function() {
         </div>
       </div>
       <div class="row">
-          <div id="mobile_interaction">
-            {% if spectacle.mode == '1' %}
-            <button href="{{ spectacle.set_mobile_interaction_url }}" class="span6 btn btn-danger btn-large mobile-interaction">
-              Interação mobile: <span>{{ spectacle.mobile_interaction }}</span>
-            </button>
-            {% else %}
-
-            <div class="span6">
-              <form id="form-scene-duration">{% csrf_token %}
-                <input type="hidden" id="duration" name="duration">
-              </form>
-              <div id="hard-countdown">00:00</div>
-              <select id="hard_duration">
-                <option value="">------</option>
-                {% for d in hard_duration %}
-                <option value="{{ d.duration|date:"H:i:s" }}">{{ d.duration|date:"H:i:s" }}</option>
-                {% endfor %}
-              </select>
-            <span class="help-inline label label-important">{{ spectacle.mobile_interaction }}</span>
-
+        {% if spectacle.mode == '1' %}
+            <div id="mobile_interaction">
+                <button href="{{ spectacle.set_mobile_interaction_url }}" class="span6 btn btn-danger btn-large mobile-interaction">
+                    Interação mobile: <span>{{ spectacle.mobile_interaction }}</span>
+                </button>
             </div>
-            {% endif %}
+        {% else %}
+        <div class="span6">
+            <form id="form-scene-duration">{% csrf_token %}
+                <input type="hidden" id="duration" name="duration">
+            </form>
+            <div id="hard-countdown">00:00</div>
+            <div id="mobile_interaction">
+                <select id="hard_duration">
+                    <option value="">------</option>
+                    {% for d in hard_duration %}
+                    <option value="{{ d.duration|date:"H:i:s" }}">{{ d.duration|date:"H:i:s" }}</option>
+                    {% endfor %}
+                </select>
+                <span class="help-inline label label-important">{{ spectacle.mobile_interaction }}</span>
+            </div>
         </div>
+        {% endif %}
       </div>
       <div class="row">
           <button id="decrease-happiness" class="span3 btn btn-large btn-info">degradar o medidor</button>
