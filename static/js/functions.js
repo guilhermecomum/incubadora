@@ -347,7 +347,7 @@ set_backside_projection_content = function () {
 
 get_bullets = function() {
     $.get($.m_get_frontal_projection_draw_list_bullet_url, function ( data ) {
-        if (!data.error) {
+        if (!data.error && data.mobile_interaction) {
             $('.command span').removeClass();
             $('.command span').addClass('score score-0');
             if (data.commands) {
@@ -356,6 +356,10 @@ get_bullets = function() {
                     $('#command-count-'+this.pk).addClass('score-'+this.draw);
                 });
             }
+        }
+        else {
+            $('.command span').removeClass();
+            $('.command span').addClass('score-0');
         }
     });
 

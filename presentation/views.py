@@ -820,7 +820,9 @@ def frontal_projection_draw_list_bullet(request, s_id):
         for m in mode:
             m['draw'] = (m['pk__count'] * BULLETS) / minimum
 
+        mi = spectacle.mobile_interaction
         message = simplejson.dumps({'error': 0,
+                                    'mobile_interaction': mi,
                                     'commands': [{'name': c['command__name'],
                                                   'pk': c['command__pk'],
                                                   'draw': c['draw'] }
