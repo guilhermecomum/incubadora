@@ -860,7 +860,12 @@ def get_frontal_projection_3d_data(request, s_id):
                     'commands_x': fps.commands_x,
                     'commands_y': fps.commands_y,
                     'happiness_meter_x': fps.happiness_meter_x,
-                    'happiness_meter_y': fps.happiness_meter_y}
+                    'happiness_meter_y': fps.happiness_meter_y,
+                    'hard_countdown_x': fps.hard_countdown_x,
+                    'hard_countdown_y': fps.hard_countdown_y,
+                    'hard_commands_x': fps.hard_commands_x,
+                    'hard_commands_y': fps.hard_commands_y}
+
         message = simplejson.dumps( { 'error': 0, 'settings': settings} )
     except FrontalProjectionSettings.DoesNotExist:
         message = simplejson.dumps( { 'error': 1 })
@@ -919,6 +924,12 @@ def set_frontal_projection_boxes_positions(request, s_id):
         elif name == 'happiness_meter':
             fps.happiness_meter_x = x
             fps.happiness_meter_y = y
+        elif name == 'hard_commands':
+            fps.hard_commands_x = x
+            fps.hard_commands_y = y
+        elif name == 'hard_countdown':
+            fps.hard_countdown_x = x
+            fps.hard_countdown_y = y
 
         fps.save()
         message = simplejson.dumps( { 'error': 0 } )

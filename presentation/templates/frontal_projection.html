@@ -84,6 +84,24 @@ $(document).ready(function() {
     $(".dial").knob();
     $('.dial').val(0).trigger('change');
 
+    $( ".hard-countdown" ).draggable({
+        stop: function(event, ui) {
+            $('#fpbf_x').val(ui.position.left);
+            $('#fpbf_y').val(ui.position.top);
+            $('#fpbf_name').val('hard_countdown');
+            set_frontal_projection_boxes_positions();
+        }
+    });
+
+    $( "#chosen-commands" ).draggable({
+        stop: function(event, ui) {
+            $('#fpbf_x').val(ui.position.left);
+            $('#fpbf_y').val(ui.position.top);
+            $('#fpbf_name').val('hard_commands');
+            set_frontal_projection_boxes_positions();
+        }
+    });
+
 });
 
 var last_hard_message_refresh = setInterval(function (){ get_last_hard_message(); }, s10);

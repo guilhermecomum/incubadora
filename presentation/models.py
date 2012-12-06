@@ -511,6 +511,26 @@ class FrontalProjectionSettings(models.Model):
         default=0,
         blank=True,
         null=True)
+    hard_countdown_x = models.IntegerField(
+        verbose_name=_('Hard Countdown X'),
+        default=0,
+        blank=True,
+        null=True)
+    hard_countdown_y = models.IntegerField(
+        verbose_name=_('Hard Countdown Y'),
+        default=0,
+        blank=True,
+        null=True)
+    hard_commands_x = models.IntegerField(
+        verbose_name=_('Hard Commands X'),
+        default=0,
+        blank=True,
+        null=True)
+    hard_commands_y = models.IntegerField(
+        verbose_name=_('Hard Commands Y'),
+        default=0,
+        blank=True,
+        null=True)
 
     class Meta:
         verbose_name = _('Frontal Projection Settings')

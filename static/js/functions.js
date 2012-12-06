@@ -408,6 +408,12 @@ get_frontal_projection_3d_data = function() {
 
             $(".happiness").css({'left': data.settings.happiness_meter_x,
                                  'top': data.settings.happiness_meter_y});
+
+            $("#chosen-commands").css({'left': data.settings.hard_commands_x,
+                                       'top': data.settings.hard_commands_y});
+
+            $(".hard-countdown").css({'left': data.settings.hard_countdown_x,
+                                      'top': data.settings.hard_countdown_y});
         }
     });
 }
