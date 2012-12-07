@@ -36,4 +36,4 @@ it, use it:
 Currently, you just have to issue:
 
     $ python manage.py syncdb
-    $ python manage.py runserve 0.0.0.0:port
+    $ python manage.py runserver 0.0.0.0:port
