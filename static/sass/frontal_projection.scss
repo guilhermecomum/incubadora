@@ -54,9 +54,15 @@ body {
     height: 24px;
 }
 
-#mobile_interaction_on {
-    background: url(../images/frontal/interacao.png) no-repeat;
-    width: 160px;
+.interaction_on {
+    background: url(../images/frontal/interacao_on.png) no-repeat;
+    width: 180px;
+    height: 24px;
+}
+
+.interaction_off {
+    background: url(../images/frontal/interacao_off.png) no-repeat;
+    width: 195px;
     height: 24px;
 }
 

@@ -66,9 +66,11 @@ get_mobile_interaction = function() {
     $.get($.m_get_mobile_interaction_url, function(data) {
         if (!data.error) {
             if (data.mobile_interaction) {
-                $('#mobile_interaction').html('<div id="mobile_interaction_on"></div>');
+                $('.mobile_interaction').removeClass('interaction_off');
+                $('.mobile_interaction').addClass('interaction_on');
             } else {
-                $('#mobile_interaction').html('');
+                $('.mobile_interaction').removeClass('interaction_on');
+                $('.mobile_interaction').addClass('interaction_off');
             }
         }
     });
