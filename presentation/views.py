@@ -147,6 +147,12 @@ def easy_add(request, s_id):
                     spectacle.easy_happiness_meter += cc.command.value_2
                 elif total_cc == 2:
                     spectacle.easy_happiness_meter += cc.command.value_3
+
+                if spectacle.easy_happiness_meter < 0:
+                    spectacle.easy_happiness_meter = 0;
+                elif spectacle.easy_happiness_meter > 100:
+                    spectacle.easy_happiness_meter = 100;
+
                 spectacle.save()
 
             message = simplejson.dumps( { 'error': 0 } )
