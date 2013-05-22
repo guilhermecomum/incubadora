@@ -1,3 +1,11 @@
+# Incubadora - Versão final
+
+INCUBADORA é um simulador de sociedade. Os “interatores” usam seus
+próprios portáteis com wi-fi (celulares, tablets ou computadores) para
+criar uma narrativa. Que sociedade é possível construir com estas
+regras?
+
+
 ## Dependencies
 
 ### Packaged software
